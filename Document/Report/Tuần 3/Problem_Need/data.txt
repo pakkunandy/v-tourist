@@ -1,0 +1,36 @@
+Tổng số lượng tham gia:131 người
+
+
+----1----
+Sử dụng smartphone:
++ 15 người không sử dụng.
++ 4 người thiếu thông tin.
++ 112 người sử dụng.
++ android: 61 - 54% 
++ ios: 26 - 24%
++ windowphone: 25 - 22%
+
+----2----
+Bạn thích đi du lịch ở đâu?
++ Biển đảo: 115 - 33%
++ Núi rừng: 75 - 21%
++ Miền tây sông nước: 49 - 14%
++ Hang động: 40 - 11% 
++ Vịnh: 50 - 14%
++ Di tích lịch sử: 16 - 7%
+
+
+----3----
+Hiện tại bạn đang sử dụng phần mềm nào cho việc tìm kiếm địa điểm?
++ Google map: 126 - 85% 
++ Foody: 21 - 14%
++ Clingme: 0
++ Khác: 1(lozi, diadiemanuong) - 1%
+
+----3----
+Bạn mong đợi điều gì ở phần mềm này?
++ Các nhu cầu, tư vấn cơ bản: 60 - 32%
++ Tìm đường đi dễ dàng: 54 - 28%
++ Có thông tin về địa điểm du lịch: 66 - 35%
++ Tìm kiếm bạn bè đi cùng: 10 - 5%
+
