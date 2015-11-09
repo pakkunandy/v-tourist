@@ -4,14 +4,11 @@ package com.group5.model;
  * Ward of Place
  */
 public class Ward {
+
     /**
-     * City Id
+     * District contain Ward
      */
-    private String mCityId;
-    /**
-     * District Id
-     */
-    private String mDistrictId;
+    private District mDistrict;
     /**
      * Ward Id
      */
@@ -24,20 +21,12 @@ public class Ward {
     /**
      * Get/Set Properties
      */
-    public String getCityId() {
-        return mCityId;
+    public District getDistrict() {
+        return mDistrict;
     }
 
-    public void setCityId(String mCityId) {
-        this.mCityId = mCityId;
-    }
-
-    public String getDistrictId() {
-        return mDistrictId;
-    }
-
-    public void setDistrictId(String mDistrictId) {
-        this.mDistrictId = mDistrictId;
+    public void setDistrict(District mDistrict) {
+        this.mDistrict = mDistrict;
     }
 
     public String getWardId() {
@@ -58,15 +47,16 @@ public class Ward {
 
     /**
      * Constructor of Ward
-     * @param mCityId: City Id
-     * @param mDistrictId: District Id
+     * @param mDistrict: District contain Ward
      * @param mWardId: Ward Id
      * @param mWardName: Ward Name
      */
-    public Ward(String mCityId, String mDistrictId, String mWardId, String mWardName) {
-        this.mCityId = mCityId;
-        this.mDistrictId = mDistrictId;
+    public Ward(District mDistrict, String mWardId, String mWardName) {
+        this.mDistrict = mDistrict;
         this.mWardId = mWardId;
         this.mWardName = mWardName;
+    }
+
+    public Ward() {
     }
 }

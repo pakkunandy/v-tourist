@@ -57,4 +57,7 @@ public class Type {
         this.mName = mName;
         this.mDescription = mDescription;
     }
+
+    public Type() {
+    }
 }

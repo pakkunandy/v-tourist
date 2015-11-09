@@ -1,14 +1,102 @@
 package com.group5.parser;
 
+import com.group5.model.City;
+import com.group5.model.District;
+import com.group5.model.Place;
+import com.group5.model.Type;
+import com.group5.model.Ward;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parse Data from JSON to Model
  */
 public class DataParser {
 
+    public static List<Place> parsePlaces(String data) throws JSONException {
+
+        /**
+         * Cast data String to JSONObject
+         */
+        JSONObject jObj = new JSONObject(data);
+
+        /**
+         * Create List Place result
+         */
+        List<Place> rs = new ArrayList<Place>();
+
+        /**
+         * Get JSONArray
+         */
+        JSONArray jsonArrayPlace = jObj.getJSONArray("data");
+
+        /**
+         * Foreach Data Member
+         */
+        for(int i = 0; i < jsonArrayPlace.length(); i++){
+            JSONObject jsonObjectPlace = jsonArrayPlace.getJSONObject(i);
+            Place place = new Place();
+            place.setPlaceId(getString("id",jsonObjectPlace));
+            place.setAddress(getString("address", jsonObjectPlace));
+            place.setPlaceName(getString("name", jsonObjectPlace));
+            place.setPlaceDescription(getString("description", jsonObjectPlace));
+            place.setLongDescription(getString("long_description", jsonObjectPlace));
+            place.setLongitude(getLong("longitude", jsonObjectPlace));
+            place.setLongitude(getLong("latitude", jsonObjectPlace));
+
+            /**
+             * Handle Object Type
+             */
+            Type type = new Type();
+            JSONObject jsonObjectType = getObject("type", jsonObjectPlace);
+            type.setTypeId(getString("id", jsonObjectType));
+            type.setName(getString("name", jsonObjectType));
+            type.setDescription(getString("description", jsonObjectType));
+            //Set Type for Place
+            place.setType(type);
+
+            /**
+             * Handle Object Ward
+             */
+            Ward ward = new Ward();
+            JSONObject jsonObjectWard = getObject("ward", jsonObjectPlace);
+            ward.setWardId(getString("id", jsonObjectWard));
+            ward.setWardName(getString("name", jsonObjectWard));
+
+            /**
+             * Handle Object City
+             */
+            City city = new City();
+            JSONObject jsonObjectCity = getObject("city", jsonObjectPlace);
+            city.setCityId(getString("id", jsonObjectCity));
+            city.setName(getString("name", jsonObjectCity));
+            city.setAttributeName(getString("attribute_name", jsonObjectCity));
+
+            /**
+             * Handle Object District
+             */
+            District district = new District();
+            JSONObject jsonObjectDistrict = getObject("district", jsonObjectPlace);
+            district.setDistrictId(getString("id", jsonObjectCity));
+            district.setDistrictName(getString("name", jsonObjectCity));
+            //Set City for District
+            district.setCity(city);
+
+            //Set District for Ward
+            ward.setDistrict(district);
+            //Set Ward for place
+            place.setWard(ward);
+
+            rs.add(place);
+        }
+
+        return rs;
+    }
 
     /**
      * Get object from JSON Object by tagName

@@ -55,4 +55,7 @@ public class City {
         this.mCityName = mCityName;
         this.mAttributeName = mAttributeName;
     }
+
+    public City() {
+    }
 }

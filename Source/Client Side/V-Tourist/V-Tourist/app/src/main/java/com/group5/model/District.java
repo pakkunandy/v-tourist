@@ -9,9 +9,9 @@ public class District {
      */
     private String mDistrictId;
     /**
-     * City Id
+     * City contain District
      */
-    private String mCityId;
+    private City mCity;
     /**
      * Name of District
      */
@@ -28,12 +28,12 @@ public class District {
         this.mDistrictId = mDistrictId;
     }
 
-    public String getCityId() {
-        return mCityId;
+    public City getCity() {
+        return mCity;
     }
 
-    public void setCityId(String mCityId) {
-        this.mCityId = mCityId;
+    public void setCity(City mCity) {
+        this.mCity = mCity;
     }
 
     public String getDistrictName() {
@@ -47,12 +47,15 @@ public class District {
     /**
      * Constructor of District
      * @param mDistrictId : District Id
-     * @param mCityId : City Id
+     * @param mCity : City
      * @param mDistrictName: District Name
      */
-    public District(String mDistrictId, String mCityId, String mDistrictName) {
+    public District(String mDistrictId, City mCity, String mDistrictName) {
         this.mDistrictId = mDistrictId;
-        this.mCityId = mCityId;
+        this.mCity = mCity;
         this.mDistrictName = mDistrictName;
+    }
+
+    public District() {
     }
 }
