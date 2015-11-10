@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WebAPI.Models
 {
-    public class Ratings
+    public class Place
     {
     }
 }
