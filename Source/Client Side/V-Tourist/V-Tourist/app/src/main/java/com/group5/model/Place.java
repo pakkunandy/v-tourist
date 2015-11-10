@@ -1,6 +1,9 @@
 package com.group5.model;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Place {
     /**
      * Place Id
@@ -42,6 +45,16 @@ public class Place {
      * Type of Place
      */
     private Type mType;
+
+    /**
+     * List of Rating
+     */
+    private List<Rating> mListRating = new ArrayList<Rating>();
+
+    /**
+     * List of Image
+     */
+    private List<Image> mListImage = new ArrayList<Image>();
 
     /**
      * Get/Set Properties
@@ -124,6 +137,22 @@ public class Place {
 
     public void setPlaceName(String mPlaceName) {
         this.mPlaceName = mPlaceName;
+    }
+
+    public List<Rating> getListRating() {
+        return mListRating;
+    }
+
+    public void setListRating(List<Rating> mListRating) {
+        this.mListRating = mListRating;
+    }
+
+    public List<Image> getListImage() {
+        return mListImage;
+    }
+
+    public void setListImage(List<Image> mListImage) {
+        this.mListImage = mListImage;
     }
 
     /**

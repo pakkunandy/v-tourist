@@ -1,6 +1,7 @@
 package com.group5.service;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -131,8 +132,83 @@ public class VTouristService {
 
         return useGetMethodGetDataString(url);
     }
+    /**
+     * Get list City
+     * @param offset
+     * @param limit
+     * @return JSON String List of City
+     */
+    public String getListCity(String offset, String limit){
+        /**
+         * Handle url
+         */
+        String url = BASE_URL + "cities/";
+        //Check limit
+        if (limit != null) {
+            url = url + "?limit=" + limit;
+        }
+        //Check offset
+        if (offset != null) {
+            url = url + "?offset=" + offset;
+        }
 
-    private String useGetMethodGetDataString(String url) {
+        return useGetMethodGetDataString(url);
+    }
+    /**
+     * Get list District of City
+     * @param idCity
+     * @param offset
+     * @param limit
+     * @return JSON String List of District
+     */
+    public String getListDistrictsOfCity(String idCity, String offset, String limit){
+        /**
+         * Handle url
+         */
+        String url = BASE_URL + "cities/"+idCity+"/districts/";
+        //Check limit
+        if (limit != null) {
+            url = url + "?limit=" + limit;
+        }
+        //Check offset
+        if (offset != null) {
+            url = url + "?offset=" + offset;
+        }
+
+        return useGetMethodGetDataString(url);
+    }
+
+    /**
+     * Get list Ward of District
+     * @param idCity
+     * @param idDistrict
+     * @param offset
+     * @param limit
+     * @return JSON String List of Ward
+     */
+    public String getListWardOfDistrict(String idCity, String idDistrict, String offset, String limit){
+        /**
+         * Handle url
+         */
+        String url = BASE_URL + "cities/"+idCity+"/districts/" + idDistrict+"/ward";
+        //Check limit
+        if (limit != null) {
+            url = url + "?limit=" + limit;
+        }
+        //Check offset
+        if (offset != null) {
+            url = url + "?offset=" + offset;
+        }
+
+        return useGetMethodGetDataString(url);
+    }
+
+    /**
+     * Get Method get Data String
+     * @param url
+     * @return
+     */
+    public static String useGetMethodGetDataString(String url) {
         /**
          * Declare Connection and InputStream
          */
@@ -164,6 +240,59 @@ public class VTouristService {
             //Return Data
             return buffer.toString();
 
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (Throwable t) {
+            }
+            try {
+                con.disconnect();
+            } catch (Throwable t) {
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get Byte Array of Image
+     * @param url
+     * @return Byte Array
+     */
+    public static byte[] useGetByteArrayOfImage(String url) {
+        /**
+         * Declare Connection and InputStream
+         */
+        HttpURLConnection con = null;
+        InputStream is = null;
+
+        try {
+            /**
+             * Create Connection
+             */
+            con = (HttpURLConnection) (new URL(url)).openConnection();
+            //Set Request Method
+            con.setRequestMethod("GET");
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            //Connect
+            con.connect();
+
+            // Let's read the response
+            is = con.getInputStream();
+            byte[] buffer = new byte[1024];
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            while ( is.read(buffer) != -1)
+                baos.write(buffer);
+
+            return baos.toByteArray();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
