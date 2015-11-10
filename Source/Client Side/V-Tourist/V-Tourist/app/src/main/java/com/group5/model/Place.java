@@ -1,6 +1,8 @@
 package com.group5.model;
 
 
+import java.util.List;
+
 public class Place {
     /**
      * Place Id
@@ -42,6 +44,11 @@ public class Place {
      * Type of Place
      */
     private Type mType;
+
+    /**
+     * List of Rating
+     */
+    private List<Rating> mListRating;
 
     /**
      * Get/Set Properties
@@ -124,6 +131,14 @@ public class Place {
 
     public void setPlaceName(String mPlaceName) {
         this.mPlaceName = mPlaceName;
+    }
+
+    public List<Rating> getListRating() {
+        return mListRating;
+    }
+
+    public void setListRating(List<Rating> mListRating) {
+        this.mListRating = mListRating;
     }
 
     /**

@@ -3,7 +3,9 @@ package com.group5.parser;
 import com.group5.model.City;
 import com.group5.model.District;
 import com.group5.model.Place;
+import com.group5.model.Rating;
 import com.group5.model.Type;
+import com.group5.model.User;
 import com.group5.model.Ward;
 
 import org.json.JSONArray;
@@ -18,6 +20,12 @@ import java.util.List;
  */
 public class DataParser {
 
+    /**
+     * Parse JSON Data get from Service about Places
+     * @param data: JSON String Data List of Place
+     * @return List of Place for Display
+     * @throws JSONException
+     */
     public static List<Place> parsePlaces(String data) throws JSONException {
 
         /**
@@ -98,6 +106,29 @@ public class DataParser {
         return rs;
     }
 
+    public static int parseRating(String data, Place srcPlace) throws JSONException {
+        //Cast DataString to jsonObject
+        JSONObject jsonObject = new JSONObject(data);
+
+        //Get list JSON Rating
+        JSONArray jsonArrayRating = getArray("data", jsonObject);
+        
+
+        //Handle each Rating
+        for(int i = 0; i< jsonArrayRating.length(); i++){
+            JSONObject jObjRating = jsonArrayRating.getJSONObject(i);
+            User user = new User();
+            user.setUsername(getString("username", jObjRating));
+
+            Rating rating = new Rating();
+            rating.setScore(getFloat("score", jObjRating));
+            rating.setComment(getString("comment",jObjRating));
+            rating.setUserRate(user);
+
+        }
+
+        return 0;
+    }
     /**
      * Get object from JSON Object by tagName
      *
