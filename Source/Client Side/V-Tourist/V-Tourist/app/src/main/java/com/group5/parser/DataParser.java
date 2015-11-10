@@ -2,11 +2,13 @@ package com.group5.parser;
 
 import com.group5.model.City;
 import com.group5.model.District;
+import com.group5.model.Image;
 import com.group5.model.Place;
 import com.group5.model.Rating;
 import com.group5.model.Type;
 import com.group5.model.User;
 import com.group5.model.Ward;
+import com.group5.service.VTouristService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,13 +108,21 @@ public class DataParser {
         return rs;
     }
 
-    public static int parseRating(String data, Place srcPlace) throws JSONException {
+    /**
+     * Parse JSON Data Rating
+     * @param data JSON String Data List of Rating
+     * @param srcPlace Place will import list of Rating
+     * @return Place have a list of Rating for Display
+     * @throws JSONException
+     */
+    public static Place parseRating(String data, Place srcPlace) throws JSONException {
+        //Create new Place
+        Place rs = srcPlace;
+
         //Cast DataString to jsonObject
         JSONObject jsonObject = new JSONObject(data);
-
         //Get list JSON Rating
         JSONArray jsonArrayRating = getArray("data", jsonObject);
-        
 
         //Handle each Rating
         for(int i = 0; i< jsonArrayRating.length(); i++){
@@ -125,10 +135,44 @@ public class DataParser {
             rating.setComment(getString("comment",jObjRating));
             rating.setUserRate(user);
 
+            rs.getListRating().add(rating);
         }
 
-        return 0;
+        return rs;
     }
+
+    /**
+     * Parse JSON Data Image
+     * @param data JSON String Data List of Image
+     * @param srcPlace Place will import list of Image
+     * @return Place have a list of Image for Display
+     * @throws JSONException
+     */
+    public static Place parseImageForPlace(String data, Place srcPlace) throws JSONException {
+        //Create new Place
+        Place rs = srcPlace;
+
+        //Cast DataString to jsonObject
+        JSONObject jsonObject = new JSONObject(data);
+        //Get list JSON Rating
+        JSONArray jsonArrayRating = getArray("data", jsonObject);
+
+        //Handle each Rating
+        for(int i = 0; i< jsonArrayRating.length(); i++){
+            JSONObject jObjImage = jsonArrayRating.getJSONObject(i);
+            Image image  = new Image();
+            image.setImageId(getString("imgid", jObjImage));
+            image.setUrlImage(getString("url", jObjImage));
+
+            //Load Byte Array image from web API
+            image.setImageContain(VTouristService.useGetByteArrayOfImage(image.getUrlImage()));
+
+            rs.getListImage().add(image);
+        }
+
+        return rs;
+    }
+
     /**
      * Get object from JSON Object by tagName
      *
