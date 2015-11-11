@@ -21,14 +21,5 @@ namespace WebAPI.Models
 
         public System.Data.Entity.DbSet<WebAPI.Models.Type> Types { get; set; }
 
-        public System.Data.Entity.DbSet<WebAPI.Models.City> Cities { get; set; }
-
-        public System.Data.Entity.DbSet<WebAPI.Models.District> Districts { get; set; }
-
-        public System.Data.Entity.DbSet<WebAPI.Models.Ward> Wards { get; set; }
-
-        public System.Data.Entity.DbSet<WebAPI.Models.Image> Images { get; set; }
-
-        public System.Data.Entity.DbSet<WebAPI.Models.Place> Places { get; set; }
     }
 }

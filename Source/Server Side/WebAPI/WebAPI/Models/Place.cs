@@ -12,7 +12,6 @@ namespace WebAPI.Models
         [Key]
         public int id { get; set; }
         [Required]
-        public string Name { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
         public float Latitude { get; set; }
@@ -25,7 +24,9 @@ namespace WebAPI.Models
         public int Ward { get; set; }
         public int type { get; set; }
         //Navigation property
-        
-        public Type Type { get; set; }
+        //public City City { get; set; }
+        //public District District { get; set; }
+        //public District Ward { get; set; }
+        //public Type Type { get; set; }
     }
 }
