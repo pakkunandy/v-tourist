@@ -206,15 +206,20 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\DistrictsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImagesController.cs" />
+    <Compile Include="Controllers\PlacesController.cs" />
     <Compile Include="Controllers\TypesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\WardsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201511110305215_Initial.cs" />
-    <Compile Include="Migrations\201511110305215_Initial.Designer.cs">
-      <DependentUpon>201511110305215_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201511110517201_Initial.cs" />
+    <Compile Include="Migrations\201511110517201_Initial.Designer.cs">
+      <DependentUpon>201511110517201_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -224,6 +229,7 @@
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Image.cs" />
+    <Compile Include="Models\ImageDetailDTO.cs" />
     <Compile Include="Models\Place.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Type.cs" />
@@ -303,8 +309,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201511110305215_Initial.resx">
-      <DependentUpon>201511110305215_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201511110517201_Initial.resx">
+      <DependentUpon>201511110517201_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

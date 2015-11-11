@@ -15,12 +15,9 @@ namespace WebAPI.Models
 
         //Foreign key
         public int city_id { get; set; }
-        public City City { get; set; }
-
         public int district_id { get; set; }
+        //Navigation property
         public District District { get; set; }
-
-
 
     }
 }
