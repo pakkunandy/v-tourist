@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">V-Tourist</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_test">Test</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Text for fragment home -->
+    <string name="title_new_update">Mới cập nhật</string>
+    <string name="title_history">Lịch sử</string>
+
+
+
+    <string-array name="newupdates">
+        <item>New 1</item>
+        <item>New 2</item>
+        <item>New 3</item>
+        <item>New 4</item>
+        <item>New 5</item>
+        <item>New 6</item>
+    </string-array>
+
+
+    <string-array name="history">
+        <item>New 1</item>
+        <item>New 2</item>
+        <item>New 3</item>
+        <item>New 4</item>
+        <item>New 5</item>
+        <item>New 6</item>
+    </string-array>
+    <string name="title_activity_activity_detail">activity_detail</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_favorite">FavoriteActivity</string>
+</resources>

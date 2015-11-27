@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_detail" tools:context="com.group5.controller.DetailActivity"
+    android:orientation="vertical"
+    >
+
+
+    <!-- ViewPager on the top of screen. It contain some images describe for specific place. -->
+    <android.support.v4.view.ViewPager
+
+        android:id="@+id/viewpagerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorAccent"
+        />
+
+    <!-- The detail body of place. There are four fragment in this section. Gradually by:
+        1. First tab: Information of place.
+        2. Second tab: Rating or comment
+        3. Third tab: Map and indicate how to get there
+        4. Fourth tab: Popular good images from this place.
+
+        All of four tab associate with the viewpager that contain the body detail match for each tab.
+    -->
+
+
+    <TabHost
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabHostDetails">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scrollView"
+                android:fillViewport="true"
+                android:scrollbars="none"
+                >
+
+                <TabWidget
+                    android:showDividers="none"
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></TabWidget>
+
+
+            </HorizontalScrollView>
+
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <android.support.v4.view.ViewPager
+
+                    android:id="@+id/viewpagerContentDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+</LinearLayout>

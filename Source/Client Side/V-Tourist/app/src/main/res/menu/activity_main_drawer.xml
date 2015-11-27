@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The menu for navigation view -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_home" android:icon="@drawable/ic_home_nav"
+            android:title="Trang chủ" />
+        <item android:id="@+id/nav_favourite_place" android:icon="@drawable/ic_favourite_nav"
+            android:title="Địa điểm yêu thích" />
+        <item android:id="@+id/nav_map" android:icon="@drawable/ic_map_maker"
+            android:title="Bản đồ" />
+
+    </group>
+
+
+</menu>
