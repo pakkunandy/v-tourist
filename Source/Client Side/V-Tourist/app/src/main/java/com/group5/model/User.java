@@ -7,6 +7,10 @@ import java.util.List;
  */
 public class User {
     /**
+     * Id
+     */
+    private String mId;
+    /**
      * Username
      */
     private String mUsername;
@@ -46,6 +50,14 @@ public class User {
     /**
      * Get/Set Properties
      */
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String mId) {
+        this.mId = mId;
+    }
+
     public String getUsername() {
         return mUsername;
     }

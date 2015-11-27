@@ -2,259 +2,57 @@ package com.group5.parser;
 
 import com.group5.model.City;
 import com.group5.model.District;
-import com.group5.model.Image;
 import com.group5.model.Place;
 import com.group5.model.Rating;
 import com.group5.model.Type;
-import com.group5.model.User;
 import com.group5.model.Ward;
-import com.group5.service.VTouristService;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.parse.ParseObject;
 
 /**
- * Parse Data from JSON to Model
+ * Created by DELL on 12/11/2015.
  */
 public class DataParser {
-
-    /**
-     * Parse JSON Data get from Service about Places
-     * @param data: JSON String Data List of Place
-     * @return List of Place for Display
-     * @throws JSONException
-     */
-    public static List<Place> parsePlaces(String data) throws JSONException {
-
-        /**
-         * Cast data String to JSONObject
-         */
-        JSONObject jObj = new JSONObject(data);
-
-        /**
-         * Create List Place result
-         */
-        List<Place> rs = new ArrayList<Place>();
-
-        /**
-         * Get JSONArray
-         */
-        JSONArray jsonArrayPlace = jObj.getJSONArray("data");
-
-        /**
-         * Foreach Data Member
-         */
-        for(int i = 0; i < jsonArrayPlace.length(); i++){
-            JSONObject jsonObjectPlace = jsonArrayPlace.getJSONObject(i);
-            Place place = new Place();
-            place.setPlaceId(getString("id",jsonObjectPlace));
-            place.setAddress(getString("address", jsonObjectPlace));
-            place.setPlaceName(getString("name", jsonObjectPlace));
-            place.setPlaceDescription(getString("description", jsonObjectPlace));
-            place.setLongDescription(getString("long_description", jsonObjectPlace));
-            place.setLongitude(getLong("longitude", jsonObjectPlace));
-            place.setLongitude(getLong("latitude", jsonObjectPlace));
-
-            /**
-             * Handle Object Type
-             */
-            Type type = new Type();
-            JSONObject jsonObjectType = getObject("type", jsonObjectPlace);
-            type.setTypeId(getString("id", jsonObjectType));
-            type.setName(getString("name", jsonObjectType));
-            type.setDescription(getString("description", jsonObjectType));
-            //Set Type for Place
-            place.setType(type);
-
-            /**
-             * Handle Object Ward
-             */
-            Ward ward = new Ward();
-            JSONObject jsonObjectWard = getObject("ward", jsonObjectPlace);
-            ward.setWardId(getString("id", jsonObjectWard));
-            ward.setWardName(getString("name", jsonObjectWard));
-
-            /**
-             * Handle Object City
-             */
-            City city = new City();
-            JSONObject jsonObjectCity = getObject("city", jsonObjectPlace);
-            city.setCityId(getString("id", jsonObjectCity));
-            city.setName(getString("name", jsonObjectCity));
-            city.setAttributeName(getString("attribute_name", jsonObjectCity));
-
-            /**
-             * Handle Object District
-             */
-            District district = new District();
-            JSONObject jsonObjectDistrict = getObject("district", jsonObjectPlace);
-            district.setDistrictId(getString("id", jsonObjectCity));
-            district.setDistrictName(getString("name", jsonObjectCity));
-            //Set City for District
-            district.setCity(city);
-
-            //Set District for Ward
-            ward.setDistrict(district);
-            //Set Ward for place
-            place.setWard(ward);
-
-            rs.add(place);
-        }
-
-        return rs;
+    public static City parseCity(ParseObject object)
+    {
+        City city = new City();
+        city.setCityId(object.getObjectId());
+        city.setName(object.getString("name"));
+        return city;
     }
 
-    /**
-     * Parse JSON Data Rating
-     * @param data JSON String Data List of Rating
-     * @param srcPlace Place will import list of Rating
-     * @return Place have a list of Rating for Display
-     * @throws JSONException
-     */
-    public static Place parseRating(String data, Place srcPlace) throws JSONException {
-        //Create new Place
-        Place rs = srcPlace;
-
-        //Cast DataString to jsonObject
-        JSONObject jsonObject = new JSONObject(data);
-        //Get list JSON Rating
-        JSONArray jsonArrayRating = getArray("data", jsonObject);
-
-        //Handle each Rating
-        for(int i = 0; i< jsonArrayRating.length(); i++){
-            JSONObject jObjRating = jsonArrayRating.getJSONObject(i);
-            User user = new User();
-            user.setUsername(getString("username", jObjRating));
-
-            Rating rating = new Rating();
-            rating.setScore(getFloat("score", jObjRating));
-            rating.setComment(getString("comment",jObjRating));
-            rating.setUserRate(user);
-
-            rs.getListRating().add(rating);
-        }
-
-        return rs;
+    public static District parseDistrict(ParseObject object)
+    {
+        District district = new District();
+        district.setDistrictId(object.getObjectId());
+        district.setDistrictName(object.getString("name"));
+        //district.setCity(ParseDemo.);
+        return district;
     }
 
-    /**
-     * Parse JSON Data Image
-     * @param data JSON String Data List of Image
-     * @param srcPlace Place will import list of Image
-     * @return Place have a list of Image for Display
-     * @throws JSONException
-     */
-    public static Place parseImageForPlace(String data, Place srcPlace) throws JSONException {
-        //Create new Place
-        Place rs = srcPlace;
-
-        //Cast DataString to jsonObject
-        JSONObject jsonObject = new JSONObject(data);
-        //Get list JSON Rating
-        JSONArray jsonArrayRating = getArray("data", jsonObject);
-
-        //Handle each Rating
-        for(int i = 0; i< jsonArrayRating.length(); i++){
-            JSONObject jObjImage = jsonArrayRating.getJSONObject(i);
-            Image image  = new Image();
-            image.setImageId(getString("imgid", jObjImage));
-            image.setUrlImage(getString("url", jObjImage));
-
-            //Load Byte Array image from web API
-            image.setImageContain(VTouristService.useGetByteArrayOfImage(image.getUrlImage()));
-
-            rs.getListImage().add(image);
-        }
-
-        return rs;
+    public static Ward parseWard(ParseObject object)
+    {
+        Ward ward = new Ward();
+        ward.setWardId(object.getObjectId());
+        ward.setWardName(object.getString("name"));
+        //ward.setCity(ParseDemo.);
+        return ward;
     }
 
-    /**
-     * Get object from JSON Object by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static JSONObject getObject(String tagName, JSONObject jObj) throws JSONException {
-        JSONObject subObj = jObj.getJSONObject(tagName);
-        return subObj;
+    public static Type parseType(ParseObject object)
+    {
+        return null;
     }
 
-    /**
-     * Get String value from JSONObject by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static String getString(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getString(tagName);
+    public static Place parsePlace(ParseObject object)
+    {
+        return null;
     }
 
-    /**
-     * Get float value from JSONObject by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static float getFloat(String tagName, JSONObject jObj) throws JSONException {
-        return (float) jObj.getDouble(tagName);
+    public static Rating parseRating(ParseObject object)
+    {
+        return null;
     }
 
-    /**
-     * Get int value from JSONObject by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static int getInt(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getInt(tagName);
-    }
 
-    /**
-     * Get long value from JSONObject by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static long getLong(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getLong(tagName);
-    }
-
-    /**
-     * Get double value from JSONObject by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static double getDouble(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getDouble(tagName);
-    }
-
-    /**
-     * Get Array JSON from JSONObject by tagName
-     *
-     * @param tagName
-     * @param jObj
-     * @return
-     * @throws JSONException
-     */
-    private static JSONArray getArray(String tagName, JSONObject jObj) throws JSONException {
-        return jObj.getJSONArray(tagName);
-    }
 }
+

@@ -12,21 +12,12 @@ public class City {
      * Name of City
      */
     private String mCityName;
-    /**
-     * Attribute Name
-     */
-    private String mAttributeName;
+
 
     /**
      * Get/Set Properties
      */
-    public String getAttributeName() {
-        return mAttributeName;
-    }
 
-    public void setAttributeName(String mAttributeName) {
-        this.mAttributeName = mAttributeName;
-    }
 
     public String getName() {
         return mCityName;
@@ -48,12 +39,10 @@ public class City {
      * Constructor of Cities
      * @param mCityId : City Id
      * @param mCityName : City Name
-     * @param mAttributeName : Attribute Name
      */
-    public City(String mCityId, String mCityName, String mAttributeName) {
+    public City(String mCityId, String mCityName) {
         this.mCityId = mCityId;
         this.mCityName = mCityName;
-        this.mAttributeName = mAttributeName;
     }
 
     public City() {

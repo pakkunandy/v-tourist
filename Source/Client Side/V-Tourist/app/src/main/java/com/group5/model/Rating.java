@@ -5,6 +5,10 @@ package com.group5.model;
  */
 public class Rating {
     /**
+     * Id
+     */
+    private String mId;
+    /**
      * User Rate
      */
     private User mUserRate;
@@ -20,6 +24,15 @@ public class Rating {
     /**
      * Get/Set properties
      */
+
+    public String getId() {
+        return mId;
+    }
+
+    public void setId(String mId) {
+        this.mId = mId;
+    }
+
     public User getUserRate() {
         return mUserRate;
     }
