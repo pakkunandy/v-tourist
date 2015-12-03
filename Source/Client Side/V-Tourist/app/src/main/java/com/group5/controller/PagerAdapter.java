@@ -21,9 +21,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         this.fragments = fragments;
     }
 
-
-
-
     @Override
     public Fragment getItem(int i) {
         return this.fragments.get(i);
