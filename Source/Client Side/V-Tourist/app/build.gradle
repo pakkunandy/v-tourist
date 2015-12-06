@@ -31,4 +31,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:8.3.0'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
+
+    // Module dependency on ParseUI libraries sources
+    compile 'com.parse:parseui-login-android:0.0.1'
+    compile 'com.parse:parseui-widget-android:0.0.1'
 }

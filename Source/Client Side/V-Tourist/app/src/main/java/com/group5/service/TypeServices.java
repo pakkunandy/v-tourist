@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public class TypeServices {
-    List<Type> getTypesList() throws ParseException {
+    public static List<Type> getTypesList() throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Type");
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         List<Type> typeList = new ArrayList<>();
@@ -27,7 +27,7 @@ public class TypeServices {
         return typeList;
     }
 
-    Type getType(String id) throws ParseException {
+    public static Type getType(String id) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Type");
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         ParseObject object = new ParseObject("Type");

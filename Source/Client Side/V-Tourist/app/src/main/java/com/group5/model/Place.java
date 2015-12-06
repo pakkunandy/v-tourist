@@ -24,11 +24,11 @@ public class Place {
     /**
      * Longitude of Place (Coordinate)
      */
-    private long mLongitude;
+    private Double mLongitude;
     /**
      * Latitude of Place (Coordinate)
      */
-    private long mLatitude;
+    private Double mLatitude;
     /**
      * Long Description of Place
      */
@@ -83,19 +83,19 @@ public class Place {
         this.mAddress = mAddress;
     }
 
-    public long getLongitude() {
+    public Double getLongitude() {
         return mLongitude;
     }
 
-    public void setLongitude(long mLongitude) {
+    public void setLongitude(Double mLongitude) {
         this.mLongitude = mLongitude;
     }
 
-    public long getLatitude() {
+    public Double getLatitude() {
         return mLatitude;
     }
 
-    public void setLatitude(long mLatitude) {
+    public void setLatitude(Double mLatitude) {
         this.mLatitude = mLatitude;
     }
 
@@ -168,7 +168,7 @@ public class Place {
      * @param mPhone: Phone
      * @param mType: Type
      */
-    public Place(String mPlaceId, String mPlaceName, String mPlaceDescription, String mAddress, long mLongitude, long mLatitude, String mLongDescription, Ward mWard, String mPhone, Type mType) {
+    public Place(String mPlaceId, String mPlaceName, String mPlaceDescription, String mAddress, Double mLongitude, Double mLatitude, String mLongDescription, Ward mWard, String mPhone, Type mType) {
         this.mPlaceId = mPlaceId;
         this.mPlaceName = mPlaceName;
         this.mPlaceDescription = mPlaceDescription;

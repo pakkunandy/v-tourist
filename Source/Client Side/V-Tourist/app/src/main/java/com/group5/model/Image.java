@@ -9,10 +9,6 @@ public class Image {
      */
     private String mImageId;
     /**
-     * Url of Image
-     */
-    private String mUrlImage;
-    /**
      * Byte Array Image
      */
     private byte[] mImageContain;
@@ -28,14 +24,6 @@ public class Image {
         this.mImageId = mImageId;
     }
 
-    public String getUrlImage() {
-        return mUrlImage;
-    }
-
-    public void setUrlImage(String mUrlImage) {
-        this.mUrlImage = mUrlImage;
-    }
-
     public byte[] getImageContain() {
         return mImageContain;
     }
@@ -47,12 +35,10 @@ public class Image {
     /**
      * Constructor
      * @param mImageId
-     * @param mUrlImage
      * @param mImageContain
      */
-    public Image(String mImageId, String mUrlImage, byte[] mImageContain) {
+    public Image(String mImageId, byte[] mImageContain) {
         this.mImageId = mImageId;
-        this.mUrlImage = mUrlImage;
         this.mImageContain = mImageContain;
     }
 

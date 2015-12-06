@@ -6,8 +6,10 @@ import com.group5.model.Place;
 import com.group5.model.Ward;
 import com.group5.parser.DataParser;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,12 @@ import java.util.List;
  */
 
 public class PlaceServices {
+    public static ParseObject getObject(String id) throws ParseException{
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        ParseObject object = new ParseObject("Place");
+        return query.get(id);
+    }
     public static Place getPlace(String id) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
@@ -95,11 +103,45 @@ public class PlaceServices {
 
         return placesList;
     }
+    public List<Place> getPlacesListByGeo(Double latitude, Double longtitude, Double distance) throws ParseException {
+        ParseGeoPoint location = new ParseGeoPoint(latitude, longtitude);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+        query.setLimit(10);
+        query.whereWithinKilometers("location", location, distance);
+        List<Place> placesList = new ArrayList<>();
+        List<ParseObject> listObject = query.find();
+        for (ParseObject object: listObject) {
+            placesList.add(DataParser.parsePlace(object));
+        }
+
+        return placesList;
+    }
 
 
+    List<Image> getImagesList(String placeId) throws ParseException {
+        ParseObject placeOb = getObject(placeId);
+        ParseRelation<ParseObject> relation = placeOb.getRelation("images");
+        // generate a query based on that relation
+        ParseQuery query = relation.getQuery();
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        ParseObject imageOb;
+        ArrayList<Image> imagesList= new ArrayList<>();
+        List<ParseObject> listObject = query.find();
+        for (ParseObject object: listObject) {
+            imagesList.add(DataParser.parseImage(object));
+        }
 
-    List<Image> getImagesList(Place placeId)
+        return imagesList;
+    }
+    Image getThumbnail(String placeId) throws ParseException
     {
-        return null;
+        ParseObject placeOb = getObject(placeId);
+        ParseRelation<ParseObject> relation = placeOb.getRelation("images");
+        // generate a query based on that relation
+        ParseQuery query = relation.getQuery();
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        ParseObject imageOb;
+        imageOb = query.getFirst();
+        return DataParser.parseImage(imageOb);
     }
 }

@@ -9,6 +9,11 @@ public class Rating {
      */
     private String mId;
     /**
+     * PlaceId
+     */
+
+    private String mPlaceId;
+    /**
      * User Rate
      */
     private User mUserRate;
@@ -31,6 +36,14 @@ public class Rating {
 
     public void setId(String mId) {
         this.mId = mId;
+    }
+
+    public String getPlaceId() {
+        return mPlaceId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.mPlaceId = placeId;
     }
 
     public User getUserRate() {
@@ -60,10 +73,12 @@ public class Rating {
     /**
      * Constructor
      * @param mUserRate
+     * @param placeId
      * @param mScore
      * @param mComment
      */
-    public Rating(User mUserRate, float mScore, String mComment) {
+    public Rating(User mUserRate, String placeId, float mScore, String mComment) {
+        this.mPlaceId = placeId;
         this.mUserRate = mUserRate;
         this.mScore = mScore;
         this.mComment = mComment;

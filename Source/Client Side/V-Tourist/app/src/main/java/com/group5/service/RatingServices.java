@@ -16,7 +16,7 @@ import java.util.List;
  */
 
 public class RatingServices {
-    Rating getRating(String id) throws ParseException {
+    public static Rating getRating(String id) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Rating");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         ParseObject object = new ParseObject("Rating");
@@ -25,9 +25,10 @@ public class RatingServices {
         return DataParser.parseRating(object);
     }
 
-    List<Rating> getRatingList(String id) throws ParseException {
+    public static List<Rating> getRatingList(String placeId) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Rating");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.whereEqualTo("place", placeId);
         List<Rating> ratingList = new ArrayList<>();
         List<ParseObject> listObject = query.find();
         for (ParseObject object: listObject
@@ -39,7 +40,7 @@ public class RatingServices {
 
     }
 
-    boolean editRating(Rating rating) throws ParseException {
+    public static boolean editRating(Rating rating) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Rating");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         ParseObject object = new ParseObject("Rating");
@@ -51,7 +52,7 @@ public class RatingServices {
         return true;
     }
 
-    boolean deleteRating(String id) throws ParseException {
+    public static boolean deleteRating(String id) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Rating");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         ParseObject object = new ParseObject("Rating");
@@ -60,7 +61,7 @@ public class RatingServices {
         return true;
     }
 
-    boolean createRating(Rating rating) throws ParseException {
+    public static boolean createRating(Rating rating) throws ParseException {
         ParseACL acl = new ParseACL();
         acl.setPublicReadAccess(true);
         acl.setWriteAccess(ParseUser.getCurrentUser(), true);
@@ -69,6 +70,7 @@ public class RatingServices {
         object.put("user", rating.getUserRate().getId());
         object.put("point", rating.getScore());
         object.put("comment", rating.getComment());
+        object.put("place", rating.getPlaceId());
         object.save();
         return true;
     }
