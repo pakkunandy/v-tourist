@@ -34,7 +34,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     ViewPager viewPagerContentDetail ; //Viewpager that contain the body
     TabHost tabHost; //Tab selection
     HorizontalScrollView horizontalScrollView;
-    ArrayList<Fragment> fragments; //List fragment that is the content in viewpager
+   // ArrayList<Fragment> fragments; //List fragment that is the content in viewpager
     android.support.v4.view.PagerAdapter pagerAdapter = null; // custom adapter in order to  pour data(fragment in this instance) to viewpager
 
     @Override
@@ -66,7 +66,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         viewPagerContentDetail = (ViewPager)findViewById(R.id.viewpagerContentDetail);
         tabHost = (TabHost)findViewById(R.id.tabHostDetails);
         horizontalScrollView = (HorizontalScrollView)findViewById(R.id.scrollView);
-        fragments = new ArrayList<Fragment>();
+        //fragments = new ArrayList<Fragment>();
         initTabHost();
         initViewPagerContentDetail();
 
@@ -141,8 +141,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     private void initViewPagerContentDetail(){
 
-        //ArrayList<Fragment> fragments = new ArrayList<android.support.v4.app.Fragment>();
-        fragments.clear();
+        ArrayList<Fragment> fragments = new ArrayList<android.support.v4.app.Fragment>();
+        //fragments.clear();
         fragments.add(new InfomationFragment());
         fragments.add(new EvaluationFragment());
         fragments.add(new MapFragment());
