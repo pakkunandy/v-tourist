@@ -1,6 +1,8 @@
 package com.group5.controller;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.os.AsyncTaskCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +32,8 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
         getFormWidget(view);
-        //getDataFromService();
-        //addDataToView();
+        getDataFromService();
+        addDataToView();
         return view;
     }
 
@@ -39,11 +41,8 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
      * Function get Place Data from Service
      */
     protected void getDataFromService(){
-        try {
-            place = PlaceServices.getPlace(GlobalVariable.idGlobalPlaceCurrent); //id này nhận từ Intent trước
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        AsyncTask asyncTask = new DataFromOnePlace();
+        asyncTask.execute();
     }
 
     /**
@@ -64,5 +63,21 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
         txtPlaceName = (TextView) v.findViewById(R.id.txtPlaceName);
         txtPhone = (TextView) v.findViewById(R.id.txtPhone);
         txtDescription = (TextView) v.findViewById(R.id.txtDescription);
+    }
+
+    /**
+     * AsyncTask
+     */
+    private class DataFromOnePlace extends AsyncTask<Void, Long, Place> {
+
+        @Override
+        protected Place doInBackground(Void... params) {
+            try {
+                place = PlaceServices.getPlace(GlobalVariable.idGlobalPlaceCurrent);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return place;
+        }
     }
 }
