@@ -1,10 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <TextView
+        android:id="@+id/txtPlaceName"
+        android:textSize="@dimen/text_header_size"
+        android:textStyle="bold"
+        android:textColor="@color/textPrimary"
+        android:paddingLeft="@dimen/padding_left_information"
+        android:paddingRight="@dimen/padding_right_information"
+        android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Detail"
+        android:text="Thành phố HCM"
         />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TableRow
+            android:paddingLeft="@dimen/padding_left_information"
+            android:paddingTop="@dimen/padding_top_information"
+            android:paddingRight="@dimen/padding_right_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_addresss"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:id="@+id/txtAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding_left_information"
+                android:textColor="@color/textPrimary"
+                android:text="451/58A Phạm Thế Hiển Phường 3 quận 8"
+                android:layout_gravity="center_vertical"
+                />
+        </TableRow>
+        <TableRow
+            android:paddingLeft="@dimen/padding_left_information"
+            android:paddingTop="@dimen/padding_top_information"
+            android:paddingRight="@dimen/padding_right_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_phone"
+                android:layout_width="@dimen/icon_size"
+                android:layout_height="@dimen/icon_size"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding_left_information"
+                android:textColor="@color/textPrimary"
+                android:text="01626027273"
+                android:layout_gravity="center_vertical"/>
+        </TableRow>
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:paddingTop="@dimen/padding_top_information"
+            android:paddingLeft="@dimen/padding_left_information"
+            android:paddingRight="@dimen/padding_right_information"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thành phố Hồ Chí Minh là thành phố lớn nhất Việt Nam xét về quy mô dân số và mức độ đô thị hóa, đồng thời cũng là đầu tàu kinh tế và là một trong những nền văn hóa, giáo dục quan trọng của quốc gia này."/>
+    </TableLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
