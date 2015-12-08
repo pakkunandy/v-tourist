@@ -12,12 +12,10 @@
 
     <!-- Viewpager that demonstrate some popular place that get a high rating from user-->
 
-    <android.support.v4.view.ViewPager
-
-        android:id="@+id/viewpagerHome"
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="@color/colorAccent"
         />
 
     <!-- Two suggestion from app to user:
@@ -31,13 +29,17 @@
         android:layout_height="30dp"
         android:background="@color/grey"
         android:text="@string/title_new_update"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerNewUpdate"
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="200dp"></android.support.v7.widget.RecyclerView>
+        android:layout_height="200dp">
+
+    </android.support.v7.widget.RecyclerView>
 
 
     <TextView
@@ -45,13 +47,17 @@
         android:layout_height="30dp"
         android:background="@color/grey"
         android:text="@string/title_history"
+        android:gravity="center_vertical"
+        android:paddingLeft="5dp"
         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerHistory"
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="200dp"></android.support.v7.widget.RecyclerView>
+        android:layout_height="200dp">
+
+    </android.support.v7.widget.RecyclerView>
 
 
 
