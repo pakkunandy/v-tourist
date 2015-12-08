@@ -10,6 +10,8 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         holder.comment.setText(current.comment);
         holder.imageAvatar.setImageResource(R.drawable.ic_addresss);
         holder.ratingBar.setRating(current.rating);
+        holder.userName.setText(current.userName);
     }
 
     @Override
@@ -48,13 +51,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
+        TextView userName;
         TextView comment;
         RatingBar ratingBar;
         ImageView imageAvatar;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            userName = (TextView) itemView.findViewById(R.id.txtUserName);
             comment = (TextView) itemView.findViewById(R.id.txtComment);
             ratingBar = (RatingBar) itemView.findViewById(R.id.rtComment);
             imageAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
