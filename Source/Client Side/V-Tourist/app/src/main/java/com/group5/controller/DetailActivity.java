@@ -25,7 +25,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     /*
     * View pager on top of screen
     * */
-    ViewPager viewPagerDetails ;
+    ViewPager viewPagerDetails;
 
 
     /*
@@ -222,7 +222,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 break;
             default:
                 break;
-
         }
 
 

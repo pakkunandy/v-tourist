@@ -1,10 +1,14 @@
 package com.group5.controller;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,7 +18,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    public static GoogleMap googleMap; //googlemap object
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +49,45 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+
+        //goolgemap
+        if(googleMap == null){
+            googleMap = ((com.google.android.gms.maps.MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
+        }else{
+            setupMap();
+        }
+
     }
 
+
+    public void setupMap(){
+
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
+        googleMap.getUiSettings().setMapToolbarEnabled(true);
+        googleMap.setBuildingsEnabled(true);
+
+        LatLng dest = new LatLng(10.7715007,106.6959833);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 15));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //goolgemap
+        if(googleMap == null){
+            googleMap = ((com.google.android.gms.maps.MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
+        }else{
+            setupMap();
+        }
+    }
 
     @Override
     public void onBackPressed() {
