@@ -104,8 +104,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     }
 
-
-
     private void initTabHost() {
         tabHost.setup();
 
