@@ -3,10 +3,12 @@ package com.group5.controller;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.os.AsyncTaskCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.group5.model.Place;
 import com.group5.service.PlaceServices;
@@ -41,7 +43,7 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
      * Function get Place Data from Service
      */
     protected void getDataFromService(){
-        AsyncTask asyncTask = new DataFromOnePlace();
+        DataFromOnePlace asyncTask = new DataFromOnePlace();
         asyncTask.execute();
     }
 
@@ -70,14 +72,21 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
      */
     private class DataFromOnePlace extends AsyncTask<Void, Long, Place> {
 
+
         @Override
         protected Place doInBackground(Void... params) {
             try {
-                place = PlaceServices.getPlace(GlobalVariable.idGlobalPlaceCurrent);
+                return PlaceServices.getPlace(GlobalVariable.idGlobalPlaceCurrent);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             return place;
+        }
+
+        @Override
+        protected void onPostExecute(Place mplace) {
+            super.onPostExecute(place);
+            place = mplace;
         }
     }
 }
