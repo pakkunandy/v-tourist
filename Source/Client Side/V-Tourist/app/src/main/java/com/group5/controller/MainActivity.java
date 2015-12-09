@@ -2,9 +2,7 @@ package com.group5.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,13 +12,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -34,7 +27,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,9 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /*
     View pager on top
      */
-    ViewPager viewPagerHome ;
-
-
+    ViewPager viewPagerHome;
 
     /*
     Two recyclerView that it's content suggest user about some place.
@@ -53,16 +43,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView recyclerNewUpdate;
     MyHomeRecyclerAdapter myHomeRecyclerAdapterNewUpdate;
     RecyclerView.LayoutManager layoutManagerNewUpdate;
-    String[] strings_new_updates;
-    //ArrayList<String> arrayListNewUpdates;//array list string list menu
     ArrayList<Place> arrayListNewUpdates = new ArrayList<Place>();
 
 
     RecyclerView recyclerHistory;
     MyHomeRecyclerAdapter myHomeRecyclerAdapterHistory;
     RecyclerView.LayoutManager layoutManagerHistory;
-    String[] strings_history;
-    //ArrayList<String> arrayListHistory;//array list string list menu
     ArrayList<Place> arrayListHistory = new ArrayList<Place>();//array list string list menu
 
     @Override
@@ -74,6 +60,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupSlider();
 
+        getData();
+
+        //Config for Drawer navigation - start
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+    }
+
+    private void getData() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
         query.orderByDescending("createdAt").setLimit(5);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -91,47 +93,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                     setupListNewUpdate();
                     setupListHistory();
-                } else
-                {
+                } else {
                     e.printStackTrace();
                 }
-                //Log.d("a",Integer.toString(scoreList.size()));
             }
         });
-
-//        Log.d("a",Integer.toString(arrayListNewUpdates.size()));
-        //Config for Drawer navigation - start
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-
     }
 
-    private void setupListNewUpdate()
-    {
-        recyclerNewUpdate = (RecyclerView)findViewById(R.id.recyclerNewUpdate);
+    private void setupListNewUpdate() {
+        recyclerNewUpdate = (RecyclerView) findViewById(R.id.recyclerNewUpdate);
         //use linear layout manager
         layoutManagerNewUpdate = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerNewUpdate.setLayoutManager(layoutManagerNewUpdate);
 
-        myHomeRecyclerAdapterNewUpdate = new MyHomeRecyclerAdapter(getApplicationContext(),R.layout.custom_list_home,arrayListNewUpdates);
+        myHomeRecyclerAdapterNewUpdate = new MyHomeRecyclerAdapter(getApplicationContext(), R.layout.custom_list_home, arrayListNewUpdates);
         recyclerNewUpdate.setAdapter(myHomeRecyclerAdapterNewUpdate);
     }
 
-    private void setupListHistory()
-    {
-        recyclerHistory = (RecyclerView)findViewById(R.id.recyclerHistory);
+    private void setupListHistory() {
+        recyclerHistory = (RecyclerView) findViewById(R.id.recyclerHistory);
         //use linear layout manager
         layoutManagerHistory = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerHistory.setLayoutManager(layoutManagerHistory);
 
-        myHomeRecyclerAdapterHistory = new MyHomeRecyclerAdapter(getApplicationContext(),R.layout.custom_list_home,arrayListHistory);
+        myHomeRecyclerAdapterHistory = new MyHomeRecyclerAdapter(getApplicationContext(), R.layout.custom_list_home, arrayListHistory);
         recyclerHistory.setAdapter(myHomeRecyclerAdapterHistory);
 
     }
@@ -151,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id){
+        switch (id) {
             case R.id.action_settings:
                 break;
             case R.id.action_map:
@@ -182,24 +167,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.nav_home:
                 //not do somthing
                 break;
             case R.id.nav_favourite_place:
                 //navigate to favourite place activity
-                Intent intentFavorite = new Intent(MainActivity.this,FavoriteActivity.class);
+                Intent intentFavorite = new Intent(MainActivity.this, FavoriteActivity.class);
                 startActivity(intentFavorite);
                 break;
             case R.id.nav_map:
-                Intent intentMap = new Intent(MainActivity.this,MapActivity.class);
+                Intent intentMap = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intentMap);
                 break;
             default:
-                    break;
+                break;
 
         }
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -208,23 +192,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private SliderLayout mDemoSlider;
-    private void setupSlider()
-    {
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
 
-        HashMap<String,String> url_maps = new HashMap<String, String>();
+    private void setupSlider() {
+        mDemoSlider = (SliderLayout) findViewById(R.id.slider);
+
+        HashMap<String, String> url_maps = new HashMap<String, String>();
         url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
         url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
         url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
         url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("Hồ Chí Minh",R.drawable.slide1);
-        file_maps.put("Nha Trang",R.drawable.slide2);
-        file_maps.put("Hạ Long",R.drawable.slide3);
+        HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
+        file_maps.put("Hồ Chí Minh", R.drawable.slide1);
+        file_maps.put("Nha Trang", R.drawable.slide2);
+        file_maps.put("Hạ Long", R.drawable.slide3);
         file_maps.put("Hội An", R.drawable.slide4);
 
-        for(String name : file_maps.keySet()){
+        for (String name : file_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
             // initialize a SliderLayout
             textSliderView
@@ -235,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra",name);
+                    .putString("extra", name);
 
             mDemoSlider.addSlider(textSliderView);
         }

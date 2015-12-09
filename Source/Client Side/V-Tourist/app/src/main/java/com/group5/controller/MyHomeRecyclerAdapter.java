@@ -55,7 +55,8 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
     public void onBindViewHolder(MyHomeRecyclerAdapter.ViewHolder holder, int position) {
 
 
-        //holder.lblTest.setText(arrayList.get(position));
+        holder.captionTitle.setText(arrayList.get(position).getPlaceName());
+        holder.captionBody.setText(arrayList.get(position).getPlaceDescription());
 
         Bitmap image = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.nhatho);
         int gradientStartColor = Color.argb(0, 0, 0, 0);

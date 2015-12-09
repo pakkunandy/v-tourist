@@ -118,7 +118,7 @@ public class PlaceServices {
     }
 
 
-    List<Image> getImagesList(String placeId) throws ParseException {
+    public List<Image> getImagesList(String placeId) throws ParseException {
         ParseObject placeOb = getObject(placeId);
         ParseRelation<ParseObject> relation = placeOb.getRelation("images");
         // generate a query based on that relation
@@ -133,7 +133,7 @@ public class PlaceServices {
 
         return imagesList;
     }
-    Image getThumbnail(String placeId) throws ParseException
+    public Image getThumbnail(String placeId) throws ParseException
     {
         ParseObject placeOb = getObject(placeId);
         ParseRelation<ParseObject> relation = placeOb.getRelation("images");
