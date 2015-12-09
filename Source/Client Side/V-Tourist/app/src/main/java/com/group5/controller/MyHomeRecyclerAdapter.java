@@ -8,13 +8,21 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Salmon on 11/24/2015.
@@ -44,6 +52,8 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
 
     @Override
     public void onBindViewHolder(MyHomeRecyclerAdapter.ViewHolder holder, int position) {
+
+
         //holder.lblTest.setText(arrayList.get(position));
 
         Bitmap image = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.nhatho);
