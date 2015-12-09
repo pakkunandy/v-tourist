@@ -52,7 +52,7 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
     }
 
     @Override
-    public void onBindViewHolder(MyHomeRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MyHomeRecyclerAdapter.ViewHolder holder, final int position) {
 
 
         holder.captionTitle.setText(arrayList.get(position).getPlaceName());
@@ -69,7 +69,7 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
         holder.imgTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                GlobalVariable.idGlobalPlaceCurrent = arrayList.get(position).getPlaceId();
                 Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.getApplicationContext().startActivity(intent);
