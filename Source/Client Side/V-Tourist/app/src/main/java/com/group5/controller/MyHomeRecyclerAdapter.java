@@ -2,13 +2,10 @@ package com.group5.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +13,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.group5.model.Place;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.LoadedFrom;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Salmon on 11/24/2015.
@@ -43,6 +43,20 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
         this.context = context;
         this.layoutId = layoutId;
         this.arrayList = arrayList;
+
+        // UNIVERSAL IMAGE LOADER SETUP
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                this.context)
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
     }
 
     @Override
@@ -58,13 +72,20 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
         holder.captionTitle.setText(arrayList.get(position).getPlaceName());
         holder.captionBody.setText(arrayList.get(position).getPlaceDescription());
 
-        Bitmap image = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.nhatho);
-        int gradientStartColor = Color.argb(0, 0, 0, 0);
-        int gradientEndColor = Color.argb(255, 0, 0, 0);
-        GradientOverImageDrawable gradientDrawable = new GradientOverImageDrawable(this.context.getResources(), image);
-        gradientDrawable.setGradientColors(gradientStartColor, gradientEndColor);
-
-        holder.imgTest.setImageDrawable(gradientDrawable);
+        DisplayImageOptions dio = new DisplayImageOptions.Builder().displayer(new BitmapDisplayer() {
+            @Override
+            public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+                int gradientStartColor = Color.argb(0, 0, 0, 0);
+                int gradientEndColor = Color.argb(255, 0, 0, 0);
+                GradientOverImageDrawable gradientDrawable = new GradientOverImageDrawable(context.getResources(), bitmap);
+                gradientDrawable.setGradientColors(gradientStartColor, gradientEndColor);
+                imageAware.setImageDrawable(gradientDrawable);
+            }
+        })
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .build();
+        ImageLoader.getInstance().displayImage(arrayList.get(position).firstImageURL, holder.imgTest, dio);
 
         holder.imgTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +100,7 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return arrayList.size();
     }
 

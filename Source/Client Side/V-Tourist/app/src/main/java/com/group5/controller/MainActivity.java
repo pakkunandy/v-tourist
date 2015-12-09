@@ -1,6 +1,8 @@
 package com.group5.controller;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,9 +24,12 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.group5.model.Place;
 import com.group5.parser.DataParser;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupSlider();
 
-        getData();
+        //getData();
+        LoadData loadData = new LoadData();
+        loadData.execute();
 
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -75,29 +82,85 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void getData() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
-        query.orderByDescending("createdAt").setLimit(5);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> scoreList, ParseException e) {
-                if (e == null) {
-                    for (ParseObject score : scoreList) {
-                        try {
-                            Place p = DataParser.parsePlace(score);
-                            arrayListNewUpdates.add(p);
-                            arrayListHistory.add(p);
-                            Log.d("a", p.getPlaceName());
-                        } catch (ParseException e1) {
-                            e1.printStackTrace();
+//    private Place p;
+//    private void getData() {
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+//        query.orderByDescending("createdAt").setLimit(5);
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> scoreList, ParseException e) {
+//                if (e == null) {
+//                    for (ParseObject score : scoreList) {
+//                        try {
+//                            p = DataParser.parsePlace(score);
+//                            ParseRelation<ParseObject> relation = score.getRelation("images");
+//                            // generate a query based on that relation
+//                            ParseQuery query = relation.getQuery();
+//                            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+//                            query.getFirstInBackground(new GetCallback<ParseObject>() {
+//                                @Override
+//                                public void done(ParseObject object, ParseException e) {
+//                                    if (object != null)
+//                                    {
+//                                        ParseFile imageFile = object.getParseFile("img");
+//                                        p.firstImageURL = imageFile.getUrl();
+//                                    }
+//                                }
+//                            });
+//                            arrayListNewUpdates.add(p);
+//                            arrayListHistory.add(p);
+//                            Log.d("a", p.getPlaceName());
+//                        } catch (ParseException e1) {
+//                            e1.printStackTrace();
+//                        }
+//                    }
+//                    setupListNewUpdate();
+//                    setupListHistory();
+//                } else {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+
+    private class LoadData extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+            query.orderByDescending("createdAt").setLimit(10);
+            try {
+                List<ParseObject> places = query.find();
+                for (ParseObject place : places)
+                {
+                    if (place != null)
+                    {
+                        Place p = DataParser.parsePlace(place);
+                        ParseRelation<ParseObject> relation = place.getRelation("images");
+                        ParseQuery query2 = relation.getQuery();
+                        ParseObject imageObject = query2.getFirst();
+                        if (imageObject != null)
+                        {
+                            ParseFile imageFile = imageObject.getParseFile("img");
+                            p.firstImageURL = imageFile.getUrl();
                         }
+                        arrayListNewUpdates.add(p);
+                        arrayListHistory.add(p);
                     }
-                    setupListNewUpdate();
-                    setupListHistory();
-                } else {
-                    e.printStackTrace();
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        });
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            setupListHistory();
+            setupListNewUpdate();
+        }
     }
 
     private void setupListNewUpdate() {

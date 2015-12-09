@@ -56,6 +56,8 @@ public class Place {
      */
     private List<Image> mListImage = new ArrayList<Image>();
 
+    public String firstImageURL;
+
     /**
      * Get/Set Properties
      */
