@@ -26,6 +26,8 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.group5.model.Place;
+import com.group5.parser.DataParser;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -52,14 +54,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MyHomeRecyclerAdapter myHomeRecyclerAdapterNewUpdate;
     RecyclerView.LayoutManager layoutManagerNewUpdate;
     String[] strings_new_updates;
-    ArrayList<String> arrayListNewUpdates;//array list string list menu
+    //ArrayList<String> arrayListNewUpdates;//array list string list menu
+    ArrayList<Place> arrayListNewUpdates = new ArrayList<Place>();
 
 
     RecyclerView recyclerHistory;
     MyHomeRecyclerAdapter myHomeRecyclerAdapterHistory;
     RecyclerView.LayoutManager layoutManagerHistory;
     String[] strings_history;
-    ArrayList<String> arrayListHistory;//array list string list menu
+    //ArrayList<String> arrayListHistory;//array list string list menu
+    ArrayList<Place> arrayListHistory = new ArrayList<Place>();//array list string list menu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +75,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupSlider();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
-        query.orderByDescending("createdAt").setLimit(20);
+        query.orderByDescending("createdAt").setLimit(5);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> scoreList, ParseException e) {
-                for (ParseObject score : scoreList)
+                if (e == null) {
+                    for (ParseObject score : scoreList) {
+                        try {
+                            Place p = DataParser.parsePlace(score);
+                            arrayListNewUpdates.add(p);
+                            arrayListHistory.add(p);
+                            Log.d("a", p.getPlaceName());
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    setupListNewUpdate();
+                    setupListHistory();
+                } else
                 {
-                    Log.d("1",score.getObjectId());
+                    e.printStackTrace();
                 }
                 //Log.d("a",Integer.toString(scoreList.size()));
             }
         });
 
+//        Log.d("a",Integer.toString(arrayListNewUpdates.size()));
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -93,16 +111,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
+    }
 
-
-        //viewPagerHome = (ViewPager)findViewById(R.id.viewpagerHome);
-        //initViewPager();
-
-
-        arrayListNewUpdates = new ArrayList<String>();
-        strings_new_updates = getResources().getStringArray(R.array.newupdates);
-        Collections.addAll(arrayListNewUpdates, strings_new_updates); // replace for for() or foreach
-
+    private void setupListNewUpdate()
+    {
         recyclerNewUpdate = (RecyclerView)findViewById(R.id.recyclerNewUpdate);
         //use linear layout manager
         layoutManagerNewUpdate = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -110,13 +122,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         myHomeRecyclerAdapterNewUpdate = new MyHomeRecyclerAdapter(getApplicationContext(),R.layout.custom_list_home,arrayListNewUpdates);
         recyclerNewUpdate.setAdapter(myHomeRecyclerAdapterNewUpdate);
+    }
 
-
-
-        arrayListHistory = new ArrayList<String>();
-        strings_history = getResources().getStringArray(R.array.history);
-        Collections.addAll(arrayListHistory, strings_history); // replace for for() or foreach
-
+    private void setupListHistory()
+    {
         recyclerHistory = (RecyclerView)findViewById(R.id.recyclerHistory);
         //use linear layout manager
         layoutManagerHistory = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -124,16 +133,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         myHomeRecyclerAdapterHistory = new MyHomeRecyclerAdapter(getApplicationContext(),R.layout.custom_list_home,arrayListHistory);
         recyclerHistory.setAdapter(myHomeRecyclerAdapterHistory);
-
-
-
-    }
-
-
-
-    private void initViewPager(){
-
-        //Init here
 
     }
 

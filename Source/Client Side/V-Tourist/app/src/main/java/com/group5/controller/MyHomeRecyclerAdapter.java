@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.group5.model.Place;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -31,13 +32,13 @@ import java.util.List;
 public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAdapter.ViewHolder> {
 
 
-    ArrayList<String> arrayList;
+    ArrayList<Place> arrayList;
     Context context;
     int layoutId;
 
 
     //Construtor
-    public MyHomeRecyclerAdapter(Context context, int layoutId, ArrayList<String> arrayList) {
+    public MyHomeRecyclerAdapter(Context context, int layoutId, ArrayList<Place> arrayList) {
         super();
         this.context = context;
         this.layoutId = layoutId;
@@ -77,7 +78,8 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return arrayList.size();
     }
 
