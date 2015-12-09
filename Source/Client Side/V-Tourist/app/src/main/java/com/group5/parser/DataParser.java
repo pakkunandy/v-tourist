@@ -68,7 +68,7 @@ public class DataParser {
         place.setPlaceDescription(object.getString("description"));
         place.setPlaceId(object.getObjectId());
         place.setPlaceName(object.getString("name"));
-        place.setType(TypeServices.getType(object.getString("type")));
+        //place.setType(TypeServices.getType(object.getString("type")));
         return place;
     }
 
