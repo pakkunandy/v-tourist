@@ -1,36 +1,26 @@
 package com.group5.controller;
 
-import android.*;
-
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.group5.model.Place;
 import com.group5.parser.DirectionsJSONParser;
-import com.group5.service.PlaceServices;
-import com.parse.ParseException;
 
 import org.json.JSONObject;
 
@@ -65,11 +55,6 @@ public class MapFragment  extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-
-
-
-
-
         //goolgemap
         if(googleMap == null){
             googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -80,19 +65,11 @@ public class MapFragment  extends Fragment {
 
         //origin = new LatLng(10.8147499,106.7091127);
 
-
         return view;
     }
 
-
-
-
-
-
     public void setupMap(){
 
-        //place = new LatLng(10.7920719,106.6995855);
-        //set up for app
         dest = new LatLng(GlobalVariable.latitute,GlobalVariable.longtitute);
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -104,8 +81,7 @@ public class MapFragment  extends Fragment {
         googleMap.setBuildingsEnabled(true);
         //googleMap.setInfoWindowAdapter(new MyInfoWindow(getActivity().getBaseContext(), R.layout.my_info_window));
 
-        googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_default)).anchor(0.0f,
-                0.0f).position(dest).title(GlobalVariable.name + " => Chỉ đường")).showInfoWindow();
+        googleMap.addMarker(new MarkerOptions().position(dest).title(GlobalVariable.name + " => Chỉ đường")).showInfoWindow();
 
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 13));
@@ -126,7 +102,7 @@ public class MapFragment  extends Fragment {
 
                     //get my location
                     Location myLocation = googleMap.getMyLocation();
-                    origin = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
+                    origin = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 
                     String url = getDirectionsUrl(origin, dest);
 
@@ -194,7 +170,7 @@ public class MapFragment  extends Fragment {
             br.close();
 
         }catch(Exception e){
-            Log.d("Exception while downloading url", e.toString());
+            Log.d("Exception", e.toString());
         }finally{
             iStream.close();
             urlConnection.disconnect();
