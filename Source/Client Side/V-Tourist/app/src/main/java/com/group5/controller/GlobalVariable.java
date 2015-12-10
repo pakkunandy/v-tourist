@@ -5,4 +5,7 @@ package com.group5.controller;
  */
 public class GlobalVariable {
     public static String idGlobalPlaceCurrent = "1uAeJjnThk";
+    public static Double longtitute ;
+    public static Double latitute;
+    public static String name;
 }

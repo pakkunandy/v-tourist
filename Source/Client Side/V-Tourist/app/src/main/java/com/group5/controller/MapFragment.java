@@ -3,6 +3,7 @@ package com.group5.controller;
 import android.*;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,7 +27,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.group5.model.Place;
 import com.group5.parser.DirectionsJSONParser;
+import com.group5.service.PlaceServices;
+import com.parse.ParseException;
 
 import org.json.JSONObject;
 
@@ -49,8 +54,8 @@ public class MapFragment  extends Fragment {
     Declare for google map
      */
 
-    public static GoogleMap googleMap; //googlemap object
-    //public LatLng place = null; //Demo with a location default, be change to Object class Place when data willing
+    public GoogleMap googleMap; //googlemap object
+
     public LatLng origin = null; //Start location, update after with Object class Place
     public LatLng dest = null; //Finish location, update after with Object class Place
     public static final int REQUEST_LOCATION = 1;
@@ -59,6 +64,9 @@ public class MapFragment  extends Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+
+
+
 
 
 
@@ -77,11 +85,15 @@ public class MapFragment  extends Fragment {
     }
 
 
+
+
+
+
     public void setupMap(){
 
         //place = new LatLng(10.7920719,106.6995855);
         //set up for app
-        dest = new LatLng(10.7920719,106.6995855);
+        dest = new LatLng(GlobalVariable.latitute,GlobalVariable.longtitute);
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
@@ -90,10 +102,10 @@ public class MapFragment  extends Fragment {
         googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.setBuildingsEnabled(true);
-        googleMap.setInfoWindowAdapter(new MyInfoWindow(getActivity().getBaseContext(), R.layout.my_info_window));
+        //googleMap.setInfoWindowAdapter(new MyInfoWindow(getActivity().getBaseContext(), R.layout.my_info_window));
 
         googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_default)).anchor(0.0f,
-                0.0f).position(dest)).showInfoWindow();
+                0.0f).position(dest).title(GlobalVariable.name + " => Chỉ đường")).showInfoWindow();
 
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 13));
@@ -313,10 +325,12 @@ public class MapFragment  extends Fragment {
     @Override
     public void onDestroy() {
         if (googleMap != null) {
+            /*
             googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             getActivity().getFragmentManager().beginTransaction()
                     .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
             googleMap = null;
+            */
         }
         super.onDestroy();
 
@@ -325,10 +339,10 @@ public class MapFragment  extends Fragment {
     @Override
     public void onDestroyView() {
         if (googleMap != null) {
-            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+           /* googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             getActivity().getFragmentManager().beginTransaction()
                     .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
-            googleMap = null;
+            googleMap = null;*/
         }
         super.onDestroyView();
     }

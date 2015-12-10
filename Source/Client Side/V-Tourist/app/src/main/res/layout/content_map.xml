@@ -8,32 +8,39 @@
     tools:showIn="@layout/activity_favorite" tools:context="com.group5.controller.FavoriteActivity"
     android:orientation="vertical"
     >
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="vertical"
-       android:background="@color/colorPrimary"
-       android:paddingLeft="20dp"
-       android:paddingRight="20dp"
-       android:paddingTop="10dp"
-       android:paddingBottom="10dp"
-       >
-       <EditText
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:hint="Chọn địa điểm bắt đầu hoặc nhấp vào bản đồ"
-           android:textColor="@color/white"
-           android:background="@color/colorPrimary"
-           android:textColorHint="@color/white"
-           android:textSize="18sp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        >
+        <EditText
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Nhập địa điểm"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
+            android:textColorHint="@color/white"
+            android:textSize="18sp"
+            android:id="@+id/txtSearch"
 
-           />
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="2dp"
-           android:background="@color/white"/>
+            />
+        <Button
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSearch"
+            android:text="Tìm kiếm"
+            />
 
-   </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

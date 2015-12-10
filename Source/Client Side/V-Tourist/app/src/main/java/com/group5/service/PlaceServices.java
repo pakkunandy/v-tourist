@@ -27,7 +27,7 @@ public class PlaceServices {
     }
     public static Place getPlace(String id) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
-        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         ParseObject object = new ParseObject("Place");
         object = query.get(id);
 
@@ -75,7 +75,7 @@ public class PlaceServices {
     }
 
 
-    public List<Place> getPlacesList(String city, String district, String ward, String type, Integer offset, Integer limit) throws ParseException {
+    public static List<Place> getPlacesList(String city, String district, String ward, String type, Integer offset, Integer limit) throws ParseException {
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
 
         if (city != null)
@@ -103,7 +103,7 @@ public class PlaceServices {
 
         return placesList;
     }
-    public List<Place> getPlacesListByGeo(Double latitude, Double longtitude, Double distance) throws ParseException {
+    public static List<Place> getPlacesListByGeo(Double latitude, Double longtitude, Double distance) throws ParseException {
         ParseGeoPoint location = new ParseGeoPoint(latitude, longtitude);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
         query.setLimit(10);
@@ -118,7 +118,7 @@ public class PlaceServices {
     }
 
 
-    public List<Image> getImagesList(String placeId) throws ParseException {
+    public static List<Image> getImagesList(String placeId) throws ParseException {
         ParseObject placeOb = getObject(placeId);
         ParseRelation<ParseObject> relation = placeOb.getRelation("images");
         // generate a query based on that relation
@@ -133,7 +133,7 @@ public class PlaceServices {
 
         return imagesList;
     }
-    public Image getThumbnail(String placeId) throws ParseException
+    public static Image getThumbnail(String placeId) throws ParseException
     {
         ParseObject placeOb = getObject(placeId);
         ParseRelation<ParseObject> relation = placeOb.getRelation("images");
