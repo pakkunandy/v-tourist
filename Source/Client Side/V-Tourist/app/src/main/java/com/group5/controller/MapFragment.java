@@ -1,9 +1,11 @@
 package com.group5.controller;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -90,13 +93,21 @@ public class MapFragment  extends Fragment {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 //Direction
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    //All location services are disabled
+                    Toast.makeText(getContext(),"Vui lòng mở cho phép truy cập địa điểm hiện tại",Toast.LENGTH_LONG).show();
+
+                }
+                /*
                 if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getContext(),"Không có location",Toast.LENGTH_LONG).show();
                     // Check Permissions Now
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             REQUEST_LOCATION);
-                } else {
+                }*/ else {
                     // permission has been granted, continue as usual
                     googleMap.setMyLocationEnabled(true);
 
@@ -266,7 +277,7 @@ public class MapFragment  extends Fragment {
             googleMap.addPolyline(lineOptions);
 
             //set marker and focus
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin,17));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin,13));
             //googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_start)).position(origin));
             //googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_goal)).position(dest));
         }
@@ -310,6 +321,18 @@ public class MapFragment  extends Fragment {
         }
         super.onDestroy();
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (googleMap != null) {
+
+            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+            getActivity().getFragmentManager().beginTransaction()
+                    .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
+
+        }
     }
 
     @Override
