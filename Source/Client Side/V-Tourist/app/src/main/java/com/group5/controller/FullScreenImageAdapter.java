@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -59,29 +58,15 @@ public class FullScreenImageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         ImageView imgDisplay;
-        inflater = (LayoutInflater) _activity
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View viewLayout = inflater.inflate(R.layout.layout_fullscreen_image, container,
-                false);
+        inflater = (LayoutInflater) _activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View viewLayout = inflater.inflate(R.layout.layout_fullscreen_image, container, false);
 
         imgDisplay = (ImageView) viewLayout.findViewById(R.id.imgDisplay);
-
-       /* BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);*/
-
-//        imgDisplay.setImageResource(mThumbIds[position]);
         ImageLoader.getInstance().displayImage(GlobalVariable.arrayListImageUrlCurrent.get(position), imgDisplay);
-
-                ((ViewPager) container).addView(viewLayout);
+        ((ViewPager) container).addView(viewLayout);
 
         return viewLayout;
     }
-
-    private Integer[] mThumbIds = {
-            R.drawable.nhatho,R.drawable.nhatho,
-            R.drawable.nhatho,R.drawable.nhatho
-    };
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
