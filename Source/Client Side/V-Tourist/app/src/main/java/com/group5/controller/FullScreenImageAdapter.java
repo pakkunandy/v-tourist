@@ -57,9 +57,8 @@ public class FullScreenImageAdapter extends PagerAdapter {
     }
 
     private Integer[] mThumbIds = {
-            R.drawable.slide1,R.drawable.slide3,
-            R.drawable.slide2,R.drawable.slide4
-
+            R.drawable.nhatho,R.drawable.nhatho,
+            R.drawable.nhatho,R.drawable.nhatho
     };
 
     @Override

@@ -134,6 +134,23 @@ public class PlaceServices {
 
         return imagesList;
     }
+
+    public static ArrayList<String> getImageUrlList(String placeId) throws ParseException{
+
+        ParseObject placeOb = getObject(placeId);
+        ParseRelation<ParseObject> relation = placeOb.getRelation("images");
+        // generate a query based on that relation
+        ParseQuery query = relation.getQuery();
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        ArrayList<String> imageUrlList = new ArrayList<>();
+        List<ParseObject> listObject = query.find();
+
+        for (ParseObject object: listObject) {
+            imageUrlList.add(object.getParseFile("img").getUrl());
+        }
+        return imageUrlList;
+    }
+
     public static Image getThumbnail(String placeId) throws ParseException
     {
         ParseObject placeOb = getObject(placeId);
