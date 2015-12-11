@@ -42,6 +42,7 @@ public class ImageFragment  extends android.support.v4.app.Fragment {
         protected Void doInBackground(Void... params) {
             try {
                 arrayListImageUrl = PlaceServices.getImageUrlList(GlobalVariable.idGlobalPlaceCurrent);
+                GlobalVariable.arrayListImageUrlCurrent = arrayListImageUrl;
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -52,7 +53,6 @@ public class ImageFragment  extends android.support.v4.app.Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-
             gridview.setAdapter(new ImageAdapter(getContext(), arrayListImageUrl));
 
             gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,7 +61,7 @@ public class ImageFragment  extends android.support.v4.app.Fragment {
                     // Sending image id to FullScreenActivity
                     Intent i = new Intent(getContext(), FullScreenViewActivity.class);
                     // passing array index
-                    i.putExtra("id", position);
+                    i.putExtra("imageUrl", position);
                     getActivity().startActivity(i);
                 }
             });

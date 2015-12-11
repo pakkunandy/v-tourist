@@ -1,5 +1,7 @@
 package com.group5.controller;
 
+import java.util.ArrayList;
+
 /**
  * Created by Duy on 12/8/2015.
  */
@@ -8,4 +10,5 @@ public class GlobalVariable {
     public static Double longtitute ;
     public static Double latitute;
     public static String name;
+    public static ArrayList<String> arrayListImageUrlCurrent;
 }

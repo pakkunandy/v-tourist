@@ -11,6 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+
 /**
  * Created by Jabbawocky on 12/8/2015.
  */
@@ -22,12 +29,27 @@ public class FullScreenImageAdapter extends PagerAdapter {
 
     // constructor
     public FullScreenImageAdapter(Activity activity) {
+
         this._activity = activity;
+
+        // UNIVERSAL IMAGE LOADER SETUP
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                this._activity.getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
     }
 
     @Override
     public int getCount() {
-        return 6;
+        return GlobalVariable.arrayListImageUrlCurrent.size();
     }
     @Override
     public boolean isViewFromObject(View view, Object object) {
@@ -48,10 +70,10 @@ public class FullScreenImageAdapter extends PagerAdapter {
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeFile(_imagePaths.get(position), options);*/
 
-        imgDisplay.setImageResource(mThumbIds[position]);
+//        imgDisplay.setImageResource(mThumbIds[position]);
+        ImageLoader.getInstance().displayImage(GlobalVariable.arrayListImageUrlCurrent.get(position), imgDisplay);
 
-
-        ((ViewPager) container).addView(viewLayout);
+                ((ViewPager) container).addView(viewLayout);
 
         return viewLayout;
     }

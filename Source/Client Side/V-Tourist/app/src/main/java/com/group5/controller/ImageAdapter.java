@@ -72,14 +72,4 @@ public class ImageAdapter extends BaseAdapter {
         return imageView;
     }
 
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.slide1,R.drawable.slide3,
-            R.drawable.slide2,R.drawable.slide4
-
-    };
-    public Integer getID(int pos)
-    {
-        return mThumbIds[pos];
-    }
 }
