@@ -10,13 +10,18 @@
 
 
     <!-- ViewPager on the top of screen. It contain some images describe for specific place. -->
-    <android.support.v4.view.ViewPager
+    <!--<android.support.v4.view.ViewPager
 
         android:id="@+id/viewpagerDetails"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@color/colorAccent"
-        />
+        />-->
+    <ImageView
+        android:id="@+id/viewpagerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorAccent"/>
 
     <!-- The detail body of place. There are four fragment in this section. Gradually by:
         1. First tab: Information of place.

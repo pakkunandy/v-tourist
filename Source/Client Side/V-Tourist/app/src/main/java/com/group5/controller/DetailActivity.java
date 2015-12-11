@@ -1,7 +1,10 @@
 package com.group5.controller;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
@@ -25,13 +29,14 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     /*
     * View pager on top of screen
     * */
-    ViewPager viewPagerDetails;
+    ImageView viewPagerDetails;
 
 
     /*
     Declare for tab and viewpager matching with it
      */
     ViewPager viewPagerContentDetail ; //Viewpager that contain the body
+
     TabHost tabHost; //Tab selection
     HorizontalScrollView horizontalScrollView;
    // ArrayList<Fragment> fragments; //List fragment that is the content in viewpager
@@ -58,7 +63,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
 
         //Config viewPagerDetails on the top
-        viewPagerDetails = (ViewPager)findViewById(R.id.viewpagerDetails);
+        viewPagerDetails = (ImageView) findViewById(R.id.viewpagerDetails);
         initViewPagerDetails();
 
 
@@ -229,6 +234,41 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Load Image
+     */
+    private class LoadImage extends AsyncTask<Void, Long, String> {
+
+        Activity activity;
+        ImageView imageView;
+        ProgressDialog progressDialog;
+
+        public LoadImage(Activity activity) {
+            this.activity = activity;
+            progressDialog = new ProgressDialog(activity.getApplicationContext());
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            imageView = (ImageView) activity.findViewById(R.id.viewpagerDetails);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            //Load Image
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String strUrl) {
+            super.onPostExecute(strUrl);
+        }
+
     }
 
 }
