@@ -14,7 +14,6 @@
         android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thành phố HCM"
         />
     <TableLayout
         android:layout_width="match_parent"
@@ -37,11 +36,10 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/padding_left_information"
                 android:textColor="@color/textPrimary"
-                android:text="451/58A Phạm Thế Hiển Phường 3 quận 8"
                 android:layout_gravity="center_vertical"
                 />
         </TableRow>
-        <TableRow
+        <!--<TableRow
             android:paddingLeft="@dimen/padding_left_information"
             android:paddingTop="@dimen/padding_top_information"
             android:paddingRight="@dimen/padding_right_information"
@@ -60,7 +58,7 @@
                 android:textColor="@color/textPrimary"
                 android:text="01626027273"
                 android:layout_gravity="center_vertical"/>
-        </TableRow>
+        </TableRow>-->
 
         <TextView
             android:id="@+id/txtDescription"
@@ -70,7 +68,7 @@
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thành phố Hồ Chí Minh là thành phố lớn nhất Việt Nam xét về quy mô dân số và mức độ đô thị hóa, đồng thời cũng là đầu tàu kinh tế và là một trong những nền văn hóa, giáo dục quan trọng của quốc gia này."/>
+            />
     </TableLayout>
 
     <TextView
