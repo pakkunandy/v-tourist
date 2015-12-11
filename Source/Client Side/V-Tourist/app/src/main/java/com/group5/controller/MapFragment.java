@@ -59,11 +59,20 @@ public class MapFragment  extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         //goolgemap
+
         if(googleMap == null){
             googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
-        }else{
             setupMap();
         }
+
+
+        /*
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
+        if(f == null){
+            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+            setupMap();
+        }
+        */
 
 
         //origin = new LatLng(10.8147499,106.7091127);
@@ -301,24 +310,48 @@ public class MapFragment  extends Fragment {
     public void onResume() {
         super.onResume();
         //goolgemap
-        if(googleMap == null){
-            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
-        }else{
+
+
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
+        if (f == null) {
+            googleMap = ((com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             setupMap();
         }
+
+
+        /*
+        if(f == null){
+            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+            setupMap();
+        }
+        */
+
+
+        /*
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
+        if(googleMap == null){
+            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+            setupMap();
+        }
+        else {
+            setupMap();
+        }
+        */
     }
 
 
     @Override
     public void onDestroy() {
+        /*
         if (googleMap != null) {
-            /*
+
             googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             getActivity().getFragmentManager().beginTransaction()
                     .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
             googleMap = null;
-            */
+
         }
+        */
         super.onDestroy();
 
     }
@@ -327,22 +360,40 @@ public class MapFragment  extends Fragment {
     public void onPause() {
         super.onPause();
         if (googleMap != null) {
-
             googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
-            getActivity().getFragmentManager().beginTransaction()
+            getActivity().
+                    getFragmentManager().beginTransaction()
                     .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
-
+            //googleMap = null;
         }
+        /*
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }*/
     }
+
+
+
+
 
     @Override
     public void onDestroyView() {
+        /*
         if (googleMap != null) {
            /* googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             getActivity().getFragmentManager().beginTransaction()
                     .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
-            googleMap = null;*/
+            googleMap = null;
         }
+    */
         super.onDestroyView();
+        /*
+        Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commit();
+        }
+
+        */
     }
 }

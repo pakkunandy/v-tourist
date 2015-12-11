@@ -59,7 +59,7 @@ public class ImageFragment  extends android.support.v4.app.Fragment {
                 public void onItemClick(AdapterView<?> parent, View v,
                                         int position, long id) {
                     // Sending image id to FullScreenActivity
-                    Intent i = new Intent(getContext(), FullScreenViewActivity.class);
+                    Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
                     // passing array index
                     i.putExtra("imageUrl", position);
                     getActivity().startActivity(i);
