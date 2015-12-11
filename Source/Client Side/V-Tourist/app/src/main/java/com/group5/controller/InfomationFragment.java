@@ -43,7 +43,7 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
         View view;
         TextView txtPlaceName;
         TextView txtAddress;
-        TextView txtPhone;
+        //TextView txtPhone;
         TextView txtDescription;
         ProgressDialog dialog;
 
@@ -82,7 +82,7 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
         protected void getFormWidget(View v) {
             txtAddress = (TextView) v.findViewById(R.id.txtAddress);
             txtPlaceName = (TextView) v.findViewById(R.id.txtPlaceName);
-            txtPhone = (TextView) v.findViewById(R.id.txtPhone);
+            //txtPhone = (TextView) v.findViewById(R.id.txtPhone);
             txtDescription = (TextView) v.findViewById(R.id.txtDescription);
         }
 
@@ -91,7 +91,7 @@ public class InfomationFragment  extends android.support.v4.app.Fragment {
          */
         protected void addDataToView(Place place){
             txtPlaceName.setText(place.getPlaceName());
-            txtPhone.setText(place.getPhone());
+            //txtPhone.setText(place.getPhone());
             txtAddress.setText(place.getAddress());
             txtDescription.setText(place.getLongDescription());
             dialog.dismiss();

@@ -43,7 +43,7 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     protected List<CommentItem> getData(){
         List<CommentItem> itemList = new ArrayList<>();
         for (int i = 0; i < 5; i++){
-            CommentItem commentItem = new CommentItem("Nguoi viet " + i, R.drawable.ic_addresss, "Nội dung " + i, (float)4.5);
+            CommentItem commentItem = new CommentItem("Nguoi viet " + i, R.drawable.ic_avatar, "Nội dung " + i, (float)4.5);
             itemList.add(commentItem);
         }
         return  itemList;
