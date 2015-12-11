@@ -17,11 +17,25 @@
         android:layout_height="150dp"
         android:background="@color/colorAccent"
         />-->
-    <ImageView
-        android:id="@+id/viewpagerDetails"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@color/colorAccent"/>
+        android:layout_height="150dp">
+        <ImageView
+            android:id="@+id/viewpagerDetails"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/colorAccent"/>
+        <ImageView
+            android:id="@+id/imgFavourite"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_pin"/>
+    </RelativeLayout>
+
 
     <!-- The detail body of place. There are four fragment in this section. Gradually by:
         1. First tab: Information of place.

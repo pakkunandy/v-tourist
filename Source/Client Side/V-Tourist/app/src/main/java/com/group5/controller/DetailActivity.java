@@ -22,7 +22,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TabHost;
 
+import com.group5.model.Bookmark;
+import com.group5.model.User;
+import com.group5.service.UserServices;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener  {
 
@@ -41,6 +46,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     HorizontalScrollView horizontalScrollView;
    // ArrayList<Fragment> fragments; //List fragment that is the content in viewpager
     android.support.v4.view.PagerAdapter pagerAdapter = null; // custom adapter in order to  pour data(fragment in this instance) to viewpager
+
+    ImageView imgFavourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +113,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             }
         });
 
-
+        //Add view Bookmark
+        imgFavourite = (ImageView) findViewById(R.id.imgFavourite);
     }
 
     private void initTabHost() {
@@ -278,4 +286,18 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     }
 
+    private void handleBookmark(){
+        loadFavourite();
+
+        imgFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void loadFavourite() {
+       //Load favourite
+    }
 }
