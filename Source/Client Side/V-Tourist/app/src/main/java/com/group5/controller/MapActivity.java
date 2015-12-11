@@ -2,6 +2,7 @@ package com.group5.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -117,6 +118,16 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 downloadPlaceTask.execute(latLng);
             }
         });
+
+        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                Location myLocation = googleMap.getMyLocation();  //Nullpointer exception.........
+                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                        myLocation.getLongitude());
+                return false;
+            }
+        });
     }
 
     private class DownloadPlaceTask extends AsyncTask<LatLng, Void, Void> implements ClusterManager.OnClusterItemInfoWindowClickListener<MyItem> {
@@ -197,7 +208,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         }
 
     }
-
 
     @Override
     protected void onResume() {
@@ -378,7 +388,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         MarkerOptions options = new MarkerOptions().position(location);
         options.title("Trung tâm");
 
-        options.icon(BitmapDescriptorFactory.defaultMarker());
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.iamhere));
         googleMap.addMarker(options);
     }
 }

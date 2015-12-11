@@ -11,4 +11,5 @@ public class GlobalVariable {
     public static Double latitute;
     public static String name;
     public static ArrayList<String> arrayListImageUrlCurrent;
+    public static String firstImageUrl;
 }

@@ -25,12 +25,19 @@ import android.widget.TabHost;
 import com.group5.model.Bookmark;
 import com.group5.model.User;
 import com.group5.service.UserServices;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener  {
 
+    private ImageView imageViewDetail;
     /*
     * View pager on top of screen
     * */
@@ -56,6 +63,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        imageViewDetail = (ImageView)findViewById(R.id.imageViewDetails);
+        setupImageViewDetail();
 
 
         //Config for Drawer navigation - start
@@ -70,8 +79,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
 
         //Config viewPagerDetails on the top
-        viewPagerDetails = (ImageView) findViewById(R.id.viewpagerDetails);
-        initViewPagerDetails();
+//        viewPagerDetails = (ImageView) findViewById(R.id.viewpagerDetails);
+//        initViewPagerDetails();
 
 
         //Config tabhost and viewpager
@@ -270,7 +279,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            imageView = (ImageView) activity.findViewById(R.id.viewpagerDetails);
+            //imageView = (ImageView) activity.findViewById(R.id.viewpagerDetails);
         }
 
         @Override
@@ -299,5 +308,25 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     private void loadFavourite() {
        //Load favourite
+    }
+
+    private  void setupImageViewDetail()
+    {
+        // UNIVERSAL IMAGE LOADER SETUP
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                this.getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
+
+        ImageLoader.getInstance().displayImage(GlobalVariable.firstImageUrl, imageViewDetail);
+        imageViewDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 }
