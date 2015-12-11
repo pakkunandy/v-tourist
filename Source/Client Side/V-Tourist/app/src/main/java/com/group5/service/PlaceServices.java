@@ -108,6 +108,7 @@ public class PlaceServices {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
         query.setLimit(10);
         query.whereWithinKilometers("location", location, distance);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         List<Place> placesList = new ArrayList<>();
         List<ParseObject> listObject = query.find();
         for (ParseObject object: listObject) {

@@ -1,7 +1,6 @@
 package com.group5.controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.group5.model.Place;
+import com.group5.model.City;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,19 +24,17 @@ import com.nostra13.universalimageloader.core.imageaware.ImageAware;
 import java.util.ArrayList;
 
 /**
- * Created by Salmon on 11/24/2015.
- * Adapter for recycler view
+ * Created by Duy on 11-Dec-15.
  */
-public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAdapter.ViewHolder> {
+public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapter.ViewHolder> {
 
-
-    ArrayList<Place> arrayList;
+    ArrayList<City> arrayList;
     Context context;
     int layoutId;
 
 
     //Construtor
-    public MyHomeRecyclerAdapter(Context context, int layoutId, ArrayList<Place> arrayList) {
+    public CityRecyclerAdapter(Context context, int layoutId, ArrayList<City> arrayList) {
         super();
         this.context = context;
         this.layoutId = layoutId;
@@ -59,17 +56,17 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
     }
 
     @Override
-    public MyHomeRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CityRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
-        return new MyHomeRecyclerAdapter.ViewHolder(view);
+        return new CityRecyclerAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyHomeRecyclerAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(CityRecyclerAdapter.ViewHolder holder, final int position) {
 
 
-        holder.captionTitle.setText(arrayList.get(position).getPlaceName());
-        holder.captionBody.setText(arrayList.get(position).getPlaceDescription());
+        holder.captionTitle.setText(arrayList.get(position).getName());
+        holder.captionBody.setText("");
 
         DisplayImageOptions dio = new DisplayImageOptions.Builder().displayer(new BitmapDisplayer() {
             @Override
@@ -84,18 +81,18 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
                 .cacheOnDisc(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .build();
-        ImageLoader.getInstance().displayImage(arrayList.get(position).firstImageURL, holder.imgTest, dio);
+        ImageLoader.getInstance().displayImage(arrayList.get(position).imageURL, holder.imgTest, dio);
 
         holder.imgTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GlobalVariable.idGlobalPlaceCurrent = arrayList.get(position).getPlaceId();
-                GlobalVariable.longtitute = arrayList.get(position).getLongitude();
-                GlobalVariable.latitute = arrayList.get(position).getLatitude();
-                GlobalVariable.name = arrayList.get(position).getPlaceName();
-                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.getApplicationContext().startActivity(intent);
+//                GlobalVariable.idGlobalPlaceCurrent = arrayList.get(position).getPlaceId();
+//                GlobalVariable.longtitute = arrayList.get(position).getLongitude();
+//                GlobalVariable.latitute = arrayList.get(position).getLatitude();
+//                GlobalVariable.name = arrayList.get(position).getPlaceName();
+//                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                context.getApplicationContext().startActivity(intent);
             }
         });
 
@@ -116,9 +113,10 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
         public ViewHolder(View itemView) {
             super(itemView);
 
-            imgTest = (ImageView) itemView.findViewById(R.id.imgTest);
-            captionTitle = (TextView) itemView.findViewById(R.id.captionTitleView);
-            captionBody = (TextView) itemView.findViewById(R.id.captionTextView);
+            imgTest = (ImageView) itemView.findViewById(R.id.imgTestCity);
+            captionTitle = (TextView) itemView.findViewById(R.id.captionTitleViewCity);
+            captionBody = (TextView) itemView.findViewById(R.id.captionTextViewCity);
         }
     }
+
 }

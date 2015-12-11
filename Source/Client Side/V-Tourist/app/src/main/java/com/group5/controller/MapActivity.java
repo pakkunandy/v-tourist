@@ -63,6 +63,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,6 +83,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         });
+
         //goolgemap
         if (googleMap == null) {
             googleMap = ((com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();

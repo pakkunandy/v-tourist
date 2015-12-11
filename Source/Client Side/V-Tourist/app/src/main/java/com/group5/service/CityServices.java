@@ -22,13 +22,12 @@ public class CityServices {
         return DataParser.parseCity(object);
     }
 
-    public static List<City> getCitiesList() throws ParseException {
+    public static ArrayList<City> getCitiesList() throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("City");
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-        List<City> cityList = new ArrayList<>();
+        ArrayList<City> cityList = new ArrayList<City>();
         List<ParseObject> listObject = query.find();
-        for (ParseObject object: listObject
-                ) {
+        for (ParseObject object: listObject) {
             cityList.add(DataParser.parseCity(object));
         }
 

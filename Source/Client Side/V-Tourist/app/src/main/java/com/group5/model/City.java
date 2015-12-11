@@ -18,6 +18,7 @@ public class City {
      * Get/Set Properties
      */
 
+    public String imageURL;
 
     public String getName() {
         return mCityName;

@@ -30,6 +30,7 @@ public class DataParser {
         City city = new City();
         city.setCityId(object.getObjectId());
         city.setName(object.getString("name"));
+        city.imageURL = object.getParseFile("Picture").getUrl();
         return city;
     }
 

@@ -1,7 +1,5 @@
 package com.group5.controller;
 
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,22 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.group5.model.City;
 import com.group5.model.Place;
 import com.group5.parser.DataParser;
+import com.group5.service.CityServices;
 import com.group5.service.UserServices;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -58,10 +52,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<Place> arrayListNewUpdates = new ArrayList<Place>();
 
     MenuItem loginMenuItem;
-    RecyclerView recyclerHistory;
-    MyHomeRecyclerAdapter myHomeRecyclerAdapterHistory;
-    RecyclerView.LayoutManager layoutManagerHistory;
-    ArrayList<Place> arrayListHistory = new ArrayList<Place>();//array list string list menu
+
+    RecyclerView recyclerCity;
+    CityRecyclerAdapter cityRecyclerAdapter;
+    RecyclerView.LayoutManager layoutManagerCity;
+    //ArrayList<Place> arrayListHistory = new ArrayList<Place>();//array list string list menu
+    ArrayList<City> arrayListCity = new ArrayList<City>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,13 +109,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             p.firstImageURL = imageFile.getUrl();
                         }
                         arrayListNewUpdates.add(p);
-                        arrayListHistory.add(p);
                     }
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
+            try {
+                arrayListCity = CityServices.getCitiesList();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -142,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupListHistory() {
-        recyclerHistory = (RecyclerView) findViewById(R.id.recyclerHistory);
+        recyclerCity = (RecyclerView) findViewById(R.id.recyclerHistory);
         //use linear layout manager
-        layoutManagerHistory = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerHistory.setLayoutManager(layoutManagerHistory);
+        layoutManagerCity = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerCity.setLayoutManager(layoutManagerCity);
 
-        myHomeRecyclerAdapterHistory = new MyHomeRecyclerAdapter(getApplicationContext(), R.layout.custom_list_home, arrayListHistory);
-        recyclerHistory.setAdapter(myHomeRecyclerAdapterHistory);
+        cityRecyclerAdapter = new CityRecyclerAdapter(getApplicationContext(), R.layout.custom_list_city_home, arrayListCity);
+        recyclerCity.setAdapter(cityRecyclerAdapter);
 
     }
 
@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -247,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+
     private SliderLayout mDemoSlider;
 
     private void setupSlider() {
