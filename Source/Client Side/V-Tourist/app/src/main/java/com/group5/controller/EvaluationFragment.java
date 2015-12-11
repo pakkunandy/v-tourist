@@ -1,9 +1,14 @@
 package com.group5.controller;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +30,7 @@ import java.util.List;
  */
 public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
-
+    FloatingActionButton floatingActionButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
@@ -33,6 +38,16 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_evaluation, container, false);
         //LoadComment loadComment = new LoadComment(view);
         //loadComment.execute();
+
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fabRating);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RatingPostDialog ratingPostDialog = new RatingPostDialog();
+
+                ratingPostDialog.show(getFragmentManager(),"missiles");
+            }
+        });
 
         return view;
     }
@@ -87,6 +102,36 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
                 itemList.add(commentItem);
             }
             return  itemList;
+        }
+    }
+
+    public class RatingPostDialog extends DialogFragment{
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            // Get the layout inflater
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            // Inflate and set the layout for the dialog
+            // Pass null as the parent view because its going in the dialog layout
+            builder.setView(inflater.inflate(R.layout.rating_dialog, null))
+                    // Add action buttons
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            // sign in the user ...
+
+
+                        }
+                    })
+                    .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            RatingPostDialog.this.getDialog().cancel();
+                        }
+                    });
+            return builder.create();
         }
     }
 }
