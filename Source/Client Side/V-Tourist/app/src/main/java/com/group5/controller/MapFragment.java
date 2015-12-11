@@ -25,7 +25,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.group5.model.Place;
 import com.group5.parser.DirectionsJSONParser;
+import com.group5.service.PlaceServices;
+import com.parse.ParseException;
 
 import org.json.JSONObject;
 
@@ -76,6 +79,8 @@ public class MapFragment  extends Fragment {
             }
         } catch (InflateException e) {
     /* map is already there, just return view as it is */
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return view;
 
@@ -102,7 +107,7 @@ public class MapFragment  extends Fragment {
        // return view;
     }
 
-    public void setupMap(){
+    public void setupMap() throws ParseException {
 
         dest = new LatLng(GlobalVariable.latitute,GlobalVariable.longtitute);
 
@@ -113,9 +118,11 @@ public class MapFragment  extends Fragment {
         googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
         googleMap.getUiSettings().setMapToolbarEnabled(true);
         googleMap.setBuildingsEnabled(true);
-        //googleMap.setInfoWindowAdapter(new MyInfoWindow(getActivity().getBaseContext(), R.layout.my_info_window));
+        Place place = PlaceServices.getPlace(GlobalVariable.idGlobalPlaceCurrent);
+        googleMap.setInfoWindowAdapter(new MyInfoWindow(getActivity().getBaseContext(), R.layout.my_info_window, place));
 
-        googleMap.addMarker(new MarkerOptions().position(dest).title(GlobalVariable.name + " => Chỉ đường")).showInfoWindow();
+        //googleMap.addMarker(new MarkerOptions().position(dest).title(GlobalVariable.name + " => Chỉ đường")).showInfoWindow();
+        googleMap.addMarker(new MarkerOptions().position(dest)).showInfoWindow();
 
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dest, 13));
@@ -337,7 +344,11 @@ public class MapFragment  extends Fragment {
 
         if (f == null ) {
             googleMap = ((com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
-            setupMap();
+            try {
+                setupMap();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
 
 
