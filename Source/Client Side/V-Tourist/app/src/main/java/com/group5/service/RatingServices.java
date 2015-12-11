@@ -30,8 +30,7 @@ public class RatingServices {
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         query.whereEqualTo("place", placeId);
         List<Rating> ratingList = new ArrayList<>();
-        List<ParseObject> listObject = new ArrayList<ParseObject>();
-        listObject = query.find();
+        List<ParseObject> listObject = query.find();
         for (ParseObject object: listObject
                 ) {
             ratingList.add(DataParser.parseRating(object));
