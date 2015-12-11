@@ -81,6 +81,7 @@
                 android:name="com.parse.ui.ParseLoginActivity.APP_LOGO"
                 android:resource="@drawable/ic_logo"/>
         </activity>
+        <activity android:name=".FullScreenViewActivity"/>
     </application>
 
 </manifest>
