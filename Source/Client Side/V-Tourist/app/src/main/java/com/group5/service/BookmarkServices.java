@@ -25,7 +25,7 @@ public class BookmarkServices {
         return DataParser.parseBookmark(object);
     }
 
-    public static List<Bookmark> getBookmarkList() throws ParseException {
+    public static List<Bookmark> getBookmarkList(String userId) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Bookmark");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         List<Bookmark> bookmarkList = new ArrayList<>();

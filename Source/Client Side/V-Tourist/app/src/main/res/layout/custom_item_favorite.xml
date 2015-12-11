@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp">
+        <ImageView
+            android:id="@+id/img_FavoritePlace"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@color/black"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/txt_favoriteName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/img_FavoritePlace"
+            android:paddingLeft="16dp"
+            android:textSize="20sp"
+            android:textColor="@color/textPrimary"
+            android:text="Ten"/>
+
+        <TextView
+            android:id="@+id/txt_favoriteLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/img_FavoritePlace"
+            android:paddingLeft="16dp"
+            android:layout_below="@+id/txt_favoriteName"
+            android:textSize="20sp"
+            android:textColor="@color/textPrimary"
+            android:text="Dia chi"/>
+
+        <TextView
+            android:id="@+id/txt_favoriteDecription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/img_FavoritePlace"
+            android:paddingLeft="16dp"
+            android:layout_below="@+id/txt_favoriteLocation"
+            android:textSize="20sp"
+            android:textColor="@color/textPrimary"
+            android:text="Mo ta"/>
+
+    </RelativeLayout>
+</LinearLayout>
