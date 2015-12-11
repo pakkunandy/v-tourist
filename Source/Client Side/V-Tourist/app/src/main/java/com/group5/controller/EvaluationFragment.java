@@ -1,9 +1,12 @@
 package com.group5.controller;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,51 +25,68 @@ import java.util.List;
  */
 public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
-    private RecyclerView recyclerView;
-    private CommentAdapter commentAdapter;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_evaluation, container, false);
-        getFormWidget(view);
+        //LoadComment loadComment = new LoadComment(view);
+        //loadComment.execute();
+
         return view;
     }
 
-    protected void getFormWidget(View view){
-        recyclerView  = (RecyclerView) view.findViewById(R.id.listComment);
-        commentAdapter = new CommentAdapter(getActivity(), getData());
-        recyclerView.setAdapter(commentAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-    }
-
-    protected void addEvent(){
-
-    }
-
-    protected List<CommentItem> getData(){
-
-        List<CommentItem> itemList = new ArrayList<>();
-        for (int i = 0; i < 5; i++){
-            CommentItem commentItem = new CommentItem("Nguoi viet " + i, R.drawable.ic_avatar, "Nội dung " + i, (float)4.5);
-            itemList.add(commentItem);
-        }
-        return  itemList;
-    }
 
     private class LoadComment extends AsyncTask<Void, Long, List<Rating>> {
 
+        private View view;
+        private RecyclerView recyclerView;
+        private ProgressDialog progressDialog;
+        private CommentAdapter commentAdapter;
+
+        public LoadComment(View view){
+            this.view = view;
+            progressDialog = new ProgressDialog(view.getContext());
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
+
+            recyclerView  = (RecyclerView) view.findViewById(R.id.listComment);
+        }
 
         @Override
         protected List<Rating> doInBackground(Void... params) {
             try {
                 return RatingServices.getRatingList(GlobalVariable.idGlobalPlaceCurrent);
+
             } catch (ParseException e) {
                 e.printStackTrace();
+                Log.i("=======================", e.getMessage());
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Rating> ratings) {
+            super.onPostExecute(ratings);
+            commentAdapter = new CommentAdapter(getActivity(), getData(ratings));
+            recyclerView.setAdapter(commentAdapter);
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            progressDialog.dismiss();
+        }
+
+        protected List<CommentItem> getData(List<Rating> ratings){
+            List<CommentItem> itemList = new ArrayList<CommentItem>();
+            for (int i = 0; i < ratings.size() ; i++){
+                CommentItem commentItem = new CommentItem(ratings.get(i).getUserRate().getName(),
+                        R.drawable.ic_avatar,
+                        ratings.get(i).getComment(),
+                        (float)ratings.get(i).getScore());
+
+                itemList.add(commentItem);
+            }
+            return  itemList;
         }
     }
 }
