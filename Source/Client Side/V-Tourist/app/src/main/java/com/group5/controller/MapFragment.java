@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,17 +55,37 @@ public class MapFragment  extends Fragment {
     public LatLng dest = null; //Finish location, update after with Object class Place
     public static final int REQUEST_LOCATION = 1;
 
+
+    private static View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_map, container, false);
+
+
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
+        try {
+            view = inflater.inflate(R.layout.fragment_map, container, false);
+            if(googleMap == null){
+                googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+                setupMap();
+            }
+        } catch (InflateException e) {
+    /* map is already there, just return view as it is */
+        }
+        return view;
+
+
+        //Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
+        //View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         //goolgemap
 
-        if(googleMap == null){
-            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
-            setupMap();
-        }
+
 
 
         /*
@@ -77,7 +99,7 @@ public class MapFragment  extends Fragment {
 
         //origin = new LatLng(10.8147499,106.7091127);
 
-        return view;
+       // return view;
     }
 
     public void setupMap(){
@@ -311,9 +333,9 @@ public class MapFragment  extends Fragment {
         super.onResume();
         //goolgemap
 
-
         Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
-        if (f == null) {
+
+        if (f == null ) {
             googleMap = ((com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             setupMap();
         }
@@ -340,37 +362,32 @@ public class MapFragment  extends Fragment {
     }
 
 
-    @Override
-    public void onDestroy() {
-        /*
-        if (googleMap != null) {
 
-            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
-            getActivity().getFragmentManager().beginTransaction()
-                    .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
-            googleMap = null;
-
-        }
-        */
-        super.onDestroy();
-
-    }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        /*
         if (googleMap != null) {
-            googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
+           // googleMap = ((com.google.android.gms.maps.MapFragment)getActivity().getFragmentManager().findFragmentById(R.id.map)).getMap();
             getActivity().
                     getFragmentManager().beginTransaction()
                     .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
             //googleMap = null;
         }
-        /*
+        */
+
+
+
         Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
         if (f != null) {
-            getFragmentManager().beginTransaction().remove(f).commit();
-        }*/
+            //getFragmentManager().beginTransaction().remove(f).commit();
+            getActivity().
+                    getFragmentManager().beginTransaction()
+                    .remove(getActivity().getFragmentManager().findFragmentById(R.id.map)).commit();
+        }
+
     }
 
 
@@ -388,12 +405,14 @@ public class MapFragment  extends Fragment {
         }
     */
         super.onDestroyView();
-        /*
+/*
         Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
         if (f != null) {
             getFragmentManager().beginTransaction().remove(f).commit();
         }
+*/
 
-        */
+
+
     }
 }

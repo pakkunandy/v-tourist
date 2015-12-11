@@ -164,7 +164,14 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(tabHost == null)
+            initTabHost();
+        if(viewPagerContentDetail == null)
+            initViewPagerContentDetail();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
