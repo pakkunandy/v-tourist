@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -82,6 +83,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     HttpAsyncTask httpAsyncTask = new HttpAsyncTask();
                     httpAsyncTask.execute(txtSearch.getText().toString());
                 }
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
             }
         });
 
@@ -125,6 +130,15 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 Location myLocation = googleMap.getMyLocation();  //Nullpointer exception.........
                 LatLng myLatLng = new LatLng(myLocation.getLatitude(),
                         myLocation.getLongitude());
+                destonClick = myLatLng;
+                placeList = null;
+                googleMap.clear();
+
+                //addMaker(myLatLng);
+                drawCircle(myLatLng);
+
+                DownloadPlaceTask downloadPlaceTask = new DownloadPlaceTask();
+                downloadPlaceTask.execute(myLatLng);
                 return false;
             }
         });
@@ -196,7 +210,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             protected void onBeforeClusterItemRendered(MyItem item, MarkerOptions markerOptions) {
                 super.onBeforeClusterItemRendered(item, markerOptions);
 
-                markerOptions.title(item.getNamePlace() + " | Chỉ đường");
+                markerOptions.title(item.getNamePlace() + " | Xem chi tiết");
             }
 
             @Override
@@ -361,9 +375,20 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 latitude = p.getDouble("lat");
                 String title = places.getJSONObject(0).getString("formatted_address");
                 Log.i("title", title);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longtitude), 15));
-                googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_default)).anchor(0.0f,
-                        0.0f).position(new LatLng(latitude, longtitude)).title(title));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longtitude), 14));
+                googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.iamhere)).position(new LatLng(latitude, longtitude)).title(title));
+
+                LatLng searchLocation = new LatLng(latitude, longtitude);
+                destonClick = searchLocation;
+                placeList = null;
+                googleMap.clear();
+
+                addMaker(searchLocation);
+                drawCircle(searchLocation);
+
+                DownloadPlaceTask downloadPlaceTask = new DownloadPlaceTask();
+                downloadPlaceTask.execute(searchLocation);
+
             } catch (JSONException e) {
                 Log.d("parse", e.getMessage());
                 e.printStackTrace();
@@ -375,7 +400,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         CircleOptions options = new CircleOptions();
         options.center(location);
         //Radius in meters
-        options.radius(2000);
+        options.radius(1500);
         options.fillColor(getResources()
                 .getColor(R.color.fill_color));
         options.strokeColor(getResources()
