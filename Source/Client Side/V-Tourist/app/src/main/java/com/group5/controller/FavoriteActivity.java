@@ -122,7 +122,8 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         protected List<Bookmark> doInBackground(Void... params) {
             List<Bookmark> bm = new ArrayList<>();
             try {
-                bm = BookmarkServices.getBookmarkList(currentUser);
+                //bm = BookmarkServices.getBookmarkList(currentUser);
+                bm = BookmarkServices.getBookmarkList();
             } catch (ParseException e) {
                 e.printStackTrace();
             }

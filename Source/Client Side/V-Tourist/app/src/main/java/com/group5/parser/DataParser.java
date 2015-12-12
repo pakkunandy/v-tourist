@@ -79,7 +79,7 @@ public class DataParser {
         rating.setPlaceId(object.getParseObject("place").fetchIfNeeded().getObjectId());
         rating.setComment(object.getString("comment"));
         rating.setScore(object.getInt("point"));
-        rating.setUserRate(UserServices.getById(object.getString("user")));
+        rating.setUserRate(DataParser.parseUser(object.getParseUser("user").fetchIfNeeded()));
         return rating;
     }
     public static Bookmark parseBookmark(ParseObject object) throws ParseException {

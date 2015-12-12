@@ -40,7 +40,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, int position) {
         CommentItem current = data.get(position);
         holder.comment.setText(current.comment);
-        holder.imageAvatar.setImageResource(R.drawable.ic_addresss);
+        holder.imageAvatar.setImageResource(current.imgAvatar);
         holder.ratingBar.setRating(current.rating);
         holder.userName.setText(current.userName);
     }

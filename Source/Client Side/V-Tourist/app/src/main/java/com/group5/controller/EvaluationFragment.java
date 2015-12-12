@@ -72,7 +72,8 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
         @Override
         protected List<Rating> doInBackground(Void... params) {
             try {
-                return RatingServices.getRatingList(GlobalVariable.idGlobalPlaceCurrent);
+                List<Rating> rs = RatingServices.getRatingList(GlobalVariable.idGlobalPlaceCurrent);
+                return  rs;
 
             } catch (ParseException e) {
                 e.printStackTrace();

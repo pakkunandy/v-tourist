@@ -1,5 +1,6 @@
 package com.group5.controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -133,6 +134,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private class LoadData extends AsyncTask<Void, Void, Void>
     {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
 
@@ -175,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onPostExecute(aVoid);
             setupListHistory();
             setupListNewUpdate();
+            progressDialog.dismiss();
         }
     }
 
