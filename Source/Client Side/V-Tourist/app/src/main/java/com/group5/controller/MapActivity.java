@@ -1,15 +1,22 @@
 package com.group5.controller;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -127,18 +134,20 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-                Location myLocation = googleMap.getMyLocation();  //Nullpointer exception.........
-                LatLng myLatLng = new LatLng(myLocation.getLatitude(),
-                        myLocation.getLongitude());
-                destonClick = myLatLng;
-                placeList = null;
-                googleMap.clear();
+                if (checkGPS()) {
+                    Location myLocation = googleMap.getMyLocation();
+                    LatLng myLatLng = new LatLng(myLocation.getLatitude(),
+                            myLocation.getLongitude());
+                    destonClick = myLatLng;
+                    placeList = null;
+                    googleMap.clear();
 
-                //addMaker(myLatLng);
-                drawCircle(myLatLng);
+                    //addMaker(myLatLng);
+                    drawCircle(myLatLng);
 
-                DownloadPlaceTask downloadPlaceTask = new DownloadPlaceTask();
-                downloadPlaceTask.execute(myLatLng);
+                    DownloadPlaceTask downloadPlaceTask = new DownloadPlaceTask();
+                    downloadPlaceTask.execute(myLatLng);
+                }
                 return false;
             }
         });
@@ -400,7 +409,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         CircleOptions options = new CircleOptions();
         options.center(location);
         //Radius in meters
-        options.radius(1500);
+        options.radius(2000);
         options.fillColor(getResources()
                 .getColor(R.color.fill_color));
         options.strokeColor(getResources()
@@ -415,5 +424,68 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.iamhere));
         googleMap.addMarker(options);
+    }
+
+    private boolean checkGPS()
+    {
+        LocationManager lm = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            FragmentManager fm = getSupportFragmentManager();
+            MyAlertDialogFragment alertDialog = MyAlertDialogFragment.newInstance();
+            alertDialog.show(fm, "fragment_alert");
+            return false;
+        }
+        return true;
+    }
+
+    public static class MyAlertDialogFragment extends DialogFragment {
+        public MyAlertDialogFragment() {
+            // Empty constructor required for DialogFragment
+        }
+
+        public static MyAlertDialogFragment newInstance() {
+            MyAlertDialogFragment frag = new MyAlertDialogFragment();
+            Bundle args = new Bundle();
+//            args.putString("title", title);
+            frag.setArguments(args);
+            return frag;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setMessage("Để xác định vị trí hiện tại, bạn phải mở dịch vụ GPS của thiết bị.");
+            dialog.setPositiveButton("Setting", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    getActivity().startActivity(myIntent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+
+            return dialog.create();
+        }
     }
 }
