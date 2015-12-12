@@ -25,7 +25,7 @@ public class BookmarkServices {
         return DataParser.parseBookmark(object);
     }
 
-    public static List<Bookmark> getBookmarkList(String userId) throws ParseException {
+    public static List<Bookmark> getBookmarkList() throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Bookmark");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
         List<Bookmark> bookmarkList = new ArrayList<>();
@@ -63,8 +63,8 @@ public class BookmarkServices {
         acl.setWriteAccess(ParseUser.getCurrentUser(), true);
         ParseObject object = new ParseObject("Rating");
         object.setACL(acl);
-        object.put("user", UserServices.getCurrentUser().getId());
-        object.put("place", bookmark.getPlace().getPlaceId());
+        object.put("user", UserServices.getCurrentUser());
+        object.put("place",  PlaceServices.getObject(bookmark.getPlace().getPlaceId()));
         object.save();
         return true;
     }
