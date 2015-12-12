@@ -81,7 +81,7 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
                 .cacheOnDisc(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .build();
-        ImageLoader.getInstance().displayImage(arrayList.get(position).imageURL, holder.imgTest, dio);
+        ImageLoader.getInstance().displayImage(arrayList.get(position).getPicture(), holder.imgTest, dio);
 
         holder.imgTest.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -28,7 +28,7 @@ public class RatingServices {
     public static List<Rating> getRatingList(String placeId) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Rating");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        query.whereEqualTo("place", placeId);
+        query.whereEqualTo("place", PlaceServices.getObject(placeId));
         List<Rating> ratingList = new ArrayList<>();
         List<ParseObject> listObject = query.find();
         for (ParseObject object: listObject
@@ -70,7 +70,7 @@ public class RatingServices {
         object.put("user", rating.getUserRate().getId());
         object.put("point", rating.getScore());
         object.put("comment", rating.getComment());
-        object.put("place", rating.getPlaceId());
+        object.put("place", PlaceServices.getObject(rating.getPlaceId()));
         object.save();
         return true;
     }

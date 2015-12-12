@@ -13,13 +13,20 @@ public class City {
      */
     private String mCityName;
 
+    private String mPicture;
+
 
     /**
      * Get/Set Properties
      */
 
-    public String imageURL;
+    public String getPicture() {
+        return mPicture;
+    }
 
+    public void setPicture(String mPicture) {
+        this.mPicture = mPicture;
+    }
     public String getName() {
         return mCityName;
     }
@@ -41,9 +48,10 @@ public class City {
      * @param mCityId : City Id
      * @param mCityName : City Name
      */
-    public City(String mCityId, String mCityName) {
+    public City(String mCityId, String mCityName, String mPicture) {
         this.mCityId = mCityId;
         this.mCityName = mCityName;
+        this.mPicture = mPicture;
     }
 
     public City() {

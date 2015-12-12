@@ -11,7 +11,7 @@ public class Image {
     /**
      * Byte Array Image
      */
-    private byte[] mImageContain;
+    private String mImageUrl;
 
     /**
      * Get/Set Properties
@@ -24,22 +24,22 @@ public class Image {
         this.mImageId = mImageId;
     }
 
-    public byte[] getImageContain() {
-        return mImageContain;
+    public String getImageUrl() {
+        return mImageUrl;
     }
 
-    public void setImageContain(byte[] mImageContain) {
-        this.mImageContain = mImageContain;
+    public void setImageUrl(String mImageUrl) {
+        this.mImageUrl = mImageUrl;
     }
 
     /**
      * Constructor
      * @param mImageId
-     * @param mImageContain
+     * @param mImageUrl
      */
-    public Image(String mImageId, byte[] mImageContain) {
+    public Image(String mImageId, String mImageUrl) {
         this.mImageId = mImageId;
-        this.mImageContain = mImageContain;
+        this.mImageUrl = mImageUrl;
     }
 
     /**

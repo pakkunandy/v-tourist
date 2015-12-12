@@ -36,8 +36,8 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_evaluation, container, false);
-        //LoadComment loadComment = new LoadComment(view);
-        //loadComment.execute();
+        LoadComment loadComment = new LoadComment(view);
+        loadComment.execute();
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fabRating);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +113,7 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
             // Get the layout inflater
             LayoutInflater inflater = getActivity().getLayoutInflater();
+            builder.setTitle("Đánh giá");
 
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout

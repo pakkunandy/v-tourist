@@ -30,7 +30,8 @@ public class DataParser {
         City city = new City();
         city.setCityId(object.getObjectId());
         city.setName(object.getString("name"));
-        city.imageURL = object.getParseFile("Picture").getUrl();
+        ParseFile file = object.getParseFile("Picture");
+        city.setPicture(file.getUrl());
         return city;
     }
 
@@ -75,7 +76,7 @@ public class DataParser {
 
     public static Rating parseRating(ParseObject object) throws ParseException {
         Rating rating = new Rating();
-        rating.setPlaceId(object.getString("place"));
+        rating.setPlaceId(object.getParseObject("place").fetchIfNeeded().getObjectId());
         rating.setComment(object.getString("comment"));
         rating.setScore(object.getInt("point"));
         rating.setUserRate(UserServices.getById(object.getString("user")));
@@ -83,15 +84,15 @@ public class DataParser {
     }
     public static Bookmark parseBookmark(ParseObject object) throws ParseException {
         Bookmark bookmark = new Bookmark();
-        bookmark.setPlace(PlaceServices.getPlace(object.getString("place")));
+        bookmark.setPlace(parsePlace(object.getParseObject("place").fetchIfNeeded()));
         bookmark.setId(object.getObjectId());
         return bookmark;
     }
     public static Image parseImage(ParseObject object) throws ParseException {
         Image image = new Image();
         image.setImageId(object.getObjectId());
-        ParseFile applicantResume = object.getParseFile("img");
-        image.setImageContain(applicantResume.getData());
+        ParseFile file = object.getParseFile("img");
+        image.setImageUrl(file.getUrl());
         return image;
     }
     public static User parseUser(ParseUser object)
@@ -105,4 +106,3 @@ public class DataParser {
 
 
 }
-
