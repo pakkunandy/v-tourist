@@ -67,7 +67,7 @@ public class RatingServices {
         acl.setWriteAccess(ParseUser.getCurrentUser(), true);
         ParseObject object = new ParseObject("Rating");
         object.setACL(acl);
-        object.put("user", rating.getUserRate().getId());
+        object.put("user", ParseUser.getCurrentUser());
         object.put("point", rating.getScore());
         object.put("comment", rating.getComment());
         object.put("place", PlaceServices.getObject(rating.getPlaceId()));

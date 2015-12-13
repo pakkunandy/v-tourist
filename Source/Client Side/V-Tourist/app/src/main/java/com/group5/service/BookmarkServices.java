@@ -63,7 +63,7 @@ public class BookmarkServices {
         acl.setWriteAccess(ParseUser.getCurrentUser(), true);
         ParseObject object = new ParseObject("Rating");
         object.setACL(acl);
-        object.put("user", UserServices.getCurrentUser());
+        object.put("user", ParseUser.getCurrentUser());
         object.put("place",  PlaceServices.getObject(bookmark.getPlace().getPlaceId()));
         object.save();
         return true;
