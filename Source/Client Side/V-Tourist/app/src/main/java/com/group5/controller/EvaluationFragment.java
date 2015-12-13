@@ -15,10 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RatingBar;
 
 import com.group5.model.Place;
 import com.group5.model.Rating;
 import com.group5.service.RatingServices;
+import com.group5.service.UserServices;
 import com.parse.ParseException;
 
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_evaluation, container, false);
+        final View view = inflater.inflate(R.layout.fragment_evaluation, container, false);
         LoadComment loadComment = new LoadComment(view);
         loadComment.execute();
 
@@ -43,7 +46,7 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RatingPostDialog ratingPostDialog = new RatingPostDialog();
+                RatingPostDialog ratingPostDialog = new RatingPostDialog(view);
 
                 ratingPostDialog.show(getFragmentManager(),"missiles");
             }
@@ -107,6 +110,13 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     }
 
     public class RatingPostDialog extends DialogFragment{
+        View parentView;
+
+        public RatingPostDialog(View parentView) {
+            this.parentView = parentView;
+
+        }
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
@@ -114,21 +124,35 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
             // Get the layout inflater
             LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            //Get Form Widget
+            final View view = inflater.inflate(R.layout.rating_dialog, null);
+
+
             builder.setTitle("Đánh giá");
 
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
-            builder.setView(inflater.inflate(R.layout.rating_dialog, null))
+            builder.setView(view)
                     // Add action buttons
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             // sign in the user ...
+                            //Create new Rating.
+                            Rating rating = new Rating();
+                            rating.setComment(((EditText) view.findViewById(R.id.edtCommentPost)).getText().toString());
+                            rating.setPlaceId(GlobalVariable.idGlobalPlaceCurrent);
+                            rating.setScore(((RatingBar) view.findViewById(R.id.rtRatingPost)).getRating());
+                            rating.setUserRate(UserServices.getCurrentUser());
 
+                            //Post Rating to Service
+                            PostComment postComment = new PostComment(view);
+                            postComment.execute(rating);
 
                         }
                     })
-                    .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             RatingPostDialog.this.getDialog().cancel();
                         }
@@ -136,4 +160,59 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
             return builder.create();
         }
     }
+
+    private class PostComment extends AsyncTask<Rating, Long, List<Rating>> {
+
+        private View view;
+        private RecyclerView recyclerView;
+        private ProgressDialog progressDialog;
+        private CommentAdapter commentAdapter;
+
+        public PostComment(View view){
+            this.view = view;
+            progressDialog = new ProgressDialog(view.getContext());
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
+
+            recyclerView  = (RecyclerView) view.findViewById(R.id.listComment);
+        }
+
+        @Override
+        protected List<Rating> doInBackground(Rating... params) {
+            try {
+                RatingServices.createRating(params[0]);
+
+                List<Rating> rs = RatingServices.getRatingList(GlobalVariable.idGlobalPlaceCurrent);
+                return  rs;
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Rating> ratings) {
+            super.onPostExecute(ratings);
+            commentAdapter = new CommentAdapter(getActivity(), getData(ratings));
+            recyclerView.setAdapter(commentAdapter);
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            progressDialog.dismiss();
+        }
+
+        protected List<CommentItem> getData(List<Rating> ratings){
+            List<CommentItem> itemList = new ArrayList<CommentItem>();
+            for (int i = 0; i < ratings.size() ; i++){
+                CommentItem commentItem = new CommentItem(ratings.get(i).getUserRate().getName(),
+                        R.drawable.ic_avatar,
+                        ratings.get(i).getComment(),
+                        (float)ratings.get(i).getScore());
+
+                itemList.add(commentItem);
+            }
+            return  itemList;
+        }
+    }
+
 }

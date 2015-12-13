@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/txtCommentPost"
+        android:id="@+id/edtCommentPost"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="16dp"
@@ -16,7 +16,7 @@
 
     <RatingBar
         android:id="@+id/rtRatingPost"
-        android:layout_below="@+id/txtCommentPost"
+        android:layout_below="@+id/edtCommentPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
