@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.group5.model.Place;
 import com.group5.model.Rating;
@@ -34,6 +35,10 @@ import java.util.List;
 public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
     FloatingActionButton floatingActionButton;
+    private RecyclerView recyclerView;
+    private CommentAdapter commentAdapter;
+    private TextView txtInfor;
+    private TextView txtContentInfor;
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
@@ -43,14 +48,25 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
         loadComment.execute();
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fabRating);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RatingPostDialog ratingPostDialog = new RatingPostDialog(view);
+        txtInfor = (TextView) view.findViewById(R.id.txtInfor);
+        txtContentInfor = (TextView) view.findViewById(R.id.txtContentInfor);
 
-                ratingPostDialog.show(getFragmentManager(),"missiles");
-            }
-        });
+        if(UserServices.getCurrentUser() != null){
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RatingPostDialog ratingPostDialog = new RatingPostDialog(view);
+
+                    ratingPostDialog.show(getFragmentManager(),"missiles");
+                }
+            });
+            txtInfor.setVisibility(View.GONE);
+        }else {
+            floatingActionButton.hide();
+            txtInfor.setText("Bạn phải Đăng Nhập để đánh giá");
+
+        }
+
 
         return view;
     }
@@ -59,9 +75,8 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     private class LoadComment extends AsyncTask<Void, Long, List<Rating>> {
 
         private View view;
-        private RecyclerView recyclerView;
         private ProgressDialog progressDialog;
-        private CommentAdapter commentAdapter;
+
 
         public LoadComment(View view){
             this.view = view;
@@ -80,7 +95,7 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
             } catch (ParseException e) {
                 e.printStackTrace();
-                Log.i("=======================", e.getMessage());
+
             }
             return null;
         }
@@ -89,6 +104,11 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
         protected void onPostExecute(List<Rating> ratings) {
             super.onPostExecute(ratings);
             commentAdapter = new CommentAdapter(getActivity(), getData(ratings));
+            if(commentAdapter.data.size() == 0){
+                txtContentInfor.setText("Hiện chưa có Đánh Giá nào");
+            }else {
+                txtContentInfor.setVisibility(View.GONE);
+            }
             recyclerView.setAdapter(commentAdapter);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -164,17 +184,13 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     private class PostComment extends AsyncTask<Rating, Long, List<Rating>> {
 
         private View view;
-        private RecyclerView recyclerView;
         private ProgressDialog progressDialog;
-        private CommentAdapter commentAdapter;
 
         public PostComment(View view){
             this.view = view;
             progressDialog = new ProgressDialog(view.getContext());
             progressDialog.setTitle("Loading");
             progressDialog.show();
-
-            recyclerView  = (RecyclerView) view.findViewById(R.id.listComment);
         }
 
         @Override
@@ -182,9 +198,12 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
             try {
                 RatingServices.createRating(params[0]);
 
-                List<Rating> rs = RatingServices.getRatingList(GlobalVariable.idGlobalPlaceCurrent);
-                return  rs;
+                CommentItem commentItem = new CommentItem(params[0].getUserRate().getName(),
+                        R.drawable.ic_avatar,
+                        params[0].getComment(),
+                        params[0].getScore());
 
+                commentAdapter.data.add(commentItem);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -194,25 +213,11 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(List<Rating> ratings) {
             super.onPostExecute(ratings);
-            commentAdapter = new CommentAdapter(getActivity(), getData(ratings));
-            recyclerView.setAdapter(commentAdapter);
-
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            commentAdapter.notifyDataSetChanged();
             progressDialog.dismiss();
         }
 
-        protected List<CommentItem> getData(List<Rating> ratings){
-            List<CommentItem> itemList = new ArrayList<CommentItem>();
-            for (int i = 0; i < ratings.size() ; i++){
-                CommentItem commentItem = new CommentItem(ratings.get(i).getUserRate().getName(),
-                        R.drawable.ic_avatar,
-                        ratings.get(i).getComment(),
-                        (float)ratings.get(i).getScore());
 
-                itemList.add(commentItem);
-            }
-            return  itemList;
-        }
     }
 
 }
