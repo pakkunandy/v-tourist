@@ -71,6 +71,9 @@ public class WeatherForecastFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(C16DayForecastsModel o) {
             super.onPostExecute(o);
             recyclerView = (RecyclerView) view.findViewById(R.id.render16DayForecast);
+            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+            recyclerView.setHasFixedSize(true);
+
             adapter = new Menu16ItemAdapter(view.getContext(), getData(o));
 
             recyclerView.setAdapter(adapter);

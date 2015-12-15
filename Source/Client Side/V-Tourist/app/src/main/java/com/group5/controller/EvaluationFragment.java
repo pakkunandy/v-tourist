@@ -109,6 +109,8 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
             }else {
                 txtContentInfor.setVisibility(View.GONE);
             }
+            recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+            recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(commentAdapter);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
