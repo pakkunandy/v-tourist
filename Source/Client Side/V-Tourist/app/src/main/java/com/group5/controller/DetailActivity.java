@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
    // ArrayList<Fragment> fragments; //List fragment that is the content in viewpager
     android.support.v4.view.PagerAdapter pagerAdapter = null; // custom adapter in order to  pour data(fragment in this instance) to viewpager
 
-    ImageView imgFavourite;
+    FloatingActionButton fabBookmark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         });
 
         //Add view Bookmark
-        imgFavourite = (ImageView) findViewById(R.id.imgFavourite);
+        fabBookmark = (FloatingActionButton) findViewById(R.id.fabBookmark);
     }
 
     private void initTabHost() {
@@ -298,10 +298,10 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     private void handleBookmark(){
         loadFavourite();
 
-        imgFavourite.setOnClickListener(new View.OnClickListener() {
+        fabBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //Set bookmark Button
             }
         });
     }
