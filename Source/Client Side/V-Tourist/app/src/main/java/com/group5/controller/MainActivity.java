@@ -64,12 +64,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView recyclerCity;
     CityRecyclerAdapter cityRecyclerAdapter;
     RecyclerView.LayoutManager layoutManagerCity;
-    //ArrayList<Place> arrayListHistory = new ArrayList<Place>();//array list string list menu
     ArrayList<City> arrayListCity = new ArrayList<City>();
 
     //
     private PtrClassicFrameLayout mPtrFrame;
     private ScrollView mScrollView;
+    private SliderLayout mDemoSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }, 100);
     }
 
-    private class LoadData extends AsyncTask<Void, Void, Void>
-    {
+    private class LoadData extends AsyncTask<Void, Void, Void> {
         ProgressDialog progressDialog;
 
         @Override
@@ -241,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -307,8 +305,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
-
-    private SliderLayout mDemoSlider;
 
     private void setupSlider() {
         mDemoSlider = (SliderLayout) findViewById(R.id.slider);
