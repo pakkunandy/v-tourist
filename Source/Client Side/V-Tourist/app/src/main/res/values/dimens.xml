@@ -11,5 +11,21 @@
     <dimen name="padding_top_information">8dp</dimen>
     <dimen name="text_header_size">20sp</dimen>
     <dimen name="icon_size">16dp</dimen>
-
+    <dimen name="image_main_current_size">180dp</dimen>
+    <dimen name="text_main_temp_current">20sp</dimen>
+    <dimen name="text_main_current">25sp</dimen>
+    <dimen name="text_main_details">15sp</dimen>
+    <dimen name="image_forecast_current">40dp</dimen>
+    <dimen name="text_forecast_current_details">12sp</dimen>
+    <dimen name="text_forecast_current_day">16sp</dimen>
+    <dimen name="image_custom_row">40dp</dimen>
+    <dimen name="text_custom_row_temp">25sp</dimen>
+    <dimen name="text_custom_row_details">10sp</dimen>
+    <dimen name="text_custom_row_cusMain">20sp</dimen>
+    <dimen name="text_custom_row_cusMainDesc">15sp</dimen>
+    <dimen name="text_custom_row_headDay">20sp</dimen>
+    <dimen name="image_radarchart">350dp</dimen>
+    <dimen name="padding_text_details">8dp</dimen>
+    <dimen name="padding_bottom_details">8dp</dimen>
+    <dimen name="icon_image_size">16dp</dimen>
 </resources>

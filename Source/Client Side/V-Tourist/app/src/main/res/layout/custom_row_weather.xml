@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frWeather"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/txtCusDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text_custom_row_headDay"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtCusMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtCusDate"
+            android:textColor="#ffd9a5"
+            android:textSize="@dimen/text_custom_row_cusMain"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtCusMainDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtCusMain"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_custom_row_cusMainDesc" />0
+
+        <TextView
+            android:id="@+id/txtCusHumidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtCusMainDesc"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_custom_row_details"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/txtCusPressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txtCusHumidity"
+            android:layout_below="@+id/txtCusMain"
+            android:layout_toRightOf="@+id/txtCusHumidity"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_custom_row_details"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/txtCusWindSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/txtCusHumidity"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_custom_row_details"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/imgCusWeather"
+            android:layout_width="@dimen/image_custom_row"
+            android:layout_height="@dimen/image_custom_row"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/txtCusTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/imgCusWeather"
+            android:paddingLeft="6dp"
+            android:textColor="#0708ff"
+            android:textSize="@dimen/text_custom_row_temp" />
+    </RelativeLayout>
+
+</FrameLayout>

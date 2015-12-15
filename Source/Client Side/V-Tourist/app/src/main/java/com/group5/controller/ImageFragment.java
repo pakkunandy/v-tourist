@@ -1,5 +1,6 @@
 package com.group5.controller;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,6 +39,15 @@ public class ImageFragment  extends android.support.v4.app.Fragment {
 
     private class LoadData extends AsyncTask<Void, Void, Void>
     {
+        ProgressDialog progressDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -65,6 +75,8 @@ public class ImageFragment  extends android.support.v4.app.Fragment {
                     getActivity().startActivity(i);
                 }
             });
+
+            progressDialog.dismiss();
         }
     }
 }

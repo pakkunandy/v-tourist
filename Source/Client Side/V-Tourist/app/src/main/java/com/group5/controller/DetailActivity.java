@@ -129,7 +129,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     private void initTabHost() {
         tabHost.setup();
 
-        String[] tabNames = {"Thông tin","Đánh giá", "Bản đồ", "Hình ảnh"};
+        String[] tabNames = {"Thông tin","Đánh giá", "Bản đồ", "Hình ảnh", "Thời tiết"};
         for(int i = 0 ; i< tabNames.length; i++){
             TabHost.TabSpec tabSpec;
             tabSpec = tabHost.newTabSpec(tabNames[i]);
@@ -167,7 +167,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         fragments.add(new EvaluationFragment());
         fragments.add(new MapFragment());
         fragments.add(new ImageFragment());
-
+        fragments.add(new WeatherForecastFragment());
 
         pagerAdapter = new com.group5.controller.PagerAdapter(getSupportFragmentManager(),fragments);
         //pagerAdapter = new PagerAdapter(getFragmentManager(),fragments);
