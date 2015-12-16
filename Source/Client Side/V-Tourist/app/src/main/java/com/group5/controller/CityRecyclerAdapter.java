@@ -1,6 +1,7 @@
 package com.group5.controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.group5.controller.PlacesOfCity.PlacesOfCityActivity;
 import com.group5.model.City;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -90,9 +92,9 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 //                GlobalVariable.longtitute = arrayList.get(position).getLongitude();
 //                GlobalVariable.latitute = arrayList.get(position).getLatitude();
 //                GlobalVariable.name = arrayList.get(position).getPlaceName();
-//                Intent intent = new Intent(context.getApplicationContext(), DetailActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.getApplicationContext().startActivity(intent);
+                Intent intent = new Intent(context.getApplicationContext(), PlacesOfCityActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.getApplicationContext().startActivity(intent);
             }
         });
 
