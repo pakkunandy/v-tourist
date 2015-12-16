@@ -23,7 +23,6 @@
             android:paddingLeft="16dp"
             android:textSize="20sp"
             android:textColor="@color/textPrimary"
-            android:textStyle="bold"
             android:text="Ten"/>
 
         <TextView
@@ -33,9 +32,8 @@
             android:layout_toRightOf="@+id/img_FavoritePlace"
             android:paddingLeft="16dp"
             android:layout_below="@+id/txt_favoriteName"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:textColor="@color/textPrimary"
-            android:textStyle="italic"
             android:text="Dia chi"/>
 
         <TextView
@@ -45,7 +43,7 @@
             android:layout_toRightOf="@+id/img_FavoritePlace"
             android:paddingLeft="16dp"
             android:layout_below="@+id/txt_favoriteLocation"
-            android:textSize="17sp"
+            android:textSize="20sp"
             android:textColor="@color/textPrimary"
             android:text="Mo ta"/>
 

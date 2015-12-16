@@ -124,6 +124,10 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
         //Add view Bookmark
         fabBookmark = (FloatingActionButton) findViewById(R.id.fabBookmark);
+        //Set Login to show Bookmark Button
+        if(UserServices.getCurrentUser() == null) {
+            fabBookmark.hide();
+        }
     }
 
     private void initTabHost() {
