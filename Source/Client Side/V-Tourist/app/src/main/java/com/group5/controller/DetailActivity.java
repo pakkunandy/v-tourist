@@ -21,9 +21,11 @@ import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.group5.model.Bookmark;
 import com.group5.model.User;
+import com.group5.service.BookmarkServices;
 import com.group5.service.UserServices;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -31,6 +33,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.parse.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +131,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         if(UserServices.getCurrentUser() == null) {
             fabBookmark.hide();
         }
+        handleBookmark();
     }
 
     private void initTabHost() {
@@ -305,7 +309,12 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         fabBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Set bookmark Button
+                try {
+                    BookmarkServices.createBookmark(GlobalVariable.idGlobalPlaceCurrent);
+                    Toast.makeText(DetailActivity.this, "Đã thêm vào danh sách yêu thích.", Toast.LENGTH_SHORT).show();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
