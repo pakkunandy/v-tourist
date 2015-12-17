@@ -278,6 +278,11 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_map:
                 break;
+            case R.id.nav_about:
+
+                Intent intentAbout = new Intent(MapActivity.this, AboutActivity.class);
+                startActivity(intentAbout);
+                break;
             default:
                 break;
         }

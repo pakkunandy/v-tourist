@@ -257,6 +257,11 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 Intent intentMap = new Intent(DetailActivity.this,MapActivity.class);
                 startActivity(intentMap);
                 break;
+            case R.id.nav_about:
+
+                Intent intentAbout = new Intent(DetailActivity.this, AboutActivity.class);
+                startActivity(intentAbout);
+                break;
             default:
                 break;
         }

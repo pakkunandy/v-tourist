@@ -209,6 +209,11 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
                 Intent intentMap = new Intent(FavoriteActivity.this,MapActivity.class);
                 startActivity(intentMap);
                 break;
+            case R.id.nav_about:
+
+                Intent intentAbout = new Intent(FavoriteActivity.this, AboutActivity.class);
+                startActivity(intentAbout);
+                break;
             default:
                 break;
 
