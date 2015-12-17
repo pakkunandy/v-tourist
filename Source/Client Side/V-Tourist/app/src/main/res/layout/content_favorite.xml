@@ -12,7 +12,7 @@
         android:id="@+id/txt_LoginRequire"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20dp"
+        android:textStyle="italic"
         android:text="Bạn cần đăng nhập để xem mục này."/>
 
     <android.support.v7.widget.RecyclerView
