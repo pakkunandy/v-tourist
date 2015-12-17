@@ -45,6 +45,7 @@ public class PlacesOfCityAdapter extends RecyclerView.Adapter<PlacesOfCityAdapte
     @Override
     public void onBindViewHolder(PlacesOfCityAdapter.ViewHolder viewHolder, int position) {
 
+        viewHolder.imageViewPlace.setImageDrawable(null);
         viewHolder.namePlace.setText(arrayListPlaces.get(position).getPlaceName());
         viewHolder.locationPlace.setText(arrayListPlaces.get(position).getAddress());
         viewHolder.decriptionPlace.setText(arrayListPlaces.get(position).getPlaceDescription());

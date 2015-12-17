@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         ParseUser.logOut();
-        //
+
+        //setup pull to refresh
         mScrollView = (ScrollView) findViewById(R.id.rotate_header_scroll_view);
         mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_web_view_frame);
         mPtrFrame.setLastUpdateTimeRelateObject(this);
