@@ -58,7 +58,8 @@
                 android:layout_below="@+id/locationPlace"
                 android:textSize="17sp"
                 android:textColor="@color/textPrimary"
-                android:text="Mo ta"/>
+                android:text="Mo ta"
+                android:maxLines="2"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

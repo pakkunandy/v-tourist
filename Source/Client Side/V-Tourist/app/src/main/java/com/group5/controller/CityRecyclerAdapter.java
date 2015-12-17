@@ -92,6 +92,7 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
 //                GlobalVariable.longtitute = arrayList.get(position).getLongitude();
 //                GlobalVariable.latitute = arrayList.get(position).getLatitude();
 //                GlobalVariable.name = arrayList.get(position).getPlaceName();
+                GlobalVariable.idCityCurrent = arrayList.get(position).getCityId();
                 Intent intent = new Intent(context.getApplicationContext(), PlacesOfCityActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.getApplicationContext().startActivity(intent);

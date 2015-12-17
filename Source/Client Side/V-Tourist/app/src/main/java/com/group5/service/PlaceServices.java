@@ -6,6 +6,7 @@ import com.group5.model.Place;
 import com.group5.model.Ward;
 import com.group5.parser.DataParser;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -75,7 +76,7 @@ public class PlaceServices {
     }
 
 
-    public static List<Place> getPlacesList(String city, String district, String ward, String type, Integer offset, Integer limit) throws ParseException {
+    public static ArrayList<Place> getPlacesList(String city, String district, String ward, String type, Integer offset, Integer limit) throws ParseException {
         List<ParseQuery<ParseObject>> queries = new ArrayList<ParseQuery<ParseObject>>();
 
         if (city != null)
@@ -94,7 +95,7 @@ public class PlaceServices {
         mainQuery.setLimit(limit);
         mainQuery.setSkip(offset);
         mainQuery.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
-        List<Place> placesList = new ArrayList<>();
+        ArrayList<Place> placesList = new ArrayList<>();
 
         List<ParseObject> listObject = mainQuery.find();
         for (ParseObject object: listObject) {
@@ -103,6 +104,37 @@ public class PlaceServices {
 
         return placesList;
     }
+
+    public static ArrayList<Place> getPlacesList(String city, int limit, int skip) throws ParseException {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        query.setLimit(limit);
+        query.setSkip(skip);
+        ParseQuery<ParseObject> cityQuery = ParseQuery.getQuery("City");
+        cityQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        ParseObject cityOb = cityQuery.get(city);
+        query.whereEqualTo("city", cityOb);
+        ArrayList<Place> placeList = new ArrayList<>();
+        List<ParseObject> listObject = query.find();
+        for (ParseObject object: listObject) {
+            //placeList.add(DataParser.parsePlace(object));
+
+            Place p = DataParser.parsePlace(object);
+            ParseRelation<ParseObject> relation = object.getRelation("images");
+            ParseQuery query2 = relation.getQuery();
+            query2.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+            ParseObject imageObject = query2.getFirst();
+            if (imageObject != null)
+            {
+                ParseFile imageFile = imageObject.getParseFile("img");
+                p.firstImageURL = imageFile.getUrl();
+            }
+            placeList.add(p);
+        }
+
+        return placeList;
+    }
+
     public static List<Place> getPlacesListByGeo(Double latitude, Double longtitude, Double distance) throws ParseException {
         ParseGeoPoint location = new ParseGeoPoint(latitude, longtitude);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");

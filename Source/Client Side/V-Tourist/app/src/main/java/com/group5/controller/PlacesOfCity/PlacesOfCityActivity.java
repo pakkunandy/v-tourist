@@ -1,6 +1,8 @@
 package com.group5.controller.PlacesOfCity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,12 +16,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.group5.controller.FavoriteActivity;
+import com.group5.controller.GlobalVariable;
 import com.group5.controller.MainActivity;
 import com.group5.controller.MapActivity;
 import com.group5.controller.R;
+import com.group5.model.Place;
+import com.group5.parser.DataParser;
+import com.group5.service.CityServices;
+import com.group5.service.PlaceServices;
 import com.group5.service.UserServices;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Duy on 15-Dec-15.
@@ -30,6 +45,7 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
     MenuItem loginMenuItem;
+    ArrayList<Place> arrayListPlaces = new ArrayList<Place>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +64,9 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //setAdapterToList();
-        mRecyclerView = (RecyclerView)findViewById(R.id.places_of_city_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mAdapter = new PlacesOfCityAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
+        //get data
+        LoadData loadData = new LoadData();
+        loadData.execute();
     }
 
     @Override
@@ -154,5 +164,45 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
 
             }
         }
+    }
+
+    private class LoadData extends AsyncTask<Void, Void, Void> {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(PlacesOfCityActivity.this);
+            progressDialog.setTitle("Loading");
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            setupPlacesOfCityAdapter();
+            progressDialog.dismiss();
+        }
+    }
+
+    private void setupPlacesOfCityAdapter() {
+        mRecyclerView = (RecyclerView)findViewById(R.id.places_of_city_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new PlacesOfCityAdapter(this, arrayListPlaces);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }

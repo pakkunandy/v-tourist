@@ -1,6 +1,7 @@
 package com.group5.controller.PlacesOfCity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.group5.controller.DetailActivity;
+import com.group5.controller.GlobalVariable;
 import com.group5.controller.R;
+import com.group5.model.Place;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +27,12 @@ public class PlacesOfCityAdapter extends RecyclerView.Adapter<PlacesOfCityAdapte
 
     //List<NatureItem> mItems;
     private Context mContext;
+    private ArrayList<Place> arrayListPlaces;
 
-    public PlacesOfCityAdapter(Context context) {
+    public PlacesOfCityAdapter(Context context, ArrayList<Place> arrayListPlaces) {
         super();
         this.mContext = context;
+        this.arrayListPlaces = arrayListPlaces;
     }
 
     @Override
@@ -37,16 +45,17 @@ public class PlacesOfCityAdapter extends RecyclerView.Adapter<PlacesOfCityAdapte
     @Override
     public void onBindViewHolder(PlacesOfCityAdapter.ViewHolder viewHolder, int position) {
 
-        viewHolder.namePlace.setText("aaa");
-        viewHolder.locationPlace.setText("aaa");
-        viewHolder.decriptionPlace.setText("aaa");
-        viewHolder.imageViewPlace.setImageResource(R.drawable.nhatho);
+        viewHolder.namePlace.setText(arrayListPlaces.get(position).getPlaceName());
+        viewHolder.locationPlace.setText(arrayListPlaces.get(position).getAddress());
+        viewHolder.decriptionPlace.setText(arrayListPlaces.get(position).getPlaceDescription());
+        //viewHolder.imageViewPlace.setImageResource(R.drawable.nhatho);
+        ImageLoader.getInstance().displayImage(arrayListPlaces.get(position).firstImageURL, viewHolder.imageViewPlace);
         viewHolder.mCardView.setTag(position);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return arrayListPlaces.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -68,7 +77,17 @@ public class PlacesOfCityAdapter extends RecyclerView.Adapter<PlacesOfCityAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext, mCardView.getTag().toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(mContext, mCardView.getTag().toString(), Toast.LENGTH_LONG).show();
+                    int position = (int) mCardView.getTag();
+
+                    GlobalVariable.idGlobalPlaceCurrent = arrayListPlaces.get(position).getPlaceId();
+                    GlobalVariable.longtitute = arrayListPlaces.get(position).getLongitude();
+                    GlobalVariable.latitute = arrayListPlaces.get(position).getLatitude();
+                    GlobalVariable.name = arrayListPlaces.get(position).getPlaceName();
+                    GlobalVariable.firstImageUrl = arrayListPlaces.get(position).firstImageURL;
+                    Intent intent = new Intent(mContext.getApplicationContext(), DetailActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.getApplicationContext().startActivity(intent);
                 }
             });
         }
