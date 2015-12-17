@@ -31,6 +31,8 @@ import com.group5.model.User;
 import com.group5.service.BookmarkServices;
 import com.group5.service.UserServices;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
 
     private RecyclerView recyclerView;
     private List<Bookmark> listItem;
+
+    MenuItem loginMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +56,22 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        loginMenuItem = navigationView.getMenu().getItem(3);
 
         if(UserServices.getCurrentUser() != null) {
             setAdapterToList();
@@ -209,6 +223,18 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
                 Intent intentMap = new Intent(FavoriteActivity.this,MapActivity.class);
                 startActivity(intentMap);
                 break;
+            case R.id.nav_login:
+                loginMenuItem = item;
+                if (UserServices.getCurrentUser() != null)
+                {
+                    ParseUser.logOut();
+                    item.setTitle("Đăng nhập");
+                }else {
+                    ParseLoginBuilder builder = new ParseLoginBuilder(FavoriteActivity.this);
+                    startActivityForResult(builder.build(), 0);
+                    //item.setTitle("Đăng xuất");
+                }
+                break;
             case R.id.nav_about:
 
                 Intent intentAbout = new Intent(FavoriteActivity.this, AboutActivity.class);
@@ -222,6 +248,22 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                loginMenuItem.setTitle("Đăng xuất");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // Change title
+
+            }
+        }
     }
 
     @Override

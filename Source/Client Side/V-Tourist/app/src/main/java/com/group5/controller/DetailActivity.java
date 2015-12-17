@@ -34,6 +34,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     FloatingActionButton fabBookmark;
 
+    MenuItem loginMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +77,22 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        loginMenuItem = navigationView.getMenu().getItem(3);
 
 
         //Config viewPagerDetails on the top
@@ -257,6 +271,18 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 Intent intentMap = new Intent(DetailActivity.this,MapActivity.class);
                 startActivity(intentMap);
                 break;
+            case R.id.nav_login:
+                loginMenuItem = item;
+                if (UserServices.getCurrentUser() != null)
+                {
+                    ParseUser.logOut();
+                    item.setTitle("Đăng nhập");
+                }else {
+                    ParseLoginBuilder builder = new ParseLoginBuilder(DetailActivity.this);
+                    startActivityForResult(builder.build(), 0);
+                    //item.setTitle("Đăng xuất");
+                }
+                break;
             case R.id.nav_about:
 
                 Intent intentAbout = new Intent(DetailActivity.this, AboutActivity.class);
@@ -271,6 +297,23 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                loginMenuItem.setTitle("Đăng xuất");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // Change title
+
+            }
+        }
     }
 
     /**

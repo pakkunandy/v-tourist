@@ -41,7 +41,10 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.group5.model.MyItem;
 import com.group5.model.Place;
 import com.group5.service.PlaceServices;
+import com.group5.service.UserServices;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +69,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     EditText txtSearch;
     Button btnSearch;
 
+    MenuItem loginMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,11 +81,22 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        loginMenuItem = navigationView.getMenu().getItem(3);
+
         btnSearch = (Button) findViewById(R.id.btnSearch);
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -278,6 +294,20 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_map:
                 break;
+
+            case R.id.nav_login:
+                loginMenuItem = item;
+                if (UserServices.getCurrentUser() != null)
+                {
+                    ParseUser.logOut();
+                    item.setTitle("Đăng nhập");
+                }else {
+                    ParseLoginBuilder builder = new ParseLoginBuilder(MapActivity.this);
+                    startActivityForResult(builder.build(), 0);
+                    //item.setTitle("Đăng xuất");
+                }
+                break;
+
             case R.id.nav_about:
 
                 Intent intentAbout = new Intent(MapActivity.this, AboutActivity.class);
@@ -289,6 +319,24 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                loginMenuItem.setTitle("Đăng xuất");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // Change title
+
+            }
+        }
     }
 
     @Override
