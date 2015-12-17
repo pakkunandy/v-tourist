@@ -85,8 +85,6 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                break;
             case R.id.action_map:
                 Intent intentMap = new Intent(this, MapActivity.class);
                 startActivity(intentMap);

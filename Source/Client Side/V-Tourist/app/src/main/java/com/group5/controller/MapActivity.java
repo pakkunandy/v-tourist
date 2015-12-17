@@ -301,8 +301,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                break;
+
             default:
                 break;
         }

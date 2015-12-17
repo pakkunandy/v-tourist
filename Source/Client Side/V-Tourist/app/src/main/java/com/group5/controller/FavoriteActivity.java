@@ -242,8 +242,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
 
         //noinspection SimplifiableIfStatement
         switch (id){
-            case R.id.action_settings:
-                break;
+
             case R.id.action_map:
                 Intent intentMap = new Intent(FavoriteActivity.this, MapActivity.class);
                 startActivity(intentMap);

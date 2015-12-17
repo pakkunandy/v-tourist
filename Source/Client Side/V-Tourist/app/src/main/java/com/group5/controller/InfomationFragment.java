@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.group5.model.Place;
+import com.group5.service.DistrictServices;
 import com.group5.service.PlaceServices;
 import com.parse.ParseException;
 

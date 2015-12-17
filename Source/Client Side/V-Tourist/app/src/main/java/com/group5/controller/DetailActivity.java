@@ -216,8 +216,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
         //noinspection SimplifiableIfStatement
         switch (id){
-            case R.id.action_settings:
-                break;
             case R.id.action_map:
                 Intent intentMap = new Intent(DetailActivity.this, MapActivity.class);
                 startActivity(intentMap);

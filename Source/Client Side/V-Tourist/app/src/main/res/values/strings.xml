@@ -15,13 +15,7 @@
 
     <!-- Text for fragment home -->
     <string name="title_new_update">Mới cập nhật</string>
-<<<<<<< HEAD
     <string name="title_history">Thành Phố</string>
-=======
-    <string name="title_history">Tỉnh/Thành phố</string>
->>>>>>> origin/master
-
-
 
     <string-array name="newupdates">
         <item>New 1</item>

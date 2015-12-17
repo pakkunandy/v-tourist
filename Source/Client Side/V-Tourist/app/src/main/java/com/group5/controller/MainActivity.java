@@ -233,8 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                break;
+
             case R.id.action_map:
                 Intent intentMap = new Intent(MainActivity.this, MapActivity.class);
                 startActivity(intentMap);
