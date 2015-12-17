@@ -47,6 +47,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         setContentView(R.layout.activity_favorite);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        this.setTitle("Địa điểm yêu thích");
 
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

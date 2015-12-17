@@ -132,6 +132,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             fabBookmark.hide();
         }
         handleBookmark();
+
+        this.setTitle(GlobalVariable.name);
     }
 
     private void initTabHost() {
