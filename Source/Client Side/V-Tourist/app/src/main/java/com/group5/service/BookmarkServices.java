@@ -1,5 +1,6 @@
 package com.group5.service;
 
+import com.group5.controller.GlobalVariable;
 import com.group5.model.Bookmark;
 import com.group5.model.Place;
 import com.group5.model.Rating;
@@ -28,6 +29,19 @@ public class BookmarkServices {
         return DataParser.parseBookmark(object);
     }
 
+    public static String inBookmark() throws ParseException {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Bookmark");
+        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.whereEqualTo("user", UserServices.getCurrentUser());
+        query.whereEqualTo("place", PlaceServices.getObject(GlobalVariable.idGlobalPlaceCurrent));
+        ParseObject rs = null;
+        rs = query.getFirst();
+        if(rs != null)
+            return rs.getObjectId();
+        else
+            return "#";
+    }
+
     public static List<Bookmark> getBookmarkList() throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Bookmark");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
@@ -38,19 +52,18 @@ public class BookmarkServices {
                 Bookmark bmitem = DataParser.parseBookmark(bookmark);
 
                 ParseQuery<ParseObject> queryPlace = ParseQuery.getQuery("Place");
-                query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+                queryPlace.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
                 ParseObject place = queryPlace.get(bmitem.getPlace().getPlaceId());
                 if (place != null)
                 {
                     ParseRelation<ParseObject> relation = place.getRelation("images");
                     ParseQuery query2 = relation.getQuery();
                     query2.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-                    ParseObject imageObject = query2.getFirst();
-                    if (imageObject != null)
-                    {
+                    try {
+                        ParseObject imageObject = query2.getFirst();
                         ParseFile imageFile = imageObject.getParseFile("img");
                         bmitem.getPlace().firstImageURL = imageFile.getUrl();
-                    }
+                    } catch (Exception ex) {}
                 }
 
                 bookmarkList.add(bmitem);
@@ -81,11 +94,7 @@ public class BookmarkServices {
     }
 
     public static boolean createBookmark(String placeID) throws ParseException {
-        ParseACL acl = new ParseACL();
-        acl.setPublicReadAccess(false);
-        acl.setWriteAccess(ParseUser.getCurrentUser(), true);
         ParseObject object = new ParseObject("Bookmark");
-        object.setACL(acl);
         object.put("user", ParseUser.getCurrentUser());
         object.put("place", PlaceServices.getObject(placeID));
         object.save();

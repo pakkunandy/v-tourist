@@ -34,6 +34,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,8 @@ import java.util.List;
 public class DetailActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener  {
 
     private ImageView imageViewDetail;
+    private boolean isAdd;
+    private String idBookmark;
     /*
     * View pager on top of screen
     * */
@@ -59,6 +63,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
     FloatingActionButton fabBookmark;
 
+    MenuItem loginMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +79,22 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        loginMenuItem = navigationView.getMenu().getItem(3);
 
 
         //Config viewPagerDetails on the top
@@ -130,8 +146,13 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         //Set Login to show Bookmark Button
         if(UserServices.getCurrentUser() == null) {
             fabBookmark.hide();
+        } else {
+            fabBookmark.show();
+            LoadBookmark lbm = new LoadBookmark(DetailActivity.this);
+            lbm.execute();
+            handleBookmark();
         }
-        handleBookmark();
+
 
         this.setTitle(GlobalVariable.name);
     }
@@ -257,6 +278,18 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 Intent intentMap = new Intent(DetailActivity.this,MapActivity.class);
                 startActivity(intentMap);
                 break;
+            case R.id.nav_login:
+                loginMenuItem = item;
+                if (UserServices.getCurrentUser() != null)
+                {
+                    ParseUser.logOut();
+                    item.setTitle("Đăng nhập");
+                }else {
+                    ParseLoginBuilder builder = new ParseLoginBuilder(DetailActivity.this);
+                    startActivityForResult(builder.build(), 0);
+                    //item.setTitle("Đăng xuất");
+                }
+                break;
             case R.id.nav_about:
 
                 Intent intentAbout = new Intent(DetailActivity.this, AboutActivity.class);
@@ -273,16 +306,31 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         return true;
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                loginMenuItem.setTitle("Đăng xuất");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // Change title
+
+            }
+        }
+    }
+
     /**
      * Load Image
      */
-    private class LoadImage extends AsyncTask<Void, Long, String> {
-
+    private class LoadBookmark extends AsyncTask<Void, Long, String> {
         Activity activity;
-        ImageView imageView;
         ProgressDialog progressDialog;
 
-        public LoadImage(Activity activity) {
+        public LoadBookmark(Activity activity) {
             this.activity = activity;
             progressDialog = new ProgressDialog(activity.getApplicationContext());
             progressDialog.setTitle("Loading");
@@ -297,36 +345,53 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
         @Override
         protected String doInBackground(Void... params) {
-            //Load Image
-            return null;
+            String rs = "#";
+            try {
+                rs = BookmarkServices.inBookmark();
+            } catch (Exception ex) {
+            }
+            return rs;
         }
 
         @Override
-        protected void onPostExecute(String strUrl) {
-            super.onPostExecute(strUrl);
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(result.equals("#")) {
+                fabBookmark.setImageResource(R.drawable.ic_pin);
+            } else {
+                fabBookmark.setImageResource(R.drawable.ic_pin_fill);
+                idBookmark = result;
+            }
+
         }
 
     }
 
     private void handleBookmark(){
-        loadFavourite();
-
         fabBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    BookmarkServices.createBookmark(GlobalVariable.idGlobalPlaceCurrent);
-                    Toast.makeText(DetailActivity.this, "Đã thêm vào danh sách yêu thích.", Toast.LENGTH_SHORT).show();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if(isAdd ) {
+                    try {
+                        BookmarkServices.createBookmark(GlobalVariable.idGlobalPlaceCurrent);
+                        isAdd = false;
+                        Toast.makeText(DetailActivity.this, "Đã thêm vào danh sách yêu thích.", Toast.LENGTH_SHORT).show();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        BookmarkServices.deleteBookmark(idBookmark);
+                        isAdd = true;
+                        Toast.makeText(DetailActivity.this, "Đã xóa khỏi danh sách yêu thích.", Toast.LENGTH_SHORT).show();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
     }
 
-    private void loadFavourite() {
-       //Load favourite
-    }
 
     private  void setupImageViewDetail()
     {

@@ -21,6 +21,8 @@ import com.parse.ui.ParseLoginBuilder;
 public class AboutActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    MenuItem loginMenuItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +34,22 @@ public class AboutActivity extends AppCompatActivity
         this.setTitle("Đội ngũ phát triển");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        loginMenuItem = navigationView.getMenu().getItem(3);
     }
 
     @Override
@@ -90,8 +102,16 @@ public class AboutActivity extends AppCompatActivity
                 startActivity(intentMap);
                 break;
             case R.id.nav_login:
-
-
+                loginMenuItem = item;
+                if (UserServices.getCurrentUser() != null)
+                {
+                    ParseUser.logOut();
+                    item.setTitle("Đăng nhập");
+                }else {
+                    ParseLoginBuilder builder = new ParseLoginBuilder(AboutActivity.this);
+                    startActivityForResult(builder.build(), 0);
+                    //item.setTitle("Đăng xuất");
+                }
                 break;
             default:
                 break;
@@ -104,4 +124,21 @@ public class AboutActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                loginMenuItem.setTitle("Đăng xuất");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // Change title
+
+            }
+        }
+    }
+
 }

@@ -13,7 +13,7 @@
             android:title="Bản đồ" />
         <item android:id="@+id/nav_login" android:icon="@drawable/ic_login"
             android:title="Đăng nhập"/>
-        <item android:id="@+id/nav_about" android:icon="@drawable/ic_login"
+        <item android:id="@+id/nav_about" android:icon="@drawable/ic_about"
             android:title="Đội ngũ phát triển"></item>
     </group>
 

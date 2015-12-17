@@ -31,6 +31,8 @@ import com.group5.model.User;
 import com.group5.service.BookmarkServices;
 import com.group5.service.UserServices;
 import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.ui.ParseLoginBuilder;
 
 
 import java.util.ArrayList;
@@ -40,30 +42,49 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
 
     private RecyclerView recyclerView;
     private List<Bookmark> listItem;
+    private TextView txtNote;
+
+    MenuItem loginMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        txtNote = (TextView) findViewById(R.id.txt_LoginRequire);
         setSupportActionBar(toolbar);
         this.setTitle("Địa điểm yêu thích");
 
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        loginMenuItem = navigationView.getMenu().getItem(3);
+
         if(UserServices.getCurrentUser() != null) {
-            setAdapterToList();
-            findViewById(R.id.txt_LoginRequire).setVisibility(View.INVISIBLE);
+            txtNote.setVisibility(View.INVISIBLE);
+            recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
+            setItemClickOfRecyclerView();
+            getPlacefromParse(UserServices.getCurrentUser());
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         } else {
-            findViewById(R.id.txt_LoginRequire).setVisibility(View.VISIBLE);
+            txtNote.setText("Bạn cần đăng nhập để xem mục này.");
+            txtNote.setVisibility(View.VISIBLE);
         }
     }
 
@@ -118,23 +139,11 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         b.create().show();
     }
 
-    public void setAdapterToList()
-    {
-        recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
-        setItemClickOfRecyclerView();
-        getPlacefromParse(UserServices.getCurrentUser());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
     private void getPlacefromParse(User currentUser)
     {
-        if(currentUser != null) {
-            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, currentUser.getId());
-            getTask.execute();
-        } else {
-            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
-            getTask.execute();
-        }
+        GetDataThread getTask = new GetDataThread(FavoriteActivity.this, currentUser.getId());
+        getTask.execute();
+
     }
 
     private class GetDataThread extends AsyncTask<Void, Void, List<Bookmark>> {
@@ -152,7 +161,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Loading.setMessage("Loading...");
+            Loading.setTitle("Loading...");
             Loading.setCanceledOnTouchOutside(false);
             Loading.show();
         }
@@ -173,12 +182,17 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         @Override
         protected void onPostExecute(List<Bookmark> result) {
             super.onPostExecute(result);
-
-            listItem = result;
-            RecyclerView lv = (RecyclerView) activity.findViewById(R.id.list_Favorite);
-            FavoriteListAdapter adapter = new FavoriteListAdapter(activity, listItem);
-            Loading.dismiss();
-            lv.setAdapter(adapter);
+            if(result.size() != 0) {
+                listItem = result;
+                RecyclerView lv = (RecyclerView) activity.findViewById(R.id.list_Favorite);
+                FavoriteListAdapter adapter = new FavoriteListAdapter(activity, listItem);
+                Loading.dismiss();
+                lv.setAdapter(adapter);
+            } else {
+                Loading.dismiss();
+                txtNote.setText("Bạn chưa có Bookmark nào.");
+                txtNote.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -209,6 +223,18 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
                 Intent intentMap = new Intent(FavoriteActivity.this,MapActivity.class);
                 startActivity(intentMap);
                 break;
+            case R.id.nav_login:
+                loginMenuItem = item;
+                if (UserServices.getCurrentUser() != null)
+                {
+                    ParseUser.logOut();
+                    item.setTitle("Đăng nhập");
+                }else {
+                    ParseLoginBuilder builder = new ParseLoginBuilder(FavoriteActivity.this);
+                    startActivityForResult(builder.build(), 0);
+                    //item.setTitle("Đăng xuất");
+                }
+                break;
             case R.id.nav_about:
 
                 Intent intentAbout = new Intent(FavoriteActivity.this, AboutActivity.class);
@@ -225,10 +251,28 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+
+                loginMenuItem.setTitle("Đăng xuất");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                // Change title
+
+            }
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
-        getTask.execute();
+        if(UserServices.getCurrentUser() != null) {
+            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
+            getTask.execute();
+        }
     }
 
     @Override

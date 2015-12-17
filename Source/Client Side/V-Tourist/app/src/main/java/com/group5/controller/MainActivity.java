@@ -93,16 +93,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                GlobalVariable.setLoginTitle(loginMenuItem);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ParseUser.logOut();
-
-        //setup pull to refresh
+        loginMenuItem = navigationView.getMenu().getItem(3);
+        //
         mScrollView = (ScrollView) findViewById(R.id.rotate_header_scroll_view);
         mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_web_view_frame);
         mPtrFrame.setLastUpdateTimeRelateObject(this);

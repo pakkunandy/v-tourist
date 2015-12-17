@@ -46,21 +46,24 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Bookmark current = data.get(position);
 
-        DisplayImageOptions dio = new DisplayImageOptions.Builder().displayer(new BitmapDisplayer() {
-            @Override
-            public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
-                int gradientStartColor = Color.argb(0, 0, 0, 0);
-                int gradientEndColor = Color.argb(255, 0, 0, 0);
-                GradientOverImageDrawable gradientDrawable = new GradientOverImageDrawable(context.getResources(), bitmap);
-                gradientDrawable.setGradientColors(gradientStartColor, gradientEndColor);
-                imageAware.setImageDrawable(gradientDrawable);
-            }
-        })
-                .cacheOnDisc(true).cacheInMemory(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .build();
-        ImageLoader.getInstance().displayImage(current.getPlace().firstImageURL, holder.imagePlace, dio);
-
+        if(current.getPlace().firstImageURL != null) {
+            DisplayImageOptions dio = new DisplayImageOptions.Builder().displayer(new BitmapDisplayer() {
+                @Override
+                public void display(Bitmap bitmap, ImageAware imageAware, LoadedFrom loadedFrom) {
+                    int gradientStartColor = Color.argb(0, 0, 0, 0);
+                    int gradientEndColor = Color.argb(255, 0, 0, 0);
+                    GradientOverImageDrawable gradientDrawable = new GradientOverImageDrawable(context.getResources(), bitmap);
+                    gradientDrawable.setGradientColors(gradientStartColor, gradientEndColor);
+                    imageAware.setImageDrawable(gradientDrawable);
+                }
+            })
+                    .cacheOnDisc(true).cacheInMemory(true)
+                    .imageScaleType(ImageScaleType.EXACTLY)
+                    .build();
+            ImageLoader.getInstance().displayImage(current.getPlace().firstImageURL, holder.imagePlace, dio);
+        } else {
+            holder.imagePlace.setImageResource(R.drawable.ic_logo);
+        }
         holder.Name.setText(current.getPlace().getPlaceName());
         holder.Location.setText(current.getPlace().getAddress());
         holder.Description.setText(current.getPlace().getPlaceDescription());
