@@ -27,6 +27,12 @@ import com.group5.model.Place;
 import com.group5.parser.DataParser;
 import com.group5.service.CityServices;
 import com.group5.service.UserServices;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -79,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         setupSlider();
+        setupImageLoader();
 
         LoadData loadData = new LoadData();
         loadData.execute();
@@ -183,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            setupListHistory();
+            setupListCity();
             setupListNewUpdate();
             progressDialog.dismiss();
         }
@@ -199,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerNewUpdate.setAdapter(myHomeRecyclerAdapterNewUpdate);
     }
 
-    private void setupListHistory() {
+    private void setupListCity() {
         recyclerCity = (RecyclerView) findViewById(R.id.recyclerHistory);
         //use linear layout manager
         layoutManagerCity = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -341,5 +348,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
 
+    }
+
+    private void setupImageLoader() {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .displayer(new FadeInBitmapDisplayer(300)).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                this.getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .memoryCache(new WeakMemoryCache())
+                .discCacheSize(100 * 1024 * 1024).build();
+
+        ImageLoader.getInstance().init(config);
     }
 }

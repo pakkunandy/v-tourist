@@ -80,14 +80,14 @@ public class BookmarkServices {
         return true;
     }
 
-    public static boolean createBookmark(Bookmark bookmark) throws ParseException {
+    public static boolean createBookmark(String placeID) throws ParseException {
         ParseACL acl = new ParseACL();
         acl.setPublicReadAccess(false);
         acl.setWriteAccess(ParseUser.getCurrentUser(), true);
-        ParseObject object = new ParseObject("Rating");
+        ParseObject object = new ParseObject("Bookmark");
         object.setACL(acl);
         object.put("user", ParseUser.getCurrentUser());
-        object.put("place",  PlaceServices.getObject(bookmark.getPlace().getPlaceId()));
+        object.put("place", PlaceServices.getObject(placeID));
         object.save();
         return true;
     }

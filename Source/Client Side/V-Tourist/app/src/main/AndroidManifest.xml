@@ -68,6 +68,11 @@
             android:label="@string/title_activity_map"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".PlacesOfCity.PlacesOfCityActivity"
+            android:label="PlaceOfCityActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
 
         <!--Parse login -->
         <activity
