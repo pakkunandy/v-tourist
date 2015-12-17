@@ -20,8 +20,8 @@
             <ImageView
                 android:id="@+id/imageViewPlace"
 
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:scaleType="centerCrop"
                 android:background="@color/black"
                 android:layout_centerVertical="true"/>
@@ -35,7 +35,8 @@
                 android:textSize="20sp"
                 android:textColor="@color/textPrimary"
                 android:textStyle="bold"
-                android:text="Ten"/>
+                android:text="Ten"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/locationPlace"
@@ -47,7 +48,8 @@
                 android:textSize="15sp"
                 android:textColor="@color/textPrimary"
                 android:textStyle="italic"
-                android:text="Dia chi"/>
+                android:text="Dia chi"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/decriptionPlace"

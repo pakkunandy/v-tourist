@@ -13,4 +13,5 @@ public class GlobalVariable {
     public static ArrayList<String> arrayListImageUrlCurrent;
     public static String firstImageUrl;
     public static String idCityCurrent;
+    public static String nameCityCurent;
 }

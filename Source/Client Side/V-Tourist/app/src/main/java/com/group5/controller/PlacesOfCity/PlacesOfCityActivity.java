@@ -53,6 +53,7 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
         setContentView(R.layout.activity_places_of_city);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        this.setTitle(GlobalVariable.nameCityCurent);
 
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
