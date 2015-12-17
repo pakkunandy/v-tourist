@@ -42,6 +42,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
 
     private RecyclerView recyclerView;
     private List<Bookmark> listItem;
+    private TextView txtNote;
 
     MenuItem loginMenuItem;
 
@@ -50,6 +51,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        txtNote = (TextView) findViewById(R.id.txt_LoginRequire);
         setSupportActionBar(toolbar);
         this.setTitle("Địa điểm yêu thích");
 
@@ -74,10 +76,15 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         loginMenuItem = navigationView.getMenu().getItem(3);
 
         if(UserServices.getCurrentUser() != null) {
-            setAdapterToList();
-            findViewById(R.id.txt_LoginRequire).setVisibility(View.INVISIBLE);
+            txtNote.setVisibility(View.INVISIBLE);
+            recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
+            setItemClickOfRecyclerView();
+            getPlacefromParse(UserServices.getCurrentUser());
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         } else {
-            findViewById(R.id.txt_LoginRequire).setVisibility(View.VISIBLE);
+            txtNote.setText("Bạn cần đăng nhập để xem mục này.");
+            txtNote.setVisibility(View.VISIBLE);
         }
     }
 
@@ -132,23 +139,11 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         b.create().show();
     }
 
-    public void setAdapterToList()
-    {
-        recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
-        setItemClickOfRecyclerView();
-        getPlacefromParse(UserServices.getCurrentUser());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
     private void getPlacefromParse(User currentUser)
     {
-        if(currentUser != null) {
-            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, currentUser.getId());
-            getTask.execute();
-        } else {
-            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
-            getTask.execute();
-        }
+        GetDataThread getTask = new GetDataThread(FavoriteActivity.this, currentUser.getId());
+        getTask.execute();
+
     }
 
     private class GetDataThread extends AsyncTask<Void, Void, List<Bookmark>> {
@@ -166,7 +161,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Loading.setMessage("Loading...");
+            Loading.setTitle("Loading...");
             Loading.setCanceledOnTouchOutside(false);
             Loading.show();
         }
@@ -187,12 +182,17 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         @Override
         protected void onPostExecute(List<Bookmark> result) {
             super.onPostExecute(result);
-
-            listItem = result;
-            RecyclerView lv = (RecyclerView) activity.findViewById(R.id.list_Favorite);
-            FavoriteListAdapter adapter = new FavoriteListAdapter(activity, listItem);
-            Loading.dismiss();
-            lv.setAdapter(adapter);
+            if(result.size() != 0) {
+                listItem = result;
+                RecyclerView lv = (RecyclerView) activity.findViewById(R.id.list_Favorite);
+                FavoriteListAdapter adapter = new FavoriteListAdapter(activity, listItem);
+                Loading.dismiss();
+                lv.setAdapter(adapter);
+            } else {
+                Loading.dismiss();
+                txtNote.setText("Bạn chưa có Bookmark nào.");
+                txtNote.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -269,8 +269,10 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
     @Override
     public void onResume() {
         super.onResume();
-        GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
-        getTask.execute();
+        if(UserServices.getCurrentUser() != null) {
+            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
+            getTask.execute();
+        }
     }
 
     @Override

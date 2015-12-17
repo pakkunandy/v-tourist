@@ -38,5 +38,12 @@ public class UserServices {
         else return null;
     }
 
-
+    public static ParseObject getOBject(String id) throws ParseException {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        ParseUser user;
+        user = query.get(id);
+        if (user != null)
+            return user;
+        else return null;
+    }
 }
