@@ -117,8 +117,6 @@ public class PlaceServices {
         ArrayList<Place> placeList = new ArrayList<>();
         List<ParseObject> listObject = query.find();
         for (ParseObject object: listObject) {
-            //placeList.add(DataParser.parsePlace(object));
-
             Place p = DataParser.parsePlace(object);
             ParseRelation<ParseObject> relation = object.getRelation("images");
             ParseQuery query2 = relation.getQuery();

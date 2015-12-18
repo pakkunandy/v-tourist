@@ -16,9 +16,7 @@
         android:id="@+id/card_view">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_bg"
-            android:clickable="true">
+            android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/imageViewPlace"
 
