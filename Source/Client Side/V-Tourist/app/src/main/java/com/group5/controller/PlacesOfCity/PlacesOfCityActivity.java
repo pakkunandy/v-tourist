@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 
+import com.group5.controller.AboutActivity;
 import com.group5.controller.FavoriteActivity;
 import com.group5.controller.GlobalVariable;
 import com.group5.controller.MainActivity;
@@ -163,6 +164,10 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
                     startActivityForResult(builder.build(), 0);
                     //item.setTitle("Đăng xuất");
                 }
+                break;
+            case R.id.nav_about:
+                Intent intentAbout = new Intent(this, AboutActivity.class);
+                startActivity(intentAbout);
                 break;
             default:
                 break;

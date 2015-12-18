@@ -45,6 +45,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     private ImageView imageViewDetail;
     private boolean isAdd = true;
     private String idBookmark;
+    private int currentItem = 0;
     /*
     * View pager on top of screen
     * */
@@ -86,6 +87,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 GlobalVariable.setLoginTitle(loginMenuItem);
+                currentItem = tabHost.getCurrentTab();
             }
         };
         drawer.setDrawerListener(toggle);
@@ -283,6 +285,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 if (UserServices.getCurrentUser() != null)
                 {
                     ParseUser.logOut();
+                    fabBookmark.hide();
                     item.setTitle("Đăng nhập");
                 }else {
                     ParseLoginBuilder builder = new ParseLoginBuilder(DetailActivity.this);
@@ -313,12 +316,15 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-
+                fabBookmark.show();
+                LoadBookmark lbm = new LoadBookmark(DetailActivity.this);
+                lbm.execute();
+                handleBookmark();
                 loginMenuItem.setTitle("Đăng xuất");
+                viewPagerContentDetail.setCurrentItem(currentItem);
             }
             if (resultCode == RESULT_CANCELED) {
                 // Change title
-
             }
         }
     }
@@ -400,18 +406,18 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     private  void setupImageViewDetail()
     {
         // UNIVERSAL IMAGE LOADER SETUP
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisc(true).cacheInMemory(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new FadeInBitmapDisplayer(300)).build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                this.getApplicationContext())
-                .defaultDisplayImageOptions(defaultOptions)
-                .memoryCache(new WeakMemoryCache())
-                .discCacheSize(100 * 1024 * 1024).build();
-
-        ImageLoader.getInstance().init(config);
+//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+//                .cacheOnDisc(true).cacheInMemory(true)
+//                .imageScaleType(ImageScaleType.EXACTLY)
+//                .displayer(new FadeInBitmapDisplayer(300)).build();
+//
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                this.getApplicationContext())
+//                .defaultDisplayImageOptions(defaultOptions)
+//                .memoryCache(new WeakMemoryCache())
+//                .discCacheSize(100 * 1024 * 1024).build();
+//
+//        ImageLoader.getInstance().init(config);
 
         ImageLoader.getInstance().displayImage(GlobalVariable.firstImageUrl, imageViewDetail);
         imageViewDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);

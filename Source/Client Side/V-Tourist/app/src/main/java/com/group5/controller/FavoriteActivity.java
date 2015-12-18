@@ -136,7 +136,6 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
 					adapter.data.remove(item);
 					adapter.notifyDataSetChanged();
                 } catch (Exception ex) {}
-                onResume();
             }
         });
         b.create().show();

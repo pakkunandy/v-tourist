@@ -299,6 +299,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 loginMenuItem = item;
                 if (UserServices.getCurrentUser() != null)
                 {
+
                     ParseUser.logOut();
                     item.setTitle("Đăng nhập");
                 }else {

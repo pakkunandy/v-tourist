@@ -235,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_about:
-
                 Intent intentAbout = new Intent(MainActivity.this, AboutActivity.class);
                 startActivity(intentAbout);
                 break;
