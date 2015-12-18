@@ -326,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, mScrollView, header);
+                //return false;
             }
 
             @Override
@@ -345,21 +346,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        // the following are default settings
         mPtrFrame.setResistance(3.7f);
         mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
         mPtrFrame.setDurationToClose(200);
         mPtrFrame.setDurationToCloseHeader(1000);
-        // default is false
-        mPtrFrame.setPullToRefresh(false);
-        // default is true
         mPtrFrame.setKeepHeaderWhenRefresh(true);
         mPtrFrame.disableWhenHorizontalMove(true);
-        mPtrFrame.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPtrFrame.autoRefresh();
-            }
-        }, 100);
+        mPtrFrame.setEnabledNextPtrAtOnce(false);
     }
 }

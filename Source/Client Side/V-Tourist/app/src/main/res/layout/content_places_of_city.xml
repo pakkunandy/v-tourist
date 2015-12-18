@@ -7,10 +7,24 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_favorite" tools:context="com.group5.controller.PlacesOfCity.PlacesOfCityActivity">
 
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/rotate_header_web_view_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:ptr_duration_to_close="200"
+        app:ptr_duration_to_close_header="1000"
+        app:ptr_keep_header_when_refresh="true"
+        app:ptr_pull_to_fresh="false"
+        app:ptr_ratio_of_header_height_to_refresh="1.2"
+        app:ptr_resistance="1.7">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/places_of_city_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/com_parse_ui_parse_login_help_button_label"/>
+
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 </RelativeLayout>

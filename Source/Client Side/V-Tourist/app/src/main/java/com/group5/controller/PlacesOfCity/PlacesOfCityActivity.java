@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.group5.controller.FavoriteActivity;
 import com.group5.controller.GlobalVariable;
@@ -37,6 +38,11 @@ import com.parse.ui.ParseLoginBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * Created by Duy on 15-Dec-15.
  */
@@ -48,6 +54,8 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
     MenuItem loginMenuItem;
     ArrayList<Place> arrayListPlaces = new ArrayList<Place>();
 
+    private PtrClassicFrameLayout mPtrFrame;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,8 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.setTitle(GlobalVariable.nameCityCurent);
+
+        setupPullToRefresh();
 
         //Config for Drawer navigation - start
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -194,7 +204,7 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0);
+                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -218,5 +228,43 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
 
         mAdapter = new PlacesOfCityAdapter(this, arrayListPlaces);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void setupPullToRefresh() {
+        //
+        mRecyclerView = (RecyclerView) findViewById(R.id.places_of_city_recycler_view);
+        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_web_view_frame);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, mRecyclerView, header);
+                //return false;
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                mPtrFrame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.NETWORK_ONLY);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        setupPlacesOfCityAdapter();
+                        mPtrFrame.refreshComplete();
+                    }
+                }, 1000);
+            }
+        });
+
+        mPtrFrame.setResistance(3.7f);
+        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrFrame.setDurationToClose(200);
+        mPtrFrame.setDurationToCloseHeader(1000);
+        mPtrFrame.setKeepHeaderWhenRefresh(true);
+        mPtrFrame.disableWhenHorizontalMove(true);
+        mPtrFrame.setEnabledNextPtrAtOnce(false);
     }
 }

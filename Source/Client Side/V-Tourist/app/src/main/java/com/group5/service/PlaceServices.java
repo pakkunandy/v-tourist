@@ -105,13 +105,13 @@ public class PlaceServices {
         return placesList;
     }
 
-    public static ArrayList<Place> getPlacesList(String city, int limit, int skip) throws ParseException {
+    public static ArrayList<Place> getPlacesList(String city, int limit, int skip, ParseQuery.CachePolicy cachePolicy) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
-        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        query.setCachePolicy(cachePolicy);
         query.setLimit(limit);
         query.setSkip(skip);
         ParseQuery<ParseObject> cityQuery = ParseQuery.getQuery("City");
-        cityQuery.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        cityQuery.setCachePolicy(cachePolicy);
         ParseObject cityOb = cityQuery.get(city);
         query.whereEqualTo("city", cityOb);
         ArrayList<Place> placeList = new ArrayList<>();
@@ -122,7 +122,7 @@ public class PlaceServices {
             Place p = DataParser.parsePlace(object);
             ParseRelation<ParseObject> relation = object.getRelation("images");
             ParseQuery query2 = relation.getQuery();
-            query2.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+            query2.setCachePolicy(cachePolicy);
             ParseObject imageObject = query2.getFirst();
             if (imageObject != null)
             {
