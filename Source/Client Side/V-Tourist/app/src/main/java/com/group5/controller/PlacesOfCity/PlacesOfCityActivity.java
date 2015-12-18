@@ -203,13 +203,14 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
             super.onPreExecute();
             progressDialog = new ProgressDialog(PlacesOfCityActivity.this);
             progressDialog.setTitle("Loading");
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.CACHE_ONLY);
+                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -253,7 +254,7 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
                     @Override
                     public void run() {
                         try {
-                            arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.NETWORK_ONLY);
+                            arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }

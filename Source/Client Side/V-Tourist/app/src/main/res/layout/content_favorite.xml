@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Bạn cần đăng nhập để xem mục này."
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:background="@color/com_parse_ui_parse_login_help_button_label"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_Favorite"
