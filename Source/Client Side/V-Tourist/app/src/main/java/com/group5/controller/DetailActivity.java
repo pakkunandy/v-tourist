@@ -205,9 +205,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     @Override
     protected void onResume() {
         super.onResume();
-//        initViewPagerContentDetail();
-//        tabHost.setCurrentTab(0);
-//        viewPagerContentDetail.setCurrentItem(0);
         //Set Login to show Bookmark Button
         if(UserServices.getCurrentUser() == null) {
             fabBookmark.hide();
