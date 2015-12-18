@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupSlider();
         setupImageLoader();
+        setupPullToRefresh();
 
         LoadData loadData = new LoadData();
         loadData.execute();
@@ -110,43 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         loginMenuItem = navigationView.getMenu().getItem(3);
-        //
-        mScrollView = (ScrollView) findViewById(R.id.rotate_header_scroll_view);
-        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_web_view_frame);
-        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        mPtrFrame.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, mScrollView, header);
-            }
-
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                mPtrFrame.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPtrFrame.refreshComplete();
-                    }
-                }, 100);
-            }
-        });
-
-        // the following are default settings
-        mPtrFrame.setResistance(3.7f);
-        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
-        mPtrFrame.setDurationToClose(200);
-        mPtrFrame.setDurationToCloseHeader(1000);
-        // default is false
-        mPtrFrame.setPullToRefresh(false);
-        // default is true
-        mPtrFrame.setKeepHeaderWhenRefresh(true);
-        mPtrFrame.disableWhenHorizontalMove(true);
-        mPtrFrame.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPtrFrame.autoRefresh();
-            }
-        }, 100);
     }
 
     private class LoadData extends AsyncTask<Void, Void, Void> {
@@ -162,35 +126,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         protected Void doInBackground(Void... params) {
-//
-//            ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
-//            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-//            query.orderByDescending("createdAt").setLimit(10);
-//            try {
-//                List<ParseObject> places = query.find();
-//                for (ParseObject place : places)
-//                {
-//                    if (place != null)
-//                    {
-//                        Place p = DataParser.parsePlace(place);
-//                        ParseRelation<ParseObject> relation = place.getRelation("images");
-//                        ParseQuery query2 = relation.getQuery();
-//                        query2.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-//                        ParseObject imageObject = query2.getFirst();
-//                        if (imageObject != null)
-//                        {
-//                            ParseFile imageFile = imageObject.getParseFile("img");
-//                            p.firstImageURL = imageFile.getUrl();
-//                        }
-//                        arrayListNewUpdates.add(p);
-//                    }
-//                }
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-
             try {
-                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE, 10);
+                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK, 10);
                 arrayListCity = CityServices.getCitiesList();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -378,5 +315,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .discCacheSize(100 * 1024 * 1024).build();
 
         ImageLoader.getInstance().init(config);
+    }
+
+    private void setupPullToRefresh() {
+        //
+        mScrollView = (ScrollView) findViewById(R.id.rotate_header_scroll_view);
+        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_web_view_frame);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, mScrollView, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                mPtrFrame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.NETWORK_ONLY, 10);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        setupListNewUpdate();
+                        mPtrFrame.refreshComplete();
+                    }
+                }, 1800);
+            }
+        });
+
+        // the following are default settings
+        mPtrFrame.setResistance(3.7f);
+        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrFrame.setDurationToClose(200);
+        mPtrFrame.setDurationToCloseHeader(1000);
+        // default is false
+        mPtrFrame.setPullToRefresh(false);
+        // default is true
+        mPtrFrame.setKeepHeaderWhenRefresh(true);
+        mPtrFrame.disableWhenHorizontalMove(true);
+        mPtrFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPtrFrame.autoRefresh();
+            }
+        }, 100);
     }
 }
