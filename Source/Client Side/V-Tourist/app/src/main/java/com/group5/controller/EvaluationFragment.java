@@ -227,6 +227,8 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        LoadComment loadComment = new LoadComment(view);
+        loadComment.execute();
         if(UserServices.getCurrentUser() != null){
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
