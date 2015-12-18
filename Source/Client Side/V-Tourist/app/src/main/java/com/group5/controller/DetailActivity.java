@@ -338,6 +338,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             this.activity = activity;
             progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("Loading");
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
 
@@ -400,8 +401,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         });
     }
 
-    private  void setupImageViewDetail()
-    {
+    private  void setupImageViewDetail() {
         ImageLoader.getInstance().displayImage(GlobalVariable.firstImageUrl, imageViewDetail);
         imageViewDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }

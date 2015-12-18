@@ -32,7 +32,7 @@ public class BookmarkServices {
 
     public static String inBookmark() throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Bookmark");
-        query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.whereEqualTo("user", ParseUser.getCurrentUser());
         query.whereEqualTo("place", PlaceServices.getObject(GlobalVariable.idGlobalPlaceCurrent));
         ParseObject rs = null;

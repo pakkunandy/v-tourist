@@ -121,13 +121,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onPreExecute();
             progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setTitle("Loading");
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.CACHE_ONLY, 10);
+                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK, 10);
                 arrayListCity = CityServices.getCitiesList();
             } catch (ParseException e) {
                 e.printStackTrace();
