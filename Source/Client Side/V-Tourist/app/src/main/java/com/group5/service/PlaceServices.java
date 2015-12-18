@@ -110,6 +110,7 @@ public class PlaceServices {
         query.setCachePolicy(cachePolicy);
         query.setLimit(limit);
         query.setSkip(skip);
+        query.orderByAscending("name");
         ParseQuery<ParseObject> cityQuery = ParseQuery.getQuery("City");
         cityQuery.setCachePolicy(cachePolicy);
         ParseObject cityOb = cityQuery.get(city);
@@ -121,7 +122,12 @@ public class PlaceServices {
             ParseRelation<ParseObject> relation = object.getRelation("images");
             ParseQuery query2 = relation.getQuery();
             query2.setCachePolicy(cachePolicy);
-            ParseObject imageObject = query2.getFirst();
+            ParseObject imageObject = null;
+            try {
+                imageObject = query2.getFirst();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             if (imageObject != null)
             {
                 ParseFile imageFile = imageObject.getParseFile("img");
