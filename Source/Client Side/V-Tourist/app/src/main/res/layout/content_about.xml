@@ -92,6 +92,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+
+
                     android:src="@drawable/canh"
                     />
                 <LinearLayout
