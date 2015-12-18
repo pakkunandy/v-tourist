@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK, 10);
+                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.CACHE_ONLY, 10);
                 arrayListCity = CityServices.getCitiesList();
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -267,12 +267,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupSlider() {
         mDemoSlider = (SliderLayout) findViewById(R.id.slider);
 
-        HashMap<String, String> url_maps = new HashMap<String, String>();
-        url_maps.put("Hannibal", "http://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");
-
         HashMap<String, Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("Hồ Chí Minh", R.drawable.slide1);
         file_maps.put("Nha Trang", R.drawable.slide2);
@@ -341,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         setupListNewUpdate();
                         mPtrFrame.refreshComplete();
                     }
-                }, 1800);
+                }, 1000);
             }
         });
 

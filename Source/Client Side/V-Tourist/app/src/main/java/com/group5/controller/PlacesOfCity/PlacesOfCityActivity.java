@@ -209,7 +209,7 @@ public class PlacesOfCityActivity extends AppCompatActivity implements Navigatio
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+                arrayListPlaces = PlaceServices.getPlacesList(GlobalVariable.idCityCurrent, 20, 0, ParseQuery.CachePolicy.CACHE_ONLY);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

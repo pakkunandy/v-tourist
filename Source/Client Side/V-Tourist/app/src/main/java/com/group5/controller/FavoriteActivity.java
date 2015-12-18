@@ -23,17 +23,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-
 import com.group5.model.Bookmark;
-
 import com.group5.model.User;
-
 import com.group5.service.BookmarkServices;
 import com.group5.service.UserServices;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.ui.ParseLoginBuilder;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -273,8 +269,10 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         } else {
-            adapter.data.clear();
-            adapter.notifyDataSetChanged();
+            if (adapter.data.size() != 0) {
+                adapter.data.clear();
+                adapter.notifyDataSetChanged();
+            }
             txtNote.setText("Bạn cần đăng nhập để xem mục này.");
             txtNote.setVisibility(View.VISIBLE);
         }
