@@ -43,7 +43,7 @@ import java.util.List;
 public class DetailActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener  {
 
     private ImageView imageViewDetail;
-    private boolean isAdd;
+    private boolean isAdd = true;
     private String idBookmark;
     /*
     * View pager on top of screen
@@ -332,7 +332,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
         public LoadBookmark(Activity activity) {
             this.activity = activity;
-            progressDialog = new ProgressDialog(activity.getApplicationContext());
+            progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("Loading");
             progressDialog.show();
         }
@@ -358,11 +358,13 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             super.onPostExecute(result);
             if(result.equals("#")) {
                 fabBookmark.setImageResource(R.drawable.ic_pin);
+                isAdd = true;
             } else {
                 fabBookmark.setImageResource(R.drawable.ic_pin_fill);
                 idBookmark = result;
+                isAdd = false;
             }
-
+            progressDialog.dismiss();
         }
 
     }
