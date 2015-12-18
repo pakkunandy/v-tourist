@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.group5.model.Place;
 import com.group5.model.Rating;
@@ -39,11 +40,12 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
     private CommentAdapter commentAdapter;
     private TextView txtInfor;
     private TextView txtContentInfor;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_evaluation, container, false);
+        view = inflater.inflate(R.layout.fragment_evaluation, container, false);
         LoadComment loadComment = new LoadComment(view);
         loadComment.execute();
 
@@ -222,4 +224,25 @@ public class EvaluationFragment  extends android.support.v4.app.Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(UserServices.getCurrentUser() != null){
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RatingPostDialog ratingPostDialog = new RatingPostDialog(view);
+
+                    ratingPostDialog.show(getFragmentManager(),"missiles");
+                }
+            });
+            txtInfor.setVisibility(View.GONE);
+            floatingActionButton.show();
+        }else {
+            floatingActionButton.hide();
+            txtInfor.setText("Bạn phải Đăng Nhập để đánh giá");
+
+        }
+
+    }
 }
