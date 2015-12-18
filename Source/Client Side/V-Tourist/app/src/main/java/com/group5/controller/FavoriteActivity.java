@@ -76,17 +76,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
 
         loginMenuItem = navigationView.getMenu().getItem(3);
 
-        if(UserServices.getCurrentUser() != null) {
-            txtNote.setVisibility(View.GONE);
-            recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
-            setItemClickOfRecyclerView();
-            getPlacefromParse(UserServices.getCurrentUser());
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        } else {
-            txtNote.setText("Bạn cần đăng nhập để xem mục này.");
-            txtNote.setVisibility(View.VISIBLE);
-        }
     }
 
     public void setItemClickOfRecyclerView() {
@@ -230,6 +220,10 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
                 if (UserServices.getCurrentUser() != null)
                 {
                     ParseUser.logOut();
+                    adapter.data.clear();
+                    adapter.notifyDataSetChanged();
+                    txtNote.setText("Bạn cần đăng nhập để xem mục này.");
+                    txtNote.setVisibility(View.VISIBLE);
                     item.setTitle("Đăng nhập");
                 }else {
                     ParseLoginBuilder builder = new ParseLoginBuilder(FavoriteActivity.this);
@@ -272,8 +266,17 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
     public void onResume() {
         super.onResume();
         if(UserServices.getCurrentUser() != null) {
-            GetDataThread getTask = new GetDataThread(FavoriteActivity.this, "non-user");
-            getTask.execute();
+            txtNote.setVisibility(View.GONE);
+            recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
+            setItemClickOfRecyclerView();
+            getPlacefromParse(UserServices.getCurrentUser());
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        } else {
+            adapter.data.clear();
+            adapter.notifyDataSetChanged();
+            txtNote.setText("Bạn cần đăng nhập để xem mục này.");
+            txtNote.setVisibility(View.VISIBLE);
         }
     }
 

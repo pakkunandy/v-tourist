@@ -145,15 +145,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
         //Add view Bookmark
         fabBookmark = (FloatingActionButton) findViewById(R.id.fabBookmark);
-        //Set Login to show Bookmark Button
-        if(UserServices.getCurrentUser() == null) {
-            fabBookmark.hide();
-        } else {
-            fabBookmark.show();
-            LoadBookmark lbm = new LoadBookmark(DetailActivity.this);
-            lbm.execute();
-            handleBookmark();
-        }
 
         this.setTitle(GlobalVariable.name);
     }
@@ -214,10 +205,22 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
     @Override
     protected void onResume() {
         super.onResume();
-        if(tabHost == null)
-            initTabHost();
-        if(viewPagerContentDetail == null)
-            initViewPagerContentDetail();
+//        if(tabHost == null)
+//            initTabHost();
+//        if(viewPagerContentDetail == null)
+//            initViewPagerContentDetail();
+        initViewPagerContentDetail();
+        tabHost.setCurrentTab(0);
+        viewPagerContentDetail.setCurrentItem(0);
+        //Set Login to show Bookmark Button
+        if(UserServices.getCurrentUser() == null) {
+            fabBookmark.hide();
+        } else {
+            fabBookmark.show();
+            LoadBookmark lbm = new LoadBookmark(DetailActivity.this);
+            lbm.execute();
+            handleBookmark();
+        }
     }
 
     @Override
@@ -283,6 +286,9 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 {
                     ParseUser.logOut();
                     fabBookmark.hide();
+                    initViewPagerContentDetail();
+                    tabHost.setCurrentTab(0);
+                    viewPagerContentDetail.setCurrentItem(0);
                     item.setTitle("Đăng nhập");
                 }else {
                     ParseLoginBuilder builder = new ParseLoginBuilder(DetailActivity.this);
@@ -318,13 +324,13 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 lbm.execute();
                 handleBookmark();
                 loginMenuItem.setTitle("Đăng xuất");
+                initViewPagerContentDetail();
+                tabHost.setCurrentTab(0);
+                viewPagerContentDetail.setCurrentItem(0);
             }
             if (resultCode == RESULT_CANCELED) {
                 // Change title
             }
-            initViewPagerContentDetail();
-            tabHost.setCurrentTab(0);
-            viewPagerContentDetail.setCurrentItem(0);
         }
     }
 
