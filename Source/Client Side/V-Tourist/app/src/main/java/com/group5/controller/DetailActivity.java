@@ -318,13 +318,13 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 lbm.execute();
                 handleBookmark();
                 loginMenuItem.setTitle("Đăng xuất");
-                initViewPagerContentDetail();
-                tabHost.setCurrentTab(0);
-                viewPagerContentDetail.setCurrentItem(0);
             }
             if (resultCode == RESULT_CANCELED) {
                 // Change title
             }
+            initViewPagerContentDetail();
+            tabHost.setCurrentTab(0);
+            viewPagerContentDetail.setCurrentItem(0);
         }
     }
 
