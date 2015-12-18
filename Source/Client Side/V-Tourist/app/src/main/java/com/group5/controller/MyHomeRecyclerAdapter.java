@@ -42,20 +42,6 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
         this.context = context;
         this.layoutId = layoutId;
         this.arrayList = arrayList;
-
-        // UNIVERSAL IMAGE LOADER SETUP
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheOnDisc(true).cacheInMemory(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .displayer(new FadeInBitmapDisplayer(300)).build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                this.context)
-                .defaultDisplayImageOptions(defaultOptions)
-                .memoryCache(new WeakMemoryCache())
-                .discCacheSize(100 * 1024 * 1024).build();
-
-        ImageLoader.getInstance().init(config);
     }
 
     @Override
@@ -67,7 +53,7 @@ public class MyHomeRecyclerAdapter extends RecyclerView.Adapter<MyHomeRecyclerAd
     @Override
     public void onBindViewHolder(MyHomeRecyclerAdapter.ViewHolder holder, final int position) {
 
-
+        holder.imgTest.setImageDrawable(null);
         holder.captionTitle.setText(arrayList.get(position).getPlaceName());
         holder.captionBody.setText(arrayList.get(position).getPlaceDescription());
 

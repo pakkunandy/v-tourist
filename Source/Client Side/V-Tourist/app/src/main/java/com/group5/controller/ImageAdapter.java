@@ -49,20 +49,6 @@ public class ImageAdapter extends BaseAdapter {
                 .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
-
-        // UNIVERSAL IMAGE LOADER SETUP
-//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-//                .cacheOnDisc(true).cacheInMemory(true)
-//                .imageScaleType(ImageScaleType.EXACTLY)
-//                .displayer(new FadeInBitmapDisplayer(300)).build();
-//
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                this.mContext)
-//                .defaultDisplayImageOptions(defaultOptions)
-//                .memoryCache(new WeakMemoryCache())
-//                .discCacheSize(100 * 1024 * 1024).build();
-//
-//        ImageLoader.getInstance().init(config);
     }
 
     public int getCount() {
@@ -79,21 +65,6 @@ public class ImageAdapter extends BaseAdapter {
 
     // create a new ImageView for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-//        ImageView imageView;
-//        if (convertView == null) {
-//            // if it's not recycled, initialize some attributes
-//            imageView = new ImageView(mContext);
-//            imageView.setLayoutParams(new GridView.LayoutParams(230, 230));
-//            imageView.setAdjustViewBounds(true);
-//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            imageView.setPadding(8, 8, 4, 8);
-//        } else {
-//            imageView = (ImageView) convertView;
-//        }
-//
-//        ImageLoader.getInstance().displayImage(arrayListImageUrl.get(position), imageView);
-//        return imageView;
-
         final ViewHolder holder;
         View view = convertView;
         if (view == null) {
