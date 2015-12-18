@@ -95,12 +95,12 @@ public class BookmarkServices {
         return true;
     }
 
-    public static boolean createBookmark(String placeID) throws ParseException {
+    public static String createBookmark(String placeID) throws ParseException {
         ParseObject object = new ParseObject("Bookmark");
         object.put("user", ParseUser.getCurrentUser());
         object.put("place", PlaceServices.getObject(placeID));
         object.save();
-        return true;
+        return object.getObjectId();
     }
 
 }

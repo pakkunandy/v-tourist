@@ -155,7 +155,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             handleBookmark();
         }
 
-
         this.setTitle(GlobalVariable.name);
     }
 
@@ -171,8 +170,6 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             tabHost.addTab(tabSpec);
         }
     }
-
-
 
     public class FakeContent  implements TabHost.TabContentFactory{
 
@@ -321,7 +318,9 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 lbm.execute();
                 handleBookmark();
                 loginMenuItem.setTitle("Đăng xuất");
-                viewPagerContentDetail.setCurrentItem(currentItem);
+                initViewPagerContentDetail();
+                tabHost.setCurrentTab(0);
+                viewPagerContentDetail.setCurrentItem(0);
             }
             if (resultCode == RESULT_CANCELED) {
                 // Change title
@@ -381,7 +380,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
             public void onClick(View v) {
                 if(isAdd ) {
                     try {
-                        BookmarkServices.createBookmark(GlobalVariable.idGlobalPlaceCurrent);
+                        idBookmark = BookmarkServices.createBookmark(GlobalVariable.idGlobalPlaceCurrent);
                         isAdd = false;
                         fabBookmark.setImageResource(R.drawable.ic_pin_fill);
                         Toast.makeText(DetailActivity.this, "Đã thêm vào danh sách yêu thích.", Toast.LENGTH_SHORT).show();
@@ -402,23 +401,8 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
         });
     }
 
-
     private  void setupImageViewDetail()
     {
-        // UNIVERSAL IMAGE LOADER SETUP
-//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-//                .cacheOnDisc(true).cacheInMemory(true)
-//                .imageScaleType(ImageScaleType.EXACTLY)
-//                .displayer(new FadeInBitmapDisplayer(300)).build();
-//
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//                this.getApplicationContext())
-//                .defaultDisplayImageOptions(defaultOptions)
-//                .memoryCache(new WeakMemoryCache())
-//                .discCacheSize(100 * 1024 * 1024).build();
-//
-//        ImageLoader.getInstance().init(config);
-
         ImageLoader.getInstance().displayImage(GlobalVariable.firstImageUrl, imageViewDetail);
         imageViewDetail.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
