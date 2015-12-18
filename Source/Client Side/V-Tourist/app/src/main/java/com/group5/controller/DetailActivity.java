@@ -332,7 +332,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
 
         public LoadBookmark(Activity activity) {
             this.activity = activity;
-            progressDialog = new ProgressDialog(activity.getApplicationContext());
+            progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("Loading");
             progressDialog.show();
         }
@@ -362,7 +362,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                 fabBookmark.setImageResource(R.drawable.ic_pin_fill);
                 idBookmark = result;
             }
-
+            progressDialog.dismiss();
         }
 
     }
