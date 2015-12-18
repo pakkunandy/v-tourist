@@ -269,7 +269,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         } else {
-            if (adapter.data.size() != 0) {
+            if (adapter.data.size() == 0) {
                 adapter.data.clear();
                 adapter.notifyDataSetChanged();
             }
