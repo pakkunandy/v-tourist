@@ -377,6 +377,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                     try {
                         BookmarkServices.createBookmark(GlobalVariable.idGlobalPlaceCurrent);
                         isAdd = false;
+                        fabBookmark.setImageResource(R.drawable.ic_pin_fill);
                         Toast.makeText(DetailActivity.this, "Đã thêm vào danh sách yêu thích.", Toast.LENGTH_SHORT).show();
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -385,6 +386,7 @@ public class DetailActivity extends AppCompatActivity  implements NavigationView
                     try {
                         BookmarkServices.deleteBookmark(idBookmark);
                         isAdd = true;
+                        fabBookmark.setImageResource(R.drawable.ic_pin);
                         Toast.makeText(DetailActivity.this, "Đã xóa khỏi danh sách yêu thích.", Toast.LENGTH_SHORT).show();
                     } catch (ParseException e) {
                         e.printStackTrace();

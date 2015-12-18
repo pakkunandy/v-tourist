@@ -5,6 +5,7 @@ import com.group5.model.Bookmark;
 import com.group5.model.Place;
 import com.group5.model.Rating;
 import com.group5.parser.DataParser;
+import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -45,6 +46,7 @@ public class BookmarkServices {
     public static List<Bookmark> getBookmarkList() throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Bookmark");
         query.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
         List<Bookmark> bookmarkList = new ArrayList<>();
         try {
             List<ParseObject> listObject = query.find();

@@ -5,14 +5,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp">
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
         <ImageView
             android:id="@+id/img_FavoritePlace"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@color/black"
+
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            android:background="@color/black"
             android:layout_centerVertical="true"/>
 
         <TextView
@@ -23,7 +25,9 @@
             android:paddingLeft="16dp"
             android:textSize="20sp"
             android:textColor="@color/textPrimary"
-            android:text="Ten"/>
+            android:textStyle="bold"
+            android:text="Ten"
+            android:maxLines="1"/>
 
         <TextView
             android:id="@+id/txt_favoriteLocation"
@@ -32,9 +36,11 @@
             android:layout_toRightOf="@+id/img_FavoritePlace"
             android:paddingLeft="16dp"
             android:layout_below="@+id/txt_favoriteName"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:textColor="@color/textPrimary"
-            android:text="Dia chi"/>
+            android:textStyle="italic"
+            android:text="Dia chi"
+            android:maxLines="1"/>
 
         <TextView
             android:id="@+id/txt_favoriteDecription"
@@ -43,9 +49,11 @@
             android:layout_toRightOf="@+id/img_FavoritePlace"
             android:paddingLeft="16dp"
             android:layout_below="@+id/txt_favoriteLocation"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:textColor="@color/textPrimary"
-            android:text="Mo ta"/>
+            android:text="Mo ta"
+            android:maxLines="2"/>
 
     </RelativeLayout>
+
 </LinearLayout>

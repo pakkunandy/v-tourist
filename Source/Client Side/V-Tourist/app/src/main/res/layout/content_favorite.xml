@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/txt_LoginRequire"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Bạn cần đăng nhập để xem mục này."
         android:textStyle="italic" />
@@ -24,7 +24,7 @@
     <TextView
         android:id="@+id/txt_EmptyBookmark"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Bạn chưa có Bookmark nào"
         android:textStyle="italic"

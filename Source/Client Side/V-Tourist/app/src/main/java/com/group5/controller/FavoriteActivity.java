@@ -76,7 +76,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
         loginMenuItem = navigationView.getMenu().getItem(3);
 
         if(UserServices.getCurrentUser() != null) {
-            txtNote.setVisibility(View.INVISIBLE);
+            txtNote.setVisibility(View.GONE);
             recyclerView  = (RecyclerView) findViewById(R.id.list_Favorite);
             setItemClickOfRecyclerView();
             getPlacefromParse(UserServices.getCurrentUser());
