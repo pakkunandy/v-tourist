@@ -43,6 +43,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
     private RecyclerView recyclerView;
     private List<Bookmark> listItem;
     private TextView txtNote;
+	FavoriteListAdapter adapter;
 
     MenuItem loginMenuItem;
 
@@ -132,6 +133,8 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
                     BookmarkServices.deleteBookmark(item.getId());
+					adapter.data.remove(item);
+					adapter.notifyDataSetChanged();
                 } catch (Exception ex) {}
                 onResume();
             }
@@ -185,7 +188,7 @@ public class FavoriteActivity extends AppCompatActivity  implements NavigationVi
             if(result.size() != 0) {
                 listItem = result;
                 RecyclerView lv = (RecyclerView) activity.findViewById(R.id.list_Favorite);
-                FavoriteListAdapter adapter = new FavoriteListAdapter(activity, listItem);
+                adapter = new FavoriteListAdapter(activity, listItem);
                 Loading.dismiss();
                 lv.setAdapter(adapter);
             } else {
