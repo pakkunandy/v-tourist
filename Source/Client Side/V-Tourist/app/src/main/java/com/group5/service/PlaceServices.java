@@ -135,6 +135,36 @@ public class PlaceServices {
         return placeList;
     }
 
+    public static ArrayList<Place> getLastedPlacesList(ParseQuery.CachePolicy cachePolicy, int limit) throws ParseException {
+        ArrayList<Place> lastedPlaceList = new ArrayList<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+        query.setCachePolicy(cachePolicy);
+        query.orderByDescending("createdAt").setLimit(limit);
+        try {
+            List<ParseObject> places = query.find();
+            for (ParseObject place : places)
+            {
+                if (place != null)
+                {
+                    Place p = DataParser.parsePlace(place);
+                    ParseRelation<ParseObject> relation = place.getRelation("images");
+                    ParseQuery query2 = relation.getQuery();
+                    query2.setCachePolicy(cachePolicy);
+                    ParseObject imageObject = query2.getFirst();
+                    if (imageObject != null)
+                    {
+                        ParseFile imageFile = imageObject.getParseFile("img");
+                        p.firstImageURL = imageFile.getUrl();
+                    }
+                    lastedPlaceList.add(p);
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return lastedPlaceList;
+    }
+
     public static List<Place> getPlacesListByGeo(Double latitude, Double longtitude, Double distance) throws ParseException {
         ParseGeoPoint location = new ParseGeoPoint(latitude, longtitude);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");

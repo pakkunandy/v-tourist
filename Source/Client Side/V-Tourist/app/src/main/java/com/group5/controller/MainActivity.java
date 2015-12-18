@@ -26,6 +26,7 @@ import com.group5.model.City;
 import com.group5.model.Place;
 import com.group5.parser.DataParser;
 import com.group5.service.CityServices;
+import com.group5.service.PlaceServices;
 import com.group5.service.UserServices;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -161,34 +162,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         protected Void doInBackground(Void... params) {
+//
+//            ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+//            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+//            query.orderByDescending("createdAt").setLimit(10);
+//            try {
+//                List<ParseObject> places = query.find();
+//                for (ParseObject place : places)
+//                {
+//                    if (place != null)
+//                    {
+//                        Place p = DataParser.parsePlace(place);
+//                        ParseRelation<ParseObject> relation = place.getRelation("images");
+//                        ParseQuery query2 = relation.getQuery();
+//                        query2.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+//                        ParseObject imageObject = query2.getFirst();
+//                        if (imageObject != null)
+//                        {
+//                            ParseFile imageFile = imageObject.getParseFile("img");
+//                            p.firstImageURL = imageFile.getUrl();
+//                        }
+//                        arrayListNewUpdates.add(p);
+//                    }
+//                }
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
-            query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-            query.orderByDescending("createdAt").setLimit(10);
             try {
-                List<ParseObject> places = query.find();
-                for (ParseObject place : places)
-                {
-                    if (place != null)
-                    {
-                        Place p = DataParser.parsePlace(place);
-                        ParseRelation<ParseObject> relation = place.getRelation("images");
-                        ParseQuery query2 = relation.getQuery();
-                        query2.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
-                        ParseObject imageObject = query2.getFirst();
-                        if (imageObject != null)
-                        {
-                            ParseFile imageFile = imageObject.getParseFile("img");
-                            p.firstImageURL = imageFile.getUrl();
-                        }
-                        arrayListNewUpdates.add(p);
-                    }
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            try {
+                arrayListNewUpdates = PlaceServices.getLastedPlacesList(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE, 10);
                 arrayListCity = CityServices.getCitiesList();
             } catch (ParseException e) {
                 e.printStackTrace();
